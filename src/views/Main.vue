@@ -76,6 +76,10 @@
     </div>
     <div class="main-right">
       <div class="all-coverage">
+        <div class="coverage-top">
+          <MainTop></MainTop>
+        </div>
+        <div class="coverage-bottom"></div>
         <router-view />
       </div>
     </div>
@@ -83,7 +87,10 @@
 </template>
 
 <script>
+import MainTop from "../components/MainTop.vue";
 export default {
+  components: { MainTop },
+
   data() {
     return {
       isCollapse: true,
@@ -102,12 +109,23 @@ export default {
   height: 100vh;
   background-color: #545c64;
 }
+
+.main .main-left > ul {
+  width: 160px;
+}
 .main .main-right {
   width: calc(100% - 160px);
   /* background-color: red; */
-  overflow: auto;
+  overflow: hidden;
   height: 100vh;
 }
+
+.main .main-right .coverage-top {
+  width: 100%;
+  height: 5vh;
+  background-color: #aaaaaa;
+}
+
 /* .main .main-right .all-coverage {
 } */
 .el-menu-vertical-demo {
