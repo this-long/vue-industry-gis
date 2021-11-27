@@ -19,22 +19,102 @@ export default {
       polygons: [],
       zoom: 10,
       marker: null, //工业遗产点位
+
+      // 弹框内容
+      title: "",
+      content: [
+        "<img src='http://tpc.googlesyndication.com/simgad/5843493769827749134'>地址：北京市朝阳区阜通东大街6号院3号楼东北8.3公里",
+        "电话：010-64733333",
+        "<a href='https://ditu.amap.com/detail/B000A8URXB?citycode=110105'>详细信息</a>",
+      ],
+      infoWindow: null,
+
+      // 模拟工业遗产数据
+      dataList: [
+        {
+          company: "河北峪耳崖黄金矿业有限公司", //单位名称
+          coordinate: [118.558439, 40.497856], //经纬度
+          address: "河北省承德市城满战自治县裕耳行值", //单位地址
+          type: "B016", //工业类别
+          start: 1958, //建成年代
+          name: "河北峪耳崖金矿工业遗产建筑群",
+          minute:
+            "详细介绍还没想好怎么搞，添加通过富文本，渲染同理？，还是分模块？上传的图片只能是链接？",
+        },
+        {
+          company: "新中国面粉厂", //单位名称
+          coordinate: [115.504115, 38.849684], //经纬度
+          name: "保定乾义面粉厂旧址", //遗产名称
+          address: "河北省保定市莲池区长城南大街654号", //单位地址
+          type: "C131", //工业类别
+          start: 1925, //建成年代
+          minute:
+            "详细介绍还没想好怎么搞，添加通过富文本，渲染同理？，还是分模块？上传的图片只能是链接？",
+        },
+        {
+          company: "张家口长城酿造(集团)有限责任公司", //单位名称
+          coordinate: [115.507904, 40.3901], //经纬度
+          name: "长城酿造集团中国第一瓶干白葡萄酒研发生产基地", //遗产名称
+          address: "河北省张家口市怀来县沙城镇", //单位地址
+          type: "C151", //工业类别
+          start: 1960, //建成年代
+          minute:
+            "详细介绍还没想好怎么搞，添加通过富文本，渲染同理？，还是分模块？上传的图片只能是链接？",
+        },
+        {
+          company: "刘伶醉酿酒股份有限公司", //单位名称
+          coordinate: [115.638353, 39.004825], //经纬度
+          name: "刘伶醉古烧锅", //遗产名称
+          address: "河北省保定市徐水区", //单位地址
+          type: "C151", //工业类别
+          start: 1958, //建成年代
+          minute:
+            "详细介绍还没想好怎么搞，添加通过富文本，渲染同理？，还是分模块？上传的图片只能是链接？",
+        },
+        {
+          company: "保定钞票纸业有限公司", //单位名称
+          coordinate: [115.425957, 38.897087], //经纬度
+          name: "国营保定造纸厂", //遗产名称
+          address: "河北省保定市", //单位地址
+          type: "C222", //工业类别
+          start: 1956, //建成年代
+          minute:
+            "详细介绍还没想好怎么搞，添加通过富文本，渲染同理？，还是分模块？上传的图片只能是链接？",
+        },
+      ],
     };
   },
 
   computed: {
     ...mapState(["lang"]),
   },
+  created() {
+    // this.infoWindow = new AMap.InfoWindow({
+    //   isCustom: true, //使用自定义窗体
+    //   // content: '  <div style="background-color:white">111</div>',
+    //   content: this.createInfoWindow(this.title, this.content.join("<br/>")),
+    //   offset: new AMap.Pixel(16, -45),
+    // });
+    // 得先执行
+    // this.content.push(
+    //   ""
+    // );
+    // this.content.push("");
+    // this.content.push(
+    //   ""
+    // );
+  },
 
   mounted() {
     this.initMap(); //初始化地图
+
     // this.disSearch();
+    this.addMarker();
     this.drawBounds();
     // console.log("test", this.map.getZoom());
     // this.mapZoom();
-    // this.addMarker();
 
-    console.log("返回所有覆盖物", this.map.getAllOverlays("marker"));
+    // console.log("返回所有覆盖物", this.map.getAllOverlays("marker"));
   },
 
   methods: {
@@ -48,6 +128,7 @@ export default {
         viewMode: "3D", //使用3D视图
         lang: this.lang,
         mapStyle: "amap://styles/fresh",
+        infoWindow: null,
       });
     },
 
@@ -92,22 +173,152 @@ export default {
       });
     },
 
-    // 地图缩放监听
-    // mapZoom() {
-    //   this.map.on("zoomchange", () => {
-    //     // this.zoom=this.map.getZoom()
-    //     console.log("当前地图级别", this.map.getZoom());
-    //     if (this.map.getZoom() < 7) {
-    //       this.zoom = 7;
-    //     }
-    //   });
-    // },
+    addMarker() {
+      var marker = new AMap.Marker({
+        map: this.map,
+        position: [116.481181, 39.989792],
+      });
+      //鼠标点击marker弹出自定义的信息窗体
+
+      //鼠标点击marker弹出自定义的信息窗体
+      this.title =
+        `{10}<span style="font-size:11px;color:#F00;">` + this.zoom + `</span>`;
+      this.infoWindow = new AMap.InfoWindow({
+        isCustom: true, //使用自定义窗体
+        // content: '  <div style="background-color:white">111</div>',
+        content: this.createInfoWindow(this.title, this.content.join("<br/>")),
+        offset: new AMap.Pixel(16, -45),
+      });
+
+      AMap.event.addListener(marker, "click", () => {
+        console.log(this.infoWindow);
+        this.infoWindow.open(this.map, marker.getPosition());
+      });
+    },
+
+    // 已经渲染出来了
+    createInfoWindow(title, content) {
+      // console.log("11111111");
+      var info = document.createElement("div");
+      info.className = "custom-info input-card content-window-card";
+
+      //可以通过下面的方式修改自定义窗体的宽高
+      //info.style.width = "400px";
+      // 定义顶部标题
+      var top = document.createElement("div");
+      var titleD = document.createElement("div");
+      var closeX = document.createElement("img");
+      top.className = "info-top";
+      titleD.innerHTML = title;
+      closeX.src = "https://webapi.amap.com/images/close2.gif";
+      closeX.onclick = this.closeInfoWindow;
+
+      top.appendChild(titleD);
+      top.appendChild(closeX);
+      info.appendChild(top);
+
+      // 定义中部内容
+      var middle = document.createElement("div");
+      middle.className = "info-middle";
+      middle.style.backgroundColor = "white";
+      middle.innerHTML = content;
+      info.appendChild(middle);
+
+      // 定义底部内容
+      var bottom = document.createElement("div");
+      bottom.className = "info-bottom";
+      bottom.style.position = "relative";
+      bottom.style.top = "0px";
+      bottom.style.margin = "0 auto";
+      var sharp = document.createElement("img");
+      sharp.src = "https://webapi.amap.com/images/sharp.png";
+      bottom.appendChild(sharp);
+      info.appendChild(bottom);
+      return info;
+    },
+
+    // 无关
+    closeInfoWindow() {
+      this.map.clearInfoWindow();
+    },
   },
 };
 </script>
 
-<style scoped>
+<style>
 .heritage-industry #container {
   border-bottom: 1px solid #f9d5a7;
+}
+/* 弹框 */
+.content-window-card {
+  position: relative;
+  box-shadow: none;
+  bottom: 0;
+  left: 0;
+  width: auto;
+  padding: 0;
+}
+
+.content-window-card p {
+  height: 2rem;
+}
+
+.custom-info {
+  border: solid 1px silver;
+}
+
+div.info-top {
+  position: relative;
+  background: none repeat scroll 0 0 #f9f9f9;
+  border-bottom: 1px solid #ccc;
+  border-radius: 5px 5px 0 0;
+}
+
+div.info-top div {
+  display: inline-block;
+  color: #333333;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 31px;
+  padding: 0 10px;
+}
+
+div.info-top img {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  transition-duration: 0.25s;
+}
+
+div.info-top img:hover {
+  box-shadow: 0px 0px 5px #000;
+}
+
+div.info-middle {
+  font-size: 12px;
+  padding: 10px 6px;
+  line-height: 20px;
+}
+
+div.info-bottom {
+  height: 0px;
+  width: 100%;
+  clear: both;
+  text-align: center;
+}
+
+div.info-bottom img {
+  position: relative;
+  z-index: 104;
+}
+
+span {
+  margin-left: 5px;
+  font-size: 11px;
+}
+
+.info-middle img {
+  float: left;
+  margin-right: 6px;
 }
 </style>
