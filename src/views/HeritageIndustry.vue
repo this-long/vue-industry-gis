@@ -8,6 +8,7 @@
 
 <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=2eccb47b400c8ab58f2dc596dbfe9d53&plugin=AMap.DistrictSearch"></script>
 <script>
+import { mapState } from "vuex";
 export default {
   name: "HeritageIndustry",
 
@@ -17,17 +18,23 @@ export default {
       district: null,
       polygons: [],
       zoom: 10,
-
-      // _this: null,
+      marker: null, //工业遗产点位
     };
+  },
+
+  computed: {
+    ...mapState(["lang"]),
   },
 
   mounted() {
     this.initMap(); //初始化地图
     // this.disSearch();
     this.drawBounds();
-    console.log("test", this.map.getZoom());
-    this.mapZoom();
+    // console.log("test", this.map.getZoom());
+    // this.mapZoom();
+    // this.addMarker();
+
+    console.log("返回所有覆盖物", this.map.getAllOverlays("marker"));
   },
 
   methods: {
@@ -39,7 +46,8 @@ export default {
         zooms: [6.5, 18],
         center: [115.464523, 38.874476], //中心点坐标
         viewMode: "3D", //使用3D视图
-        mapStyle: "amap://styles/whitesmoke",
+        lang: this.lang,
+        mapStyle: "amap://styles/fresh",
       });
     },
 
@@ -57,9 +65,10 @@ export default {
       this.district.setLevel("province");
       var _this = this;
       this.district.search("河北省", function (status, result) {
+        // 河北省边界
         // var bounds = result.districtList[0].boundaries;
-        console.log(result);
-        console.log(status);
+        // console.log(result);
+        // console.log(status);
 
         var outer = [
           new AMap.LngLat(-360, 90, true),
@@ -73,10 +82,10 @@ export default {
         pathArray.push.apply(pathArray, holes);
         var polygon = new AMap.Polygon({
           pathL: pathArray,
-          strokeColor: "#545C64",
+          strokeColor: "#F9D5A7",
           strokeWeight: 1,
-          fillColor: "black",
-          fillOpacity: 0,
+          fillColor: "#F9D5A7",
+          fillOpacity: 0.2,
         });
         polygon.setPath(pathArray);
         _this.map.add(polygon);
@@ -84,18 +93,21 @@ export default {
     },
 
     // 地图缩放监听
-    mapZoom() {
-      this.map.on("zoomchange", () => {
-        // this.zoom=this.map.getZoom()
-        console.log("当前地图级别", this.map.getZoom());
-        if (this.map.getZoom() < 7) {
-          this.zoom = 7;
-        }
-      });
-    },
+    // mapZoom() {
+    //   this.map.on("zoomchange", () => {
+    //     // this.zoom=this.map.getZoom()
+    //     console.log("当前地图级别", this.map.getZoom());
+    //     if (this.map.getZoom() < 7) {
+    //       this.zoom = 7;
+    //     }
+    //   });
+    // },
   },
 };
 </script>
 
-<style>
+<style scoped>
+.heritage-industry #container {
+  border-bottom: 1px solid #f9d5a7;
+}
 </style>

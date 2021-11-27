@@ -4,82 +4,117 @@
     <div class="main-left">
       <el-menu
         router
-        default-active="2"
+        :default-active="$route.path"
         class="el-menu-vertical-demo"
-        background-color="#545c64"
+        background-color="#90AACB"
         text-color="#fff"
+        active-text-color="#325288"
       >
-        <el-menu-item index="/home">
-          <i class="el-icon-menu"></i>
-          <span slot="title">首页</span>
+        <el-menu-item index="/">
+          <i class="myIcon el-icon-s-home"></i>
+          <span slot="title">{{ lang === "zh_cn" ? "首页" : "Home" }}</span>
         </el-menu-item>
-        <el-submenu index="1">
+        <el-submenu index="/heritage">
           <template slot="title">
-            <i class="el-icon-location"></i>
-            <span>遗产展示</span>
+            <i class="myIcon el-icon-location"></i>
+            <span>{{ lang === "zh_cn" ? "遗产展示" : "Heritage" }}</span>
           </template>
-          <el-menu-item index="/heritage/industry">工业遗产</el-menu-item>
-          <el-menu-item index="/heritage/museum">遗产博物馆</el-menu-item>
+          <el-menu-item index="/heritage/industry">{{
+            lang === "zh_cn" ? "工业遗产" : "Industry"
+          }}</el-menu-item>
+          <el-menu-item index="/heritage/museum">{{
+            lang === "zh_cn" ? "遗产博物馆" : "Museum"
+          }}</el-menu-item>
         </el-submenu>
 
-        <el-submenu index="2">
+        <el-submenu index="遗产申请">
           <template slot="title">
-            <i class="el-icon-location"></i>
-            <span>遗产申请</span>
+            <i class="myIcon el-icon-s-promotion"></i>
+            <span>{{ lang === "zh_cn" ? "遗产申请" : "Apply" }}</span>
           </template>
-          <el-menu-item index="2-1">遗产申报</el-menu-item>
-          <el-menu-item index="2-2">遗产报修</el-menu-item>
+          <el-menu-item index="/heritage/apply">{{
+            lang === "zh_cn" ? "遗产申报" : "Declare"
+          }}</el-menu-item>
+          <el-menu-item index="/heritage/repair">{{
+            lang === "zh_cn" ? "遗产报修" : "Repair"
+          }}</el-menu-item>
         </el-submenu>
 
-        <el-submenu index="3">
+        <el-submenu index="遗产数据">
           <template slot="title">
-            <i class="el-icon-location"></i>
-            <span>遗产数据</span>
+            <i class="myIcon el-icon-s-marketing"></i>
+            <span>{{ lang === "zh_cn" ? "遗产数据" : "Information" }}</span>
           </template>
-          <el-menu-item index="3-1">遗产报表</el-menu-item>
-          <el-menu-item index="3-2">遗产排行榜</el-menu-item>
+          <el-menu-item index="/heritage/Echarts">{{
+            lang === "zh_cn" ? "遗产报表" : "ReportForm"
+          }}</el-menu-item>
+          <el-menu-item index="/heritage/ranking">{{
+            lang === "zh_cn" ? "遗产排行榜" : "RankingList"
+          }}</el-menu-item>
         </el-submenu>
 
-        <el-submenu index="4">
+        <el-submenu index="我要旅行">
           <template slot="title">
-            <i class="el-icon-location"></i>
-            <span>我要旅行</span>
+            <i class="myIcon el-icon-s-cooperation"></i>
+            <span>{{ lang === "zh_cn" ? "我要旅行" : "Travel" }}</span>
           </template>
-          <el-menu-item index="4-1">出行规划</el-menu-item>
-          <el-menu-item index="4-2">预算评估</el-menu-item>
-          <el-menu-item index="4-3">足迹地图</el-menu-item>
+          <el-menu-item index="/travel/plan">{{
+            lang === "zh_cn" ? "出行规划" : "TravelPlan"
+          }}</el-menu-item>
+          <el-menu-item index="/travel/money">{{
+            lang === "zh_cn" ? "预算评估" : "Budget"
+          }}</el-menu-item>
+          <el-menu-item index="/travel/map">{{
+            lang === "zh_cn" ? "足迹地图" : "FootMap"
+          }}</el-menu-item>
         </el-submenu>
 
-        <el-submenu index="5">
+        <el-submenu index="数据维护">
           <template slot="title">
-            <i class="el-icon-location"></i>
-            <span>数据维护</span>
+            <i class="myIcon el-icon-s-order"></i>
+            <span>{{ lang === "zh_cn" ? "数据维护" : "AdminData" }}</span>
           </template>
-          <el-menu-item index="5-1">遗产管理</el-menu-item>
-          <el-menu-item index="5-2">遗产主页编辑</el-menu-item>
+          <el-menu-item index="/data/manage">{{
+            lang === "zh_cn" ? "遗产管理" : "HeritageRun"
+          }}</el-menu-item>
+          <el-menu-item index="/edit/home">{{
+            lang === "zh_cn" ? "遗产主页编辑" : "HomePageEdit"
+          }}</el-menu-item>
         </el-submenu>
 
-        <el-submenu index="6">
+        <el-submenu index="我的审核">
           <template slot="title">
-            <i class="el-icon-location"></i>
-            <span>我的审核</span>
+            <i class="myIcon el-icon-s-check"></i>
+            <span>{{ lang === "zh_cn" ? "我的审核" : "MyApprove" }}</span>
           </template>
-          <el-menu-item index="6-1">遗产申请</el-menu-item>
-          <el-menu-item index="6-2">报修申请</el-menu-item>
+          <el-menu-item index="/heritage/approve">{{
+            lang === "zh_cn" ? "遗产申请" : "HeritageApprove"
+          }}</el-menu-item>
+          <el-menu-item index="/repair/approve">{{
+            lang === "zh_cn" ? "报修申请" : "RepairApprove"
+          }}</el-menu-item>
         </el-submenu>
 
-        <el-menu-item index="aboutOur">
-          <i class="el-icon-menu"></i>
-          <span slot="title">关于我们</span>
+        <el-menu-item index="/about">
+          <i class="myIcon el-icon-s-comment"></i>
+          <span slot="title">{{
+            lang === "zh_cn" ? "关于我们" : "AboutUs"
+          }}</span>
+        </el-menu-item>
+        <el-menu-item index="/setup">
+          <i class="myIcon el-icon-s-tools"></i>
+          <span slot="title">{{ lang === "zh_cn" ? "设置" : "SetUp" }}</span>
         </el-menu-item>
       </el-menu>
     </div>
     <div class="main-right">
       <div class="all-coverage">
-        <div class="coverage-top">
+        <!-- <div class="coverage-top">
           <MainTop></MainTop>
-        </div>
-        <div class="coverage-bottom"></div>
+        </div> -->
+        <!-- <div class="coverage-bottom"> -->
+        <!-- <MainTop></MainTop> -->
+        <!-- </div> -->
         <router-view />
       </div>
     </div>
@@ -87,14 +122,24 @@
 </template>
 
 <script>
-import MainTop from "../components/MainTop.vue";
+import { mapState } from "vuex";
+
+// import MainTop from "../components/MainTop.vue";
 export default {
-  components: { MainTop },
+  // components: { MainTop },
 
   data() {
     return {
       isCollapse: true,
     };
+  },
+
+  created() {
+    // console.log("route");
+  },
+
+  computed: {
+    ...mapState(["lang"]),
   },
 };
 </script>
@@ -107,7 +152,7 @@ export default {
   width: 160px;
   overflow: auto;
   height: 100vh;
-  background-color: #545c64;
+  background-color: #90aacb;
 }
 
 .main .main-left > ul {
@@ -122,11 +167,12 @@ export default {
 
 .main .main-right .coverage-top {
   width: 100%;
-  height: 5vh;
-  background-color: #aaaaaa;
+  height: 7vh;
+  /* border-bottom: #000; */
 }
 
 /* .main .main-right .all-coverage {
+  
 } */
 .el-menu-vertical-demo {
   overflow: hidden;
@@ -134,5 +180,8 @@ export default {
 ::-webkit-scrollbar {
   /*隐藏滚轮*/
   display: none;
+}
+.myIcon {
+  color: white;
 }
 </style>
