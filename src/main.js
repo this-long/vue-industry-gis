@@ -5,6 +5,7 @@ import store from './store'
 import "./plugins/element"
 import "./plugins/style.css"
 import "./plugins/filter"
+import "./plugins/axios"
 // import "";
 
 

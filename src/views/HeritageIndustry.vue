@@ -26,68 +26,7 @@ export default {
       infoWindow: null,
 
       // 模拟工业遗产数据
-      dataList: [
-        {
-          company: "河北峪耳崖黄金矿业有限公司", //单位名称
-          coordinate: [118.558439, 40.497856], //经纬度
-          address: "河北省承德市城满战自治县裕耳行值", //单位地址
-          type: "B016", //工业类别
-          start: 1958, //建成年代
-          name: "河北峪耳崖金矿工业遗产建筑群",
-          mainImage:
-            "https://img-blog.csdnimg.cn/d3ab506a0ac34dc591fcd20ad5373925.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAPGRpdiBjbGFzcz0n6b6Z5a6d5a6dJz4=,size_14,color_FFFFFF,t_70,g_se,x_16#pic_center",
-          minute:
-            "详细介绍还没想好怎么搞，添加通过富文本，渲染同理？，还是分模块？上传的图片只能是链接？",
-        },
-        {
-          company: "新中国面粉厂", //单位名称
-          coordinate: [115.504115, 38.849684], //经纬度
-          name: "保定乾义面粉厂旧址", //遗产名称
-          address: "河北省保定市莲池区长城南大街654号", //单位地址
-          type: "C131", //工业类别
-          start: 1925, //建成年代
-          mainImage:
-            "https://img-blog.csdnimg.cn/d3ab506a0ac34dc591fcd20ad5373925.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAPGRpdiBjbGFzcz0n6b6Z5a6d5a6dJz4=,size_14,color_FFFFFF,t_70,g_se,x_16#pic_center",
-          minute:
-            "详细介绍还没想好怎么搞，添加通过富文本，渲染同理？，还是分模块？上传的图片只能是链接？",
-        },
-        {
-          company: "张家口长城酿造(集团)有限责任公司", //单位名称
-          coordinate: [115.507904, 40.3901], //经纬度
-          name: "长城酿造集团中国第一瓶干白葡萄酒研发生产基地", //遗产名称
-          address: "河北省张家口市怀来县沙城镇", //单位地址
-          type: "C151", //工业类别
-          start: 1960, //建成年代
-          mainImage:
-            "https://img-blog.csdnimg.cn/d3ab506a0ac34dc591fcd20ad5373925.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAPGRpdiBjbGFzcz0n6b6Z5a6d5a6dJz4=,size_14,color_FFFFFF,t_70,g_se,x_16#pic_center",
-          minute:
-            "详细介绍还没想好怎么搞，添加通过富文本，渲染同理？，还是分模块？上传的图片只能是链接？",
-        },
-        {
-          company: "刘伶醉酿酒股份有限公司", //单位名称
-          coordinate: [115.638353, 39.004825], //经纬度
-          name: "刘伶醉古烧锅", //遗产名称
-          address: "河北省保定市徐水区", //单位地址
-          type: "C151", //工业类别
-          start: 1958, //建成年代
-          mainImage:
-            "https://img-blog.csdnimg.cn/d3ab506a0ac34dc591fcd20ad5373925.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAPGRpdiBjbGFzcz0n6b6Z5a6d5a6dJz4=,size_14,color_FFFFFF,t_70,g_se,x_16#pic_center",
-          minute:
-            "详细介绍还没想好怎么搞，添加通过富文本，渲染同理？，还是分模块？上传的图片只能是链接？",
-        },
-        {
-          company: "保定钞票纸业有限公司", //单位名称
-          coordinate: [115.425957, 38.897087], //经纬度
-          name: "国营保定造纸厂", //遗产名称
-          address: "河北省保定市", //单位地址
-          type: "C222", //工业类别
-          start: 1956, //建成年代
-          mainImage:
-            "https://img-blog.csdnimg.cn/d3ab506a0ac34dc591fcd20ad5373925.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAPGRpdiBjbGFzcz0n6b6Z5a6d5a6dJz4=,size_14,color_FFFFFF,t_70,g_se,x_16#pic_center",
-          minute:
-            "详细介绍还没想好怎么搞，添加通过富文本，渲染同理？，还是分模块？上传的图片只能是链接？",
-        },
-      ],
+      dataList: null,
 
       // nowMarker: null,
     };
@@ -97,20 +36,7 @@ export default {
     ...mapState(["lang"]),
   },
   created() {
-    // this.infoWindow = new AMap.InfoWindow({
-    //   isCustom: true, //使用自定义窗体
-    //   // content: '  <div style="background-color:white">111</div>',
-    //   content: this.createInfoWindow(this.title, this.content.join("<br/>")),
-    //   offset: new AMap.Pixel(16, -45),
-    // });
-    // 得先执行
-    // this.content.push(
-    //   ""
-    // );
-    // this.content.push("");
-    // this.content.push(
-    //   ""
-    // );
+    // 发送请求获取所有点位
   },
 
   mounted() {
@@ -181,7 +107,14 @@ export default {
       });
     },
 
-    addMarker() {
+    async addMarker() {
+      var res = await this.$axios.get(
+        "/getHeritageMainData/getHeritageMainData"
+      );
+      // console.log("请求结果", res);
+      this.dataList = res.data.data;
+      console.log("请求结果", this.dataList);
+
       for (let i = 0; i < this.dataList.length; i++) {
         // 循环点坐标
         // 注意这里一定得用 let
@@ -201,9 +134,9 @@ export default {
             "</span>";
 
           (this.content = [
-            "<img src=" +
+            "<img src='" +
               this.dataList[i].mainImage +
-              "style='wtdth:100px;height:auto;'>地址：" +
+              "'style='wtdth:100px;height:auto;'>地址：" +
               this.dataList[i].address,
             // "单位名称：" + this.dataList[i].company,
             "工业类别：" + this.dataList[i].type,
