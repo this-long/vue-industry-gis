@@ -22,11 +22,7 @@ export default {
 
       // 弹框内容
       title: "",
-      content: [
-        "<img src='http://tpc.googlesyndication.com/simgad/5843493769827749134'>地址：北京市朝阳区阜通东大街6号院3号楼东北8.3公里",
-        "电话：010-64733333",
-        "<a href='https://ditu.amap.com/detail/B000A8URXB?citycode=110105'>详细信息</a>",
-      ],
+      content: [],
       infoWindow: null,
 
       // 模拟工业遗产数据
@@ -38,6 +34,8 @@ export default {
           type: "B016", //工业类别
           start: 1958, //建成年代
           name: "河北峪耳崖金矿工业遗产建筑群",
+          mainImage:
+            "https://img-blog.csdnimg.cn/d3ab506a0ac34dc591fcd20ad5373925.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAPGRpdiBjbGFzcz0n6b6Z5a6d5a6dJz4=,size_14,color_FFFFFF,t_70,g_se,x_16#pic_center",
           minute:
             "详细介绍还没想好怎么搞，添加通过富文本，渲染同理？，还是分模块？上传的图片只能是链接？",
         },
@@ -48,6 +46,8 @@ export default {
           address: "河北省保定市莲池区长城南大街654号", //单位地址
           type: "C131", //工业类别
           start: 1925, //建成年代
+          mainImage:
+            "https://img-blog.csdnimg.cn/d3ab506a0ac34dc591fcd20ad5373925.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAPGRpdiBjbGFzcz0n6b6Z5a6d5a6dJz4=,size_14,color_FFFFFF,t_70,g_se,x_16#pic_center",
           minute:
             "详细介绍还没想好怎么搞，添加通过富文本，渲染同理？，还是分模块？上传的图片只能是链接？",
         },
@@ -58,6 +58,8 @@ export default {
           address: "河北省张家口市怀来县沙城镇", //单位地址
           type: "C151", //工业类别
           start: 1960, //建成年代
+          mainImage:
+            "https://img-blog.csdnimg.cn/d3ab506a0ac34dc591fcd20ad5373925.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAPGRpdiBjbGFzcz0n6b6Z5a6d5a6dJz4=,size_14,color_FFFFFF,t_70,g_se,x_16#pic_center",
           minute:
             "详细介绍还没想好怎么搞，添加通过富文本，渲染同理？，还是分模块？上传的图片只能是链接？",
         },
@@ -68,6 +70,8 @@ export default {
           address: "河北省保定市徐水区", //单位地址
           type: "C151", //工业类别
           start: 1958, //建成年代
+          mainImage:
+            "https://img-blog.csdnimg.cn/d3ab506a0ac34dc591fcd20ad5373925.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAPGRpdiBjbGFzcz0n6b6Z5a6d5a6dJz4=,size_14,color_FFFFFF,t_70,g_se,x_16#pic_center",
           minute:
             "详细介绍还没想好怎么搞，添加通过富文本，渲染同理？，还是分模块？上传的图片只能是链接？",
         },
@@ -78,10 +82,14 @@ export default {
           address: "河北省保定市", //单位地址
           type: "C222", //工业类别
           start: 1956, //建成年代
+          mainImage:
+            "https://img-blog.csdnimg.cn/d3ab506a0ac34dc591fcd20ad5373925.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAPGRpdiBjbGFzcz0n6b6Z5a6d5a6dJz4=,size_14,color_FFFFFF,t_70,g_se,x_16#pic_center",
           minute:
             "详细介绍还没想好怎么搞，添加通过富文本，渲染同理？，还是分模块？上传的图片只能是链接？",
         },
       ],
+
+      // nowMarker: null,
     };
   },
 
@@ -174,26 +182,70 @@ export default {
     },
 
     addMarker() {
-      var marker = new AMap.Marker({
-        map: this.map,
-        position: [116.481181, 39.989792],
-      });
+      for (let i = 0; i < this.dataList.length; i++) {
+        // 循环点坐标
+        // 注意这里一定得用 let
+        let marker = new AMap.Marker({
+          map: this.map,
+          position: this.dataList[i].coordinate,
+        });
+
+        AMap.event.addListener(marker, "click", () => {
+          // this.nowMarker = marker;
+
+          // console.log(this.infoWindow);
+          this.title =
+            this.dataList[i].name +
+            '<span style="font-size:11px;">建于：' +
+            this.dataList[i].start +
+            "</span>";
+
+          (this.content = [
+            "<img src=" +
+              this.dataList[i].mainImage +
+              "style='wtdth:100px;height:auto;'>地址：" +
+              this.dataList[i].address,
+            // "单位名称：" + this.dataList[i].company,
+            "工业类别：" + this.dataList[i].type,
+            `<a href="#/heritage/industry/main/` +
+              this.dataList[i].company +
+              `" class="">详细信息</a>`,
+          ]),
+            (this.infoWindow = new AMap.InfoWindow({
+              isCustom: true, //使用自定义窗体
+              // content: '  <div style="background-color:white">111</div>',
+              content: this.createInfoWindow(
+                this.title,
+                this.content.join("<br/>")
+              ),
+              offset: new AMap.Pixel(16, -45),
+            }));
+          this.infoWindow.open(this.map, marker.getPosition());
+          console.log(marker.getPosition());
+        });
+      }
+
+      // var marker = new AMap.Marker({
+      //   map: this.map,
+      //   position: [116.481181, 39.989792],
+      // });
       //鼠标点击marker弹出自定义的信息窗体
 
       //鼠标点击marker弹出自定义的信息窗体
-      this.title =
-        `{10}<span style="font-size:11px;color:#F00;">` + this.zoom + `</span>`;
-      this.infoWindow = new AMap.InfoWindow({
-        isCustom: true, //使用自定义窗体
-        // content: '  <div style="background-color:white">111</div>',
-        content: this.createInfoWindow(this.title, this.content.join("<br/>")),
-        offset: new AMap.Pixel(16, -45),
-      });
 
-      AMap.event.addListener(marker, "click", () => {
-        console.log(this.infoWindow);
-        this.infoWindow.open(this.map, marker.getPosition());
-      });
+      // this.title =
+      //   `{10}<span style="font-size:11px;color:#F00;">` + this.zoom + `</span>`;
+      // this.infoWindow = new AMap.InfoWindow({
+      //   isCustom: true, //使用自定义窗体
+      //   // content: '  <div style="background-color:white">111</div>',
+      //   content: this.createInfoWindow(this.title, this.content.join("<br/>")),
+      //   offset: new AMap.Pixel(16, -45),
+      // });
+
+      // AMap.event.addListener(marker, "click", () => {
+      //   // console.log(this.infoWindow);
+      //   this.infoWindow.open(this.map, marker.getPosition());
+      // });
     },
 
     // 已经渲染出来了
@@ -265,6 +317,8 @@ export default {
 
 .custom-info {
   border: solid 1px silver;
+  width: 280px;
+  background-color: white;
 }
 
 div.info-top {
@@ -290,14 +344,19 @@ div.info-top img {
   transition-duration: 0.25s;
 }
 
-div.info-top img:hover {
+/* div.info-top img:hover {
   box-shadow: 0px 0px 5px #000;
-}
+} */
 
 div.info-middle {
   font-size: 12px;
   padding: 10px 6px;
   line-height: 20px;
+}
+div.info-middle img {
+  width: 100px;
+  height: 70px;
+  padding-bottom: 10px;
 }
 
 div.info-bottom {

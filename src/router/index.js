@@ -17,7 +17,6 @@ const routes = [
     children: [
       {
         path: '',//主页面
-        name: 'Home',
         component: Home
       },
       {
@@ -27,6 +26,11 @@ const routes = [
       {
         path: "/heritage/museum",//工业遗产博物馆
         component: HeritageMuseum
+      },
+      {
+        path: "/heritage/industry/main/:heritage",//工业遗产详情
+        name: "industryMain",
+        component: () => import('../views/Heritage/HeritageMain.vue')
       },
       // 遗产申请
       {
