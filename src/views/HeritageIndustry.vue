@@ -2,7 +2,39 @@
   <!-- 工业遗产 -->
   <div class="heritage-industry">
     <!-- 地图容器 -->
-    <div id="container" class="container"></div>
+    <div id="container" class="container">
+      <div class="map-buttons">
+        <el-button
+          size="mini"
+          @click="addRoadLayer"
+          v-show="!roadNetwork"
+          class="map-btn map-element"
+          >打开路网</el-button
+        >
+        <el-button
+          size="mini"
+          @click="removeRoadLayer"
+          v-show="roadNetwork"
+          class="map-btn map-element"
+          >关闭路网</el-button
+        >
+
+        <el-button
+          size="mini"
+          @click="addSatellite"
+          v-show="isOrdMap"
+          class="map-btn map-element"
+          >卫星地图</el-button
+        >
+        <el-button
+          size="mini"
+          @click="removeSatellite"
+          v-show="!isOrdMap"
+          class="map-btn map-element"
+          >普通地图</el-button
+        >
+      </div>
+    </div>
   </div>
 </template>
 
@@ -25,19 +57,18 @@ export default {
       content: [],
       infoWindow: null,
 
-      // 模拟工业遗产数据
-      dataList: null,
-
-      // nowMarker: null,
+      dataList: null, // 工业遗产数据
+      isOrdMap: true, //判断是卫星图还是普通图，普通图为true
+      satellite: null, //用来存储卫星地图影像
+      roadNetwork: false, //是否具有路网，默认没有
+      roadNetLayer: null, //用来存储路网
     };
   },
 
   computed: {
     ...mapState(["lang"]),
   },
-  created() {
-    // 发送请求获取所有点位
-  },
+  created() {},
 
   mounted() {
     this.initMap(); //初始化地图
@@ -107,6 +138,7 @@ export default {
       });
     },
 
+    // 添加工业遗产点集
     async addMarker() {
       var res = await this.$axios.get(
         "/getHeritageMainData/getHeritageMainData"
@@ -181,7 +213,7 @@ export default {
       // });
     },
 
-    // 已经渲染出来了
+    //渲染遗产弹框
     createInfoWindow(title, content) {
       // console.log("11111111");
       var info = document.createElement("div");
@@ -222,9 +254,36 @@ export default {
       return info;
     },
 
-    // 无关
+    // 关闭遗产弹框
     closeInfoWindow() {
       this.map.clearInfoWindow();
+    },
+
+    // 打开卫星地图
+    addSatellite() {
+      // console.log(111);
+      this.isOrdMap = !this.isOrdMap;
+      this.satellite = new AMap.TileLayer.Satellite();
+      this.map.add(this.satellite);
+    },
+
+    // 关闭卫星地图
+    removeSatellite() {
+      this.isOrdMap = !this.isOrdMap;
+      this.map.remove(this.satellite);
+    },
+
+    // 打开路网
+    addRoadLayer() {
+      this.roadNetwork = !this.roadNetwork;
+      this.roadNetLayer = new AMap.TileLayer.RoadNet();
+      this.map.add(this.roadNetLayer);
+    },
+
+    // 关闭路网
+    removeRoadLayer() {
+      this.roadNetwork = !this.roadNetwork;
+      this.map.remove(this.roadNetLayer);
     },
   },
 };
@@ -234,7 +293,7 @@ export default {
 .heritage-industry #container {
   border-bottom: 1px solid #f9d5a7;
 }
-/* 弹框 */
+/* 弹框样式 */
 .content-window-card {
   position: relative;
   box-shadow: none;
@@ -277,10 +336,6 @@ div.info-top img {
   transition-duration: 0.25s;
 }
 
-/* div.info-top img:hover {
-  box-shadow: 0px 0px 5px #000;
-} */
-
 div.info-middle {
   font-size: 12px;
   padding: 10px 6px;
@@ -312,5 +367,14 @@ span {
 .info-middle img {
   float: left;
   margin-right: 6px;
+}
+
+/* 地图元件样式 */
+.map-buttons {
+  padding: 15px;
+  z-index: 999;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 </style>
