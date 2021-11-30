@@ -4,6 +4,26 @@
     <!-- 地图容器 -->
     <div id="container" class="container">
       <div class="map-buttons">
+        <!-- 带有输入建议的搜索框start -->
+        <el-autocomplete
+          class="inline-input"
+          v-model="searchIndustry"
+          :fetch-suggestions="querySearch"
+          placeholder="请输入工业遗产名称"
+          @select="handleSelect"
+          value-key="name"
+          size="mini"
+          style="width: 300px; margin-right: 10px"
+          clearable
+        >
+          <el-button
+            slot="append"
+            icon="el-icon-search"
+            @click="searchIndustryCli"
+          ></el-button>
+        </el-autocomplete>
+        <!-- 带有输入建议的搜索框end -->
+
         <el-button
           size="mini"
           @click="addRoadLayer"
@@ -32,6 +52,9 @@
           v-show="!isOrdMap"
           class="map-btn map-element"
           >普通地图</el-button
+        >
+        <el-button size="mini" @click="resetMap" class="map-btn map-element"
+          >复位</el-button
         >
       </div>
     </div>
@@ -62,6 +85,12 @@ export default {
       satellite: null, //用来存储卫星地图影像
       roadNetwork: false, //是否具有路网，默认没有
       roadNetLayer: null, //用来存储路网
+
+      // 带有输入建议的搜索框
+      restaurants: [],
+      searchIndustry: "",
+      searchObj: null,
+      markers: [],
     };
   },
 
@@ -145,6 +174,7 @@ export default {
       );
       // console.log("请求结果", res);
       this.dataList = res.data.data;
+      this.restaurants = res.data.data; //绑定输入建议数据
       console.log("请求结果", this.dataList);
 
       for (let i = 0; i < this.dataList.length; i++) {
@@ -153,7 +183,10 @@ export default {
         let marker = new AMap.Marker({
           map: this.map,
           position: this.dataList[i].coordinate,
+          extData: this.dataList[i],
         });
+
+        this.markers.push(marker);
 
         AMap.event.addListener(marker, "click", () => {
           // this.nowMarker = marker;
@@ -257,6 +290,7 @@ export default {
     // 关闭遗产弹框
     closeInfoWindow() {
       this.map.clearInfoWindow();
+      this.searchIndustry = null;
     },
 
     // 打开卫星地图
@@ -284,6 +318,78 @@ export default {
     removeRoadLayer() {
       this.roadNetwork = !this.roadNetwork;
       this.map.remove(this.roadNetLayer);
+    },
+    // 输入建议start
+    handleSelect(item) {
+      console.log(item);
+      this.searchObj = item;
+      console.log(this.searchIndustry);
+    },
+
+    querySearch(queryString, cb) {
+      var restaurants = this.restaurants;
+      var results = queryString
+        ? restaurants.filter(this.createFilter(queryString))
+        : restaurants;
+      // 调用 callback 返回建议列表的数据
+      cb(results);
+    },
+    createFilter(queryString) {
+      return (restaurant) => {
+        return (
+          restaurant.name.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+        );
+      };
+    },
+
+    // 点击搜索按钮
+    searchIndustryCli() {
+      // var targetMarker;
+      // console.log("markers", this.markers[1].getExtData());
+      // var res = this.markers.find((ele) => {
+      //   console.log(ele.getExtData()._id);
+      //   console.log(this.searchObj._id);
+      //   return (ele.getExtData()._id = this.searchObj._id);
+      // });
+      // console.log(index);
+
+      // console.log(this.markers[index]);
+      var title =
+        this.searchObj.name +
+        '<span style="font-size:11px;">建于：' +
+        this.searchObj.start +
+        "</span>";
+      var content = [
+        "<img src='" +
+          this.searchObj.mainImage +
+          "'style='wtdth:100px;height:auto;'>地址：" +
+          this.searchObj.address,
+        // "单位名称：" + this.searchObj.company,
+        "工业类别：" + this.searchObj.type,
+        `<a href="#/heritage/industry/main/` +
+          this.searchObj.company +
+          `" class="">详细信息</a>`,
+      ];
+
+      var infoWindow = new AMap.InfoWindow({
+        position: this.searchObj.coordinate,
+        isCustom: true, //使用自定义窗体
+        // content: '  <div style="background-color:white">111</div>',
+        content: this.createInfoWindow(title, content.join("<br/>")),
+        offset: new AMap.Pixel(16, -45),
+      });
+      // infoWindow.open(this.map, marker.getPosition());
+      // console.log(marker.getPosition());
+      infoWindow.open(this.map);
+
+      this.map.setCenter(this.searchObj.coordinate); //设置地图中心点为当前位置
+    },
+    // 输入建议end
+
+    // 复位事件
+    resetMap() {
+      location.reload();
+      // this.map.setCenter([115.464523, 38.874476]);
     },
   },
 };
