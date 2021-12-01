@@ -59,6 +59,9 @@
             <span>{{ lang === "zh_cn" ? "我要旅行" : "Travel" }}</span>
           </template>
           <el-menu-item index="/travel/plan">{{
+            lang === "zh_cn" ? "工业旅游区" : "TouristArea"
+          }}</el-menu-item>
+          <el-menu-item index="/travel/plan">{{
             lang === "zh_cn" ? "出行规划" : "TravelPlan"
           }}</el-menu-item>
           <el-menu-item index="/travel/money">{{

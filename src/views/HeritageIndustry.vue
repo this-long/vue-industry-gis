@@ -9,7 +9,9 @@
           class="inline-input"
           v-model="searchIndustry"
           :fetch-suggestions="querySearch"
-          placeholder="请输入工业遗产名称"
+          :placeholder="
+            lang === 'zh_cn' ? '请输入工业遗产名称' : 'Please enter'
+          "
           @select="handleSelect"
           value-key="name"
           size="mini"
@@ -29,14 +31,14 @@
           size="mini"
           @click="opengeometryBox"
           class="map-btn map-element"
-          >几何查询</el-button
+          >{{ lang === "zh_cn" ? "几何查询" : "Geometric query" }}</el-button
         >
         <el-button
           v-show="geometryBox"
           size="mini"
           @click="closegeometryBox"
           class="map-btn map-element closegeometryBox"
-          >关闭面板</el-button
+          >{{ lang === "zh_cn" ? "关闭面板" : "Close panel" }}</el-button
         >
 
         <el-button
@@ -44,14 +46,14 @@
           @click="addRoadLayer"
           v-show="!roadNetwork"
           class="map-btn map-element"
-          >打开路网</el-button
+          >{{ lang === "zh_cn" ? "打开路网" : "Open road" }}</el-button
         >
         <el-button
           size="mini"
           @click="removeRoadLayer"
           v-show="roadNetwork"
           class="map-btn map-element"
-          >关闭路网</el-button
+          >{{ lang === "zh_cn" ? "关闭路网" : "Close road" }}</el-button
         >
 
         <el-button
@@ -59,41 +61,55 @@
           @click="addSatellite"
           v-show="isOrdMap"
           class="map-btn map-element"
-          >卫星地图</el-button
+          >{{ lang === "zh_cn" ? "卫星地图" : "Satellite map" }}</el-button
         >
         <el-button
           size="mini"
           @click="removeSatellite"
           v-show="!isOrdMap"
           class="map-btn map-element"
-          >普通地图</el-button
+          >{{ lang === "zh_cn" ? "普通地图" : "General map" }}</el-button
         >
 
-        <el-button size="mini" @click="resetMap" class="map-btn map-element"
-          >复位</el-button
-        >
+        <el-button size="mini" @click="resetMap" class="map-btn map-element">{{
+          lang === "zh_cn" ? "复位" : "Reset"
+        }}</el-button>
       </div>
 
       <!-- 几何查询弹框 -->
       <div v-show="geometryBox" class="geometrySearch">
         <el-radio-group v-model="geometrySearchType">
           <span class="geometryType"
-            >请选择绘制的几何元素类型<el-popover
+            >{{
+              lang === "zh_cn"
+                ? "请选择绘制的几何元素类型"
+                : "Please select the type of geometric element to draw"
+            }}<el-popover
               placement="top-start"
-              title="提示"
+              :title="lang === 'zh_cn' ? '提示' : 'Tips'"
               width="200"
               trigger="hover"
               style="font-size: 10px"
-              content="每次选择完元素类型后点击绘制元素按钮进行绘制，每次选择后可绘制一次，如要再次绘制请重新选择。"
+              :content="
+                lang === 'zh_cn'
+                  ? '每次选择完元素类型后点击绘制元素按钮进行绘制，每次选择后可绘制一次，如要再次绘制请重新选择。'
+                  : 'After selecting the element type each time, click the draw element button to draw. You can draw once after each selection. If you want to draw again, please select again.'
+              "
             >
               <i slot="reference" class="el-icon-question"></i>
               <!-- <el-button slot="reference">hover 激活</el-button> -->
             </el-popover>
           </span>
           <br />
-          <el-radio :label="'circle'">绘制圆形</el-radio>
-          <el-radio :label="'rectangle'">绘制矩形</el-radio>
-          <el-radio :label="'polygon'">绘制多边形</el-radio>
+          <el-radio :label="'circle'">{{
+            lang === "zh_cn" ? "绘制圆形" : "circle"
+          }}</el-radio>
+          <el-radio :label="'rectangle'">{{
+            lang === "zh_cn" ? "绘制矩形" : "rectangle"
+          }}</el-radio>
+          <el-radio :label="'polygon'">{{
+            lang === "zh_cn" ? "绘制多边形" : "polygon"
+          }}</el-radio>
         </el-radio-group>
         <div class="geometryBtns">
           <el-button
@@ -101,21 +117,23 @@
             type="primary"
             @click="drawGeometry"
             class="map-btn map-element"
-            >绘制元素</el-button
+            >{{ lang === "zh_cn" ? "绘制元素" : "Draw element" }}</el-button
           >
           <el-button
             size="mini"
             type="primary"
             @click="clearDrawGeometry"
             class="map-btn map-element"
-            >清除</el-button
+            >{{ lang === "zh_cn" ? "清除" : "Clear" }}</el-button
           >
           <el-button
             size="mini"
             type="primary"
             @click="closeDraw"
             class="map-btn map-element"
-            >清除并关闭面板</el-button
+            >{{
+              lang === "zh_cn" ? "清除并关闭面板" : "Clear and close"
+            }}</el-button
           >
 
           <el-button
@@ -124,7 +142,7 @@
             v-show="issearchRes"
             @click="changeissearchRes"
             class="map-btn map-element"
-            >关闭结果</el-button
+            >{{ lang === "zh_cn" ? "关闭结果" : "Close result" }}</el-button
           >
           <el-button
             size="mini"
@@ -132,7 +150,7 @@
             v-show="!issearchRes"
             @click="changeissearchRes"
             class="map-btn map-element"
-            >打开结果</el-button
+            >{{ lang === "zh_cn" ? "打开结果" : "Open result" }}</el-button
           >
         </div>
         <!-- 查询数据结果 -->
@@ -151,19 +169,31 @@
                   inline
                   class="demo-table-expand"
                 >
-                  <el-form-item label="遗产名称">
+                  <el-form-item
+                    :label="lang === 'zh_cn' ? '遗产名称' : 'Heritage'"
+                  >
                     <span>{{ props.row.name }}</span>
                   </el-form-item>
-                  <el-form-item label="遗产地址">
+                  <el-form-item
+                    :label="lang === 'zh_cn' ? '遗产地址' : 'Address'"
+                  >
                     <span>{{ props.row.address }}</span>
                   </el-form-item>
-                  <el-form-item label="单位名称">
+                  <el-form-item
+                    :label="lang === 'zh_cn' ? '单位名称' : 'Company'"
+                  >
                     <span>{{ props.row.company }}</span>
                   </el-form-item>
-                  <el-form-item label="始建时间">
+                  <el-form-item
+                    :label="lang === 'zh_cn' ? '始建时间' : 'Start'"
+                  >
                     <span>{{ props.row.start }}</span>
                   </el-form-item>
-                  <el-form-item label="工业类别">
+                  <el-form-item
+                    :label="
+                      lang === 'zh_cn' ? '工业类别' : 'Industrial category'
+                    "
+                  >
                     <span>{{ props.row.type }}</span>
                   </el-form-item>
                   <!-- <el-form-item label="所属店铺">
@@ -172,14 +202,25 @@
                 </el-form>
               </template>
             </el-table-column>
-            <el-table-column prop="start" label="建于" width="70">
+            <el-table-column
+              prop="start"
+              :label="lang === 'zh_cn' ? '建于' : 'Start'"
+              width="70"
+            >
             </el-table-column>
-            <el-table-column prop="name" label="遗产名称"> </el-table-column>
-            <el-table-column label="查看详情" width="80">
+            <el-table-column
+              prop="name"
+              :label="lang === 'zh_cn' ? '遗产名称' : 'Heritage name'"
+            >
+            </el-table-column>
+            <el-table-column
+              :label="lang === 'zh_cn' ? '查看详情' : 'Details'"
+              width="80"
+            >
               <template slot-scope="row">
-                <el-button type="text" size="mini" @click="lookthis(row)"
-                  >查看</el-button
-                >
+                <el-button type="text" size="mini" @click="lookthis(row)">{{
+                  lang === "zh_cn" ? "查看" : "More"
+                }}</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -344,7 +385,7 @@ export default {
             "工业类别：" + this.dataList[i].type,
             `<a href="#/heritage/industry/main/` +
               this.dataList[i]._id +
-              `" class="">详细信息</a>`,
+              `" class="xiangxi">详细信息</a>`,
           ]),
             (this.infoWindow = new AMap.InfoWindow({
               isCustom: true, //使用自定义窗体
@@ -359,28 +400,6 @@ export default {
           // console.log(marker.getPosition());
         });
       }
-
-      // var marker = new AMap.Marker({
-      //   map: this.map,
-      //   position: [116.481181, 39.989792],
-      // });
-      //鼠标点击marker弹出自定义的信息窗体
-
-      //鼠标点击marker弹出自定义的信息窗体
-
-      // this.title =
-      //   `{10}<span style="font-size:11px;color:#F00;">` + this.zoom + `</span>`;
-      // this.infoWindow = new AMap.InfoWindow({
-      //   isCustom: true, //使用自定义窗体
-      //   // content: '  <div style="background-color:white">111</div>',
-      //   content: this.createInfoWindow(this.title, this.content.join("<br/>")),
-      //   offset: new AMap.Pixel(16, -45),
-      // });
-
-      // AMap.event.addListener(marker, "click", () => {
-      //   // console.log(this.infoWindow);
-      //   this.infoWindow.open(this.map, marker.getPosition());
-      // });
     },
 
     //渲染遗产弹框
@@ -541,6 +560,13 @@ export default {
     drawGeometry() {
       // if (this.geometrySearchType === "Rectangle") {
 
+      if (!this.geometrySearchType) {
+        this.$message({
+          message: "请先选择几何元素类型再开始绘制",
+          type: "warning",
+        });
+      }
+
       console.log(this.geometrySearchType);
       switch (this.geometrySearchType) {
         case "polygon": {
@@ -598,12 +624,13 @@ export default {
 
     clearDrawGeometry() {
       this.mouseTool.close(true);
-      this.dataList = [];
+      this.geometrySearchRes = [];
     },
     closeDraw() {
       this.mouseTool.close(true);
       this.geometryBox = false;
-      this.dataList = [];
+
+      this.geometrySearchRes = [];
     },
 
     changeissearchRes() {
@@ -701,6 +728,10 @@ span {
 .info-middle img {
   float: left;
   margin-right: 6px;
+}
+
+.xiangxi {
+  color: #555;
 }
 
 /* 地图元件样式 */
