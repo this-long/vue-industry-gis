@@ -25,6 +25,21 @@
         <!-- 带有输入建议的搜索框end -->
 
         <el-button
+          v-show="!geometryBox"
+          size="mini"
+          @click="opengeometryBox"
+          class="map-btn map-element"
+          >几何查询</el-button
+        >
+        <el-button
+          v-show="geometryBox"
+          size="mini"
+          @click="closegeometryBox"
+          class="map-btn map-element closegeometryBox"
+          >关闭面板</el-button
+        >
+
+        <el-button
           size="mini"
           @click="addRoadLayer"
           v-show="!roadNetwork"
@@ -53,15 +68,128 @@
           class="map-btn map-element"
           >普通地图</el-button
         >
+
         <el-button size="mini" @click="resetMap" class="map-btn map-element"
           >复位</el-button
         >
+      </div>
+
+      <!-- 几何查询弹框 -->
+      <div v-show="geometryBox" class="geometrySearch">
+        <el-radio-group v-model="geometrySearchType">
+          <span class="geometryType"
+            >请选择绘制的几何元素类型<el-popover
+              placement="top-start"
+              title="提示"
+              width="200"
+              trigger="hover"
+              style="font-size: 10px"
+              content="每次选择完元素类型后点击绘制元素按钮进行绘制，每次选择后可绘制一次，如要再次绘制请重新选择。"
+            >
+              <i slot="reference" class="el-icon-question"></i>
+              <!-- <el-button slot="reference">hover 激活</el-button> -->
+            </el-popover>
+          </span>
+          <br />
+          <el-radio :label="'circle'">绘制圆形</el-radio>
+          <el-radio :label="'rectangle'">绘制矩形</el-radio>
+          <el-radio :label="'polygon'">绘制多边形</el-radio>
+        </el-radio-group>
+        <div class="geometryBtns">
+          <el-button
+            size="mini"
+            type="primary"
+            @click="drawGeometry"
+            class="map-btn map-element"
+            >绘制元素</el-button
+          >
+          <el-button
+            size="mini"
+            type="primary"
+            @click="clearDrawGeometry"
+            class="map-btn map-element"
+            >清除</el-button
+          >
+          <el-button
+            size="mini"
+            type="primary"
+            @click="closeDraw"
+            class="map-btn map-element"
+            >清除并关闭面板</el-button
+          >
+
+          <el-button
+            size="mini"
+            type="primary"
+            v-show="issearchRes"
+            @click="changeissearchRes"
+            class="map-btn map-element"
+            >关闭结果</el-button
+          >
+          <el-button
+            size="mini"
+            type="primary"
+            v-show="!issearchRes"
+            @click="changeissearchRes"
+            class="map-btn map-element"
+            >打开结果</el-button
+          >
+        </div>
+        <!-- 查询数据结果 -->
+        <div class="searchRes" v-show="issearchRes">
+          <el-table
+            :data="geometrySearchRes"
+            height="250"
+            border
+            style="width: 100%"
+          >
+            <el-table-column type="expand">
+              <template slot-scope="props">
+                <el-form
+                  style="font-size: 12px"
+                  label-position="left"
+                  inline
+                  class="demo-table-expand"
+                >
+                  <el-form-item label="遗产名称">
+                    <span>{{ props.row.name }}</span>
+                  </el-form-item>
+                  <el-form-item label="遗产地址">
+                    <span>{{ props.row.address }}</span>
+                  </el-form-item>
+                  <el-form-item label="单位名称">
+                    <span>{{ props.row.company }}</span>
+                  </el-form-item>
+                  <el-form-item label="始建时间">
+                    <span>{{ props.row.start }}</span>
+                  </el-form-item>
+                  <el-form-item label="工业类别">
+                    <span>{{ props.row.type }}</span>
+                  </el-form-item>
+                  <!-- <el-form-item label="所属店铺">
+                    <span>{{ props.row.shop }}</span>
+                  </el-form-item> -->
+                </el-form>
+              </template>
+            </el-table-column>
+            <el-table-column prop="start" label="建于" width="70">
+            </el-table-column>
+            <el-table-column prop="name" label="遗产名称"> </el-table-column>
+            <el-table-column label="查看详情" width="80">
+              <template slot-scope="row">
+                <el-button type="text" size="mini" @click="lookthis(row)"
+                  >查看</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
-<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=2eccb47b400c8ab58f2dc596dbfe9d53&plugin=AMap.DistrictSearch"></script>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=2eccb47b400c8ab58f2dc596dbfe9d53&plugin=AMap.MouseTool,AMap.DistrictSearch"></script>
 <script>
 import { mapState } from "vuex";
 export default {
@@ -91,6 +219,14 @@ export default {
       searchIndustry: "",
       searchObj: null,
       markers: [],
+
+      // 几何查询
+      geometrySearchType: "circle",
+      geometryBox: false, //几何查询面板隐藏展示
+      mouseTool: null,
+      overlays: [], //绘制好的覆盖物
+      geometrySearchRes: [], //几何查询结果
+      issearchRes: true, //查询结果图标显示隐藏
     };
   },
 
@@ -105,6 +241,7 @@ export default {
     // this.disSearch();
     this.addMarker();
     this.drawBounds();
+    this.mouseTool = new AMap.MouseTool(this.map);
     // console.log("test", this.map.getZoom());
     // this.mapZoom();
 
@@ -206,7 +343,7 @@ export default {
             // "单位名称：" + this.dataList[i].company,
             "工业类别：" + this.dataList[i].type,
             `<a href="#/heritage/industry/main/` +
-              this.dataList[i].company +
+              this.dataList[i]._id +
               `" class="">详细信息</a>`,
           ]),
             (this.infoWindow = new AMap.InfoWindow({
@@ -219,7 +356,7 @@ export default {
               offset: new AMap.Pixel(16, -45),
             }));
           this.infoWindow.open(this.map, marker.getPosition());
-          console.log(marker.getPosition());
+          // console.log(marker.getPosition());
         });
       }
 
@@ -391,6 +528,97 @@ export default {
       location.reload();
       // this.map.setCenter([115.464523, 38.874476]);
     },
+
+    // 几何查询函数系列start
+    opengeometryBox() {
+      this.geometryBox = !this.geometryBox;
+    },
+    closegeometryBox() {
+      this.geometryBox = !this.geometryBox;
+    },
+    // 集合查询函数系列start
+
+    drawGeometry() {
+      // if (this.geometrySearchType === "Rectangle") {
+
+      console.log(this.geometrySearchType);
+      switch (this.geometrySearchType) {
+        case "polygon": {
+          this.mouseTool.polygon({
+            fillColor: "#00b0ff",
+            strokeColor: "#80d8ff",
+            //同Polygon的Option设置
+          });
+          break;
+        }
+        case "rectangle": {
+          this.mouseTool.rectangle({
+            fillColor: "#00b0ff",
+            strokeColor: "#80d8ff",
+            //同Polygon的Option设置
+          });
+          break;
+        }
+        case "circle": {
+          this.mouseTool.circle({
+            fillColor: "#00b0ff",
+            strokeColor: "#80d8ff",
+            //同Circle的Option设置
+          });
+          break;
+        }
+      }
+      // this.mouseTool.close(); //关闭，并清除覆盖物
+      this.mouseTool.on("draw", (e) => {
+        this.overlays.push(e.obj);
+        // console.log("e.obj---------", e.obj.contains([115.638353, 39.004825]));
+
+        // 遍历点位，判断是否在范围内
+        for (let i = 0; i < this.dataList.length; i++) {
+          if (e.obj.contains(this.dataList[i].coordinate)) {
+            if (
+              !this.geometrySearchRes.some(
+                (ele) => ele.name === this.dataList[i].name
+              )
+            ) {
+              this.geometrySearchRes.push(this.dataList[i]);
+            }
+
+            // this.geometrySearchRes = [
+            //   ...this.geometrySearchRes,
+            //   this.dataList[i],
+            // ];
+          }
+        }
+        console.log("几何查询结果geometrySearchRes", this.geometrySearchRes);
+        this.mouseTool.close(); //关闭
+        this.geometrySearchType = null;
+      }); //解除绑定，
+    },
+
+    clearDrawGeometry() {
+      this.mouseTool.close(true);
+      this.dataList = [];
+    },
+    closeDraw() {
+      this.mouseTool.close(true);
+      this.geometryBox = false;
+      this.dataList = [];
+    },
+
+    changeissearchRes() {
+      this.issearchRes = !this.issearchRes;
+    },
+
+    // 查询结果跳转详情
+    lookthis(row) {
+      console.log(row);
+      // this.$router.push({
+      //   name: `industryMain`,
+      //   params: { heritage: row._id },
+      // });
+      this.$router.push("/heritage/industry/main/" + row.row._id);
+    },
   },
 };
 </script>
@@ -476,11 +704,49 @@ span {
 }
 
 /* 地图元件样式 */
-.map-buttons {
+.heritage-industry .map-buttons {
   padding: 15px;
   z-index: 999;
   position: absolute;
   top: 0;
   right: 0;
+}
+
+.heritage-industry .geometrySearch {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  z-index: 999;
+  background-color: white;
+  padding: 15px;
+  border-radius: 5px;
+  margin-right: 15px;
+  border: 1px solid #dcdfe6;
+}
+
+.heritage-industry .geometrySearch .geometryType {
+  display: block;
+  padding-bottom: 15px;
+  color: #606266;
+}
+.heritage-industry .geometrySearch .geometryBtns {
+  padding-top: 15px;
+}
+
+.heritage-industry .map-buttons .closegeometryBox {
+  margin-left: 0;
+}
+
+.heritage-industry .geometrySearch .searchRes {
+  padding-top: 15px;
+}
+
+.heritage-industry .geometrySearch .searchRes .el-form-item__label {
+  font-size: 12px;
+  color: #111;
+}
+.heritage-industry .geometrySearch .searchRes .el-form-item {
+  margin: 0;
+  padding-left: 10px;
 }
 </style>
