@@ -5,13 +5,37 @@
       <!-- 地图容器 -->
       <div id="container" class="container">
         <div class="map-buttons">
+          <!-- 类型搜索start -->
+          <el-select
+            class="typeSelect"
+            v-model="typeSelect"
+            placeholder="请选择类型"
+            size="mini"
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.type"
+              :label="item.type"
+              :value="item.type"
+            >
+            </el-option>
+          </el-select>
+          <el-button
+            id="selectBtn"
+            class="selectBtn"
+            size="mini"
+            icon="el-icon-search"
+            @click="searchTypeClick"
+          ></el-button>
+          <!-- 类型搜索end -->
+
           <!-- 带有输入建议的搜索框start -->
           <el-autocomplete
             class="inline-input"
             v-model="searchIndustry"
             :fetch-suggestions="querySearch"
             :placeholder="
-              lang === 'zh_cn' ? '请输入工业遗产名称' : 'Please enter'
+              lang === 'zh_cn' ? '请输入工业遗产博物馆名称' : 'Please enter'
             "
             @select="handleSelect"
             value-key="name"
@@ -174,7 +198,7 @@
                     class="demo-table-expand"
                   >
                     <el-form-item
-                      :label="lang === 'zh_cn' ? '遗产名称' : 'Heritage'"
+                      :label="lang === 'zh_cn' ? '博物馆名称' : 'Museum'"
                     >
                       <span>{{ props.row.name }}</span>
                     </el-form-item>
@@ -194,9 +218,7 @@
                       <span>{{ props.row.start }}</span>
                     </el-form-item>
                     <el-form-item
-                      :label="
-                        lang === 'zh_cn' ? '工业类别' : 'Industrial category'
-                      "
+                      :label="lang === 'zh_cn' ? '类型' : 'Museum category'"
                     >
                       <span>{{ props.row.type }}</span>
                     </el-form-item>
@@ -214,7 +236,7 @@
               </el-table-column>
               <el-table-column
                 prop="name"
-                :label="lang === 'zh_cn' ? '遗产名称' : 'Heritage name'"
+                :label="lang === 'zh_cn' ? '博物馆名称' : 'Museum name'"
               >
               </el-table-column>
               <el-table-column
@@ -273,13 +295,29 @@ export default {
       overlays: [], //绘制好的覆盖物
       geometrySearchRes: [], //几何查询结果
       issearchRes: true, //查询结果图标显示隐藏
+
+      // 类型查询
+      options: [
+        {
+          type: "全部类型",
+        },
+      ],
+      typeSelect: "全部类型",
     };
   },
 
   computed: {
     ...mapState(["lang"]),
   },
-  created() {},
+  async created() {
+    var res = await this.$axios.get("/getHeritageMuseum/getHeritageMuseum");
+    this.dataList = res.data.data;
+
+    // var res2 = await this.$axios.get("/getHeritageMuseum/getHeritageMuseum");
+    // console.log("res2-------", res2.data.data);
+
+    this.getAllType(); //初始化下拉菜单
+  },
 
   mounted() {
     this.initMap(); //初始化地图
@@ -288,6 +326,7 @@ export default {
     this.addMarker();
     this.drawBounds();
     this.mouseTool = new AMap.MouseTool(this.map);
+
     // console.log("test", this.map.getZoom());
     // this.mapZoom();
 
@@ -352,9 +391,7 @@ export default {
 
     // 添加工业遗产点集
     async addMarker() {
-      var res = await this.$axios.get(
-        "/getHeritageMainData/getHeritageMainData"
-      );
+      var res = await this.$axios.get("/getHeritageMuseum/getHeritageMuseum");
       // console.log("请求结果", res);
       this.dataList = res.data.data;
       this.restaurants = res.data.data; //绑定输入建议数据
@@ -387,7 +424,7 @@ export default {
               "'style='wtdth:100px;height:auto;'>地址：" +
               this.dataList[i].address,
             // "单位名称：" + this.dataList[i].company,
-            "工业类别：" + this.dataList[i].type,
+            "类型：" + this.dataList[i].type,
             `<a href="#/heritage/industry/main/` +
               this.dataList[i]._id +
               `" class="xiangxi">详细信息</a>`,
@@ -515,6 +552,7 @@ export default {
       // console.log(index);
 
       // console.log(this.markers[index]);
+      this.addMarker();
       var title =
         this.searchObj.name +
         '<span style="font-size:11px;">建于：' +
@@ -526,7 +564,7 @@ export default {
           "'style='wtdth:100px;height:auto;'>地址：" +
           this.searchObj.address,
         // "单位名称：" + this.searchObj.company,
-        "工业类别：" + this.searchObj.type,
+        "类型：" + this.searchObj.type,
         `<a href="#/heritage/industry/main/` +
           this.searchObj.company +
           `" class="">详细信息</a>`,
@@ -614,14 +652,9 @@ export default {
             ) {
               this.geometrySearchRes.push(this.dataList[i]);
             }
-
-            // this.geometrySearchRes = [
-            //   ...this.geometrySearchRes,
-            //   this.dataList[i],
-            // ];
           }
         }
-        console.log("几何查询结果geometrySearchRes", this.geometrySearchRes);
+        // console.log("几何查询结果geometrySearchRes", this.geometrySearchRes);
         this.mouseTool.close(); //关闭
         this.geometrySearchType = null;
       }); //解除绑定，
@@ -651,6 +684,93 @@ export default {
       // });
       this.$router.push("/heritage/industry/main/" + row.row._id);
     },
+
+    // 类型查询start
+    async getAllType() {
+      // var res = await this.$axios.get(
+      //   "/getHeritageMuseum/getHeritageMuseum"
+      // );
+      // res = res.data.data;
+      // console.log("请求结果", res);
+      // this.dataList = res.data.data;
+      // console.log(this.dataList);
+
+      for (let i = 0; i < this.dataList.length; i++) {
+        if (!this.options.some((ele) => ele.type === this.dataList[i].type)) {
+          this.options.push(this.dataList[i]);
+        }
+      }
+      console.log(this.options);
+    },
+
+    searchTypeClick() {
+      console.log(this.typeSelect);
+      this.map.remove(this.markers);
+      this.map.clearInfoWindow();
+      if (this.typeSelect === "全部类型") {
+        this.addMarker();
+      } else {
+        var filEnd = this.dataList.filter(
+          (ele) => ele.type === this.typeSelect
+        );
+        console.log(filEnd);
+        // this.map.clearMap();
+        for (let i = 0; i < filEnd.length; i++) {
+          // 循环点坐标
+          // 注意这里一定得用 let
+          let marker = new AMap.Marker({
+            map: this.map,
+            position: filEnd[i].coordinate,
+            extData: filEnd[i],
+          });
+
+          this.markers.push(marker);
+
+          AMap.event.addListener(marker, "click", () => {
+            // this.nowMarker = marker;
+
+            // console.log(this.infoWindow);
+            this.title =
+              filEnd[i].name +
+              '<span style="font-size:11px;">建于：' +
+              filEnd[i].start +
+              "</span>";
+
+            (this.content = [
+              "<img src='" +
+                filEnd[i].mainImage +
+                "'style='wtdth:100px;height:auto;'>地址：" +
+                filEnd[i].address,
+              // "单位名称：" + filEnd[i].company,
+              "类型：" + filEnd[i].type,
+              `<a href="#/heritage/industry/main/` +
+                filEnd[i]._id +
+                `" class="xiangxi">详细信息</a>`,
+            ]),
+              (this.infoWindow = new AMap.InfoWindow({
+                isCustom: true, //使用自定义窗体
+                // content: '  <div style="background-color:white">111</div>',
+                content: this.createInfoWindow(
+                  this.title,
+                  this.content.join("<br/>")
+                ),
+                offset: new AMap.Pixel(16, -45),
+              }));
+            this.infoWindow.open(this.map, marker.getPosition());
+            // console.log(marker.getPosition());
+          });
+        }
+        // this.map.setFitView();
+        // AMap.event.addDomListener(
+        //   document.getElementById("selectBtn"),
+        //   "click",
+        //   () => {
+        //     this.map.setFitView();
+        //   }
+        // );
+      }
+    },
+    // 类型查询end
   },
 };
 </script>
@@ -784,5 +904,15 @@ span {
 .heritage-industry .geometrySearch .searchRes .el-form-item {
   margin: 0;
   padding-left: 10px;
+}
+.heritage-industry .map-buttons .el-input__inner {
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-right: none;
+}
+.heritage-industry .map-buttons .selectBtn {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  margin-right: 10px;
 }
 </style>

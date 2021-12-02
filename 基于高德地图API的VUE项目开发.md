@@ -33,6 +33,8 @@
 
 - 1day 注记不可行，几何查询已经实现。已经上传 git
 
+- 2day 依据 type 类型动态展示覆盖点
+
 ## 显示地图
 
 ```js
@@ -136,8 +138,25 @@
     ],
     "name": "唐山工业博物馆",
     "address": "河北省唐山市路北区",
-    "type": "工业博物馆",
+    "type": "综合型博物馆",
     "start": 2017,
+    "mainImage": ""
+}
+```
+
+- heritageTourism:工业旅游区主要信息表 通过将旅游区\_id 传入详情页进行详细内容查询展示。
+
+```js
+// 示例数据
+{
+    "company": "石家庄君乐宝乳业有限公司",
+    "coordinate": [
+114.393934,37.966148
+    ],
+    "name": "石家庄君乐宝乳业文化景区",
+    "address": "河北省石家庄市鹿泉区",
+    "type": "乳业生产园区",
+    "start": 2012,
     "mainImage": ""
 }
 ```
@@ -296,3 +315,29 @@ module.exports = class postHeritageMainData extends Service {
     "id": "61a4b5c73d5f3a0001846ae5"//数据id
   }
   ```
+
+- 2、获取遗产博物馆主要内容
+  url:https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/getHeritageMuseum/getHeritageMuseum
+
+  参数：无
+
+  请求方式：get
+  返回值：
+
+  ```js
+  {
+    "company": "唐山工业博物馆",
+    "coordinate": [
+  118.192433,39.634984
+    ],
+    "name": "唐山工业博物馆",
+    "address": "河北省唐山市路北区",
+    "type": "综合型博物馆",
+    "start": 2017,
+    "mainImage": ""
+  }
+  ```
+
+- 3、
+
+- 4、
