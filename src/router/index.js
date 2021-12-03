@@ -28,6 +28,10 @@ const routes = [
         component: HeritageMuseum
       },
       {
+        path: '/heritage/tourism',//工业旅游区
+        component: () => import('../views/HeritageTourism.vue')
+      },
+      {
         path: "/heritage/industry/main/:heritage",//工业遗产详情
         name: "industryMain",
         component: () => import('../views/Heritage/HeritageMain.vue')

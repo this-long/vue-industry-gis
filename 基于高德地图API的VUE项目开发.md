@@ -6,7 +6,7 @@
 
 ## 开发日志
 
-2021 年 11 月
+2021 年 11 月：
 
 - 27day 开发语言国际化，仅针对系统本身，不计划支持遗产介绍国际化,
   国际以及用户退出计划放到设置项内。
@@ -33,7 +33,7 @@
 
 - 1day 注记不可行，几何查询已经实现。已经上传 git
 
-- 2day 依据 type 类型动态展示覆盖点
+- 2day 依据 type 类型动态展示覆盖点，工业旅游区数据已配置
 
 ## 显示地图
 
@@ -326,18 +326,78 @@ module.exports = class postHeritageMainData extends Service {
 
   ```js
   {
-    "company": "唐山工业博物馆",
-    "coordinate": [
-  118.192433,39.634984
-    ],
-    "name": "唐山工业博物馆",
-    "address": "河北省唐山市路北区",
-    "type": "综合型博物馆",
-    "start": 2017,
-    "mainImage": ""
+    "affectedDocs": 12,
+    "data": [
+        {
+            "_id": "61a763ea3d5f3a0001966237",
+            "company": "唐山工业博物馆",
+            "coordinate": [
+                118.192433,
+                39.634984
+            ],
+            "name": "唐山工业博物馆",
+            "address": "河北省唐山市路北区",
+            "type": "综合型博物馆",
+            "start": 2017,
+            "mainImage": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-790d5b85-9674-4a89-9bcc-c0657ea369be/392ea8ed-2ad3-466f-82a3-1c2247501f46.png"
+        },
+        {
+            "_id": "61a889e48e97d900017109a6",
+            "company": "中国铁路源头博物馆",
+            "coordinate": [
+                118.198669,
+                39.62063
+            ],
+            "name": "中国铁路源头博物馆",
+            "address": "河北省唐山市路南区",
+            "type": "铁路业",
+            "start": 2018,
+            "mainImage": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-790d5b85-9674-4a89-9bcc-c0657ea369be/faa6833d-6d0a-4c99-a969-164346bc722c.png"
+        }...
+    ]
   }
   ```
 
 - 3、
 
-- 4、
+- 4、获取`工业旅游区`主要内容
+  url:https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/getHeritageTourism/getHeritageTourism
+
+  参数：无
+
+  请求方式：get
+  返回值：
+
+  ```js
+  {
+    "affectedDocs": 14,
+    "data": [
+        {
+            "_id": "61a8be0654ebf6000194750b",
+            "company": "石家庄君乐宝乳业有限公司",
+            "coordinate": [
+                114.393934,
+                37.966148
+            ],
+            "name": "石家庄君乐宝乳业文化景区",
+            "address": "河北省石家庄市鹿泉区",
+            "type": "乳业生产园区",
+            "start": 2012,
+            "mainImage": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-790d5b85-9674-4a89-9bcc-c0657ea369be/0999b84b-077d-4fd2-98a5-a189db96c1cd.png"
+        },
+        {
+            "_id": "61a8bf2c344587000171c8c8",
+            "company": "井矿集团",
+            "coordinate": [
+                114.032609,
+                38.037056
+            ],
+            "name": "段家楼正丰矿工业旅游景区",
+            "address": "河北省石家庄市井径矿区",
+            "type": "工业遗址旅游",
+            "start": 1912,
+            "mainImage": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-790d5b85-9674-4a89-9bcc-c0657ea369be/9e2a5e4b-08ae-4271-b9d0-45321499666a.png"
+        }...
+    ]
+  }
+  ```

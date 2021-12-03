@@ -25,7 +25,7 @@
           <el-menu-item index="/heritage/museum">{{
             lang === "zh_cn" ? "遗产博物馆" : "Museum"
           }}</el-menu-item>
-          <el-menu-item index="/travel/plan">{{
+          <el-menu-item index="/heritage/tourism">{{
             lang === "zh_cn" ? "工业旅游区" : "TouristArea"
           }}</el-menu-item>
         </el-submenu>
