@@ -1,14 +1,20 @@
 <template>
-  <div class="home">i am home</div>
+  <div class="home">
+    <div class="home-top">
+      <MainTop>首页</MainTop>
+    </div>
+    <div class="home-bottom"></div>
+  </div>
 </template>
 
 <script>
 // @ is an alias to /src
+import MainTop from "../components/MainTop.vue";
 
 export default {
   name: "Home",
   components: {
-    // HelloWorld
+    MainTop,
   },
 };
 </script>

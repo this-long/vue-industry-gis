@@ -84,13 +84,18 @@ const routes = [
       },
       // 关于我们
       {
-        path: '/about',//报修申请
+        path: '/about',
         component: () => import('../views/About.vue')
       },
       // 设置
       {
-        path: '/setup',//报修申请
+        path: '/setup',
         component: () => import('../views/SetUp.vue')
+      },
+      // 工业遗产数据添加
+      {
+        path: '/heritage/add',
+        component: () => import('../views/Heritage/HeritageAdd.vue')
       },
     ]
 

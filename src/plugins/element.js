@@ -1,7 +1,7 @@
 import Vue from "vue"
 import 'element-ui/lib/theme-chalk/index.css' //难道不引入样式不可以了吗？
 
-import { Button, Submenu, MenuItemGroup, MenuItem, Menu, Avatar, Dropdown, DropdownMenu, DropdownItem, Input, Alert, Switch, Autocomplete, RadioGroup, Radio, FormItem, Popover, Table, TableColumn, Form, Message, Select, Option } from "element-ui"
+import { Button, Submenu, MenuItemGroup, MenuItem, Menu, Avatar, Dropdown, DropdownMenu, DropdownItem, Input, Alert, Switch, Autocomplete, RadioGroup, Radio, FormItem, Popover, Table, TableColumn, Form, Message, Select, Option, Col, DatePicker, TimePicker, CheckboxGroup, Checkbox } from "element-ui"
 
 Vue.use(Button)
 Vue.use(Menu)
@@ -25,5 +25,10 @@ Vue.use(TableColumn)
 Vue.use(Form)
 Vue.use(Select)
 Vue.use(Option)
+Vue.use(Col)
+Vue.use(DatePicker)
+Vue.use(TimePicker)
+Vue.use(CheckboxGroup)
+Vue.use(Checkbox)
 
 Vue.prototype.$message = Message

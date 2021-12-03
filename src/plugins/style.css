@@ -14,3 +14,13 @@ body {
 .mainPadding {
   padding: 15px;
 }
+
+.gang {
+  color: #999;
+  margin: 0;
+  font-weight: 600;
+}
+
+.padding15 {
+  padding: 15px !important;
+}

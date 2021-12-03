@@ -1,10 +1,26 @@
 <template>
   <!-- 遗产排行榜 -->
-  <div class="heritage-ranking">遗产排行榜</div>
+  <div class="heritage-ranking">
+    <div class="heritage-ranking-top">
+      <MainTop>遗产数据 <span class="gang"> / </span> 遗产排行榜</MainTop>
+    </div>
+    <div class="heritage-ranking-bottom"></div>
+  </div>
 </template>
 
 <script>
-export default {};
+import MainTop from "../components/MainTop.vue";
+export default {
+  components: {
+    MainTop,
+  },
+
+  data() {
+    return {};
+  },
+
+  methods: {},
+};
 </script>
 
 <style>

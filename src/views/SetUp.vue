@@ -1,6 +1,8 @@
 <template>
   <!-- 设置 -->
   <div class="set-up mainPadding">
+    <MainTop>设置 </MainTop>
+    <br />
     <el-alert
       :title="
         lang === 'zh_cn'
@@ -30,10 +32,10 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
-
+import MainTop from "../components/MainTop.vue";
 // import MainTop from "../components/MainTop.vue";
 export default {
-  // components: { MainTop },
+  components: { MainTop },
 
   data() {
     return {

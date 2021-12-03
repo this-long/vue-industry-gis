@@ -1,29 +1,34 @@
 <template>
   <div class="main-top">
     <div class="main-top-left">
-      <el-input placeholder="请输入内容"></el-input>
-
-      <el-button icon="el-icon-search" circle></el-button>
+      <span class="el-icon-arrow-left"></span>
+      <span> <slot></slot></span>
     </div>
     <div class="main-top-right">
       <div class="btnBox">
         <el-dropdown @command="handleCommand">
           <span class="el-dropdown-link">
-            {{ lang === "zh_cn" ? "中文" : "英文"
+            {{ lang === "zh_cn" ? "中文" : "English"
             }}<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="zh_cn">中文</el-dropdown-item>
-            <el-dropdown-item command="zh_en">英文</el-dropdown-item>
+            <el-dropdown-item command="zh_cn">
+              {{ lang === "zh_cn" ? "中文" : "Chinese" }}</el-dropdown-item
+            >
+            <el-dropdown-item command="zh_en">
+              {{ lang === "zh_cn" ? "英文" : "English" }}</el-dropdown-item
+            >
           </el-dropdown-menu>
         </el-dropdown>
-        <el-button type="text" style="margin-left: 10px">退出</el-button>
+        <el-button type="text" style="margin-left: 10px">
+          {{ lang === "zh_cn" ? "退出登陆" : "SignOut" }}</el-button
+        >
       </div>
       <el-avatar
         style="margin-left: 10px"
         shape="square"
         size="small"
-        src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+        src="https://vkceyugu.cdn.bspapp.com/VKCEYUGU-790d5b85-9674-4a89-9bcc-c0657ea369be/5f0c8b2c-22e0-42f3-9ed3-539de3652c08.jpg"
       ></el-avatar>
     </div>
   </div>
@@ -58,9 +63,14 @@ export default {
   display: flex;
   justify-content: space-between;
   padding: 0 10px;
+  /* border-bottom: 1px; */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
 }
 .main-top .main-top-left {
   display: flex;
+  align-items: center;
+  color: #444;
+  font-size: 15px !important;
 }
 .main-top .main-top-right {
   display: flex;
