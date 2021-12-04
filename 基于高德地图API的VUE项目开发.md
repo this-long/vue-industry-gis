@@ -36,6 +36,7 @@
 - 6、2day 依据 type 类型动态展示覆盖点，工业旅游区数据已配置
 
 - 7、顶部展示配置(明日，开发工业遗产数据的添加)
+- 8、5day 遗产添加功能已完全实现
 
 ## 显示地图
 
@@ -204,6 +205,77 @@ module.exports = class postHeritageMainData extends Service {
     );
     return collection;
   }
+};
+```
+
+- 开发一个图片等文件上传的接口
+
+```html
+<!-- vue 代码 -->
+<template>
+  <div class="home">
+    <div class="home-top">
+      <MainTop>首页</MainTop>
+    </div>
+    <div class="home-bottom">
+      <input type="file" multiple="multiple" @change="mainImage" />
+    </div>
+  </div>
+</template>
+
+<script>
+  // @ is an alias to /src
+  import MainTop from "../components/MainTop.vue";
+
+  export default {
+    name: "Home",
+    components: {
+      MainTop,
+    },
+
+    methods: {
+      mainImage(e) {
+        const file = e.target.files[0];
+        console.log(file);
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = async (event) => {
+          let dataUrl = (this.src = event.target.result);
+          var res = await this.$axios.post(
+            "https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/image",
+            {
+              dataUrl,
+              name: file.name,
+            }
+          );
+
+          console.log(res);
+        };
+      },
+    },
+  };
+</script>
+```
+
+```js
+// uniCloud 代码
+"use strict";
+
+exports.main = async (event, context) => {
+  console.log("event : ", event);
+  let body = JSON.parse(event.body);
+  let data, result;
+  if (body.dataUrl) {
+    // 前端base64   data:image/png;base64,iVBORw0KGgoAAAAN........  把前面data:image/png;base64,去掉再转buffter即可
+    body.dataUrl = body.dataUrl.split(",")[1];
+    data = Buffer.from(body.dataUrl, "base64");
+  }
+  result = await uniCloud.uploadFile({
+    fileContent: data,
+    cloudPath: body.name,
+  });
+
+  return result;
 };
 ```
 
