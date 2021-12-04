@@ -5,16 +5,16 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    lang: "zh_cn"
+    lang: "zh_cn",
+    newCoordinate: []
   },
   mutations: {
     langChange(state, lang) {
-      // if (state.lang === "zh_cn") {
-      //   state.lang = "zh_en"
-      // } else {
-      //   state.lang = "zh_cn"
-      // }
       state.lang = lang
+    },
+    getCoordinate(state, newCoordinate) {
+      // 拾取遗产坐标
+      state.newCoordinate = newCoordinate
     }
   },
   actions: {

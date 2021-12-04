@@ -165,7 +165,7 @@ export default {
 .main .main-right {
   width: calc(100% - 160px);
   /* background-color: red; */
-  overflow: hidden;
+  overflow: auto;
   height: 100vh;
 }
 

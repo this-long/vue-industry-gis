@@ -97,6 +97,11 @@ const routes = [
         path: '/heritage/add',
         component: () => import('../views/Heritage/HeritageAdd.vue')
       },
+      // 拾取遗产坐标位置页
+      {
+        path: '/get/coordinate',
+        component: () => import('../views/Heritage/getCoordinate.vue')
+      },
     ]
 
   },

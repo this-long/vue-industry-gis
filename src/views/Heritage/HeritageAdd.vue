@@ -10,6 +10,7 @@
         {{ lang === "zh_cn" ? "遗产添加" : "Heritage Add" }}</MainTop
       >
     </div>
+
     <div class="HeritageAdd-bottom padding15">
       <el-alert
         :title="
@@ -20,74 +21,107 @@
         type="info"
       >
       </el-alert>
-      <br />
-      <el-form
-        size="mini"
-        :model="ruleForm"
-        :rules="rules"
-        ref="ruleForm"
-        label-width="100px"
-        class="demo-ruleForm"
+      <br v-show="newCoordinate.length === 0" />
+      <el-alert
+        :title="
+          lang === 'zh_cn'
+            ? '请先拾取要添加的工业遗产的地理坐标'
+            : 'Please pick the geographical coordinates of the industrial heritage to be added first'
+        "
+        type="info"
+        v-show="newCoordinate.length === 0"
       >
-        <el-form-item label="活动名称" prop="name">
-          <el-input v-model="ruleForm.name"></el-input>
-        </el-form-item>
-        <el-form-item label="活动区域" prop="region">
-          <el-select v-model="ruleForm.region" placeholder="请选择活动区域">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="活动时间" required>
-          <el-col :span="11">
-            <el-form-item prop="date1">
-              <el-date-picker
-                type="date"
-                placeholder="选择日期"
-                v-model="ruleForm.date1"
-                style="width: 100%"
-              ></el-date-picker>
-            </el-form-item>
-          </el-col>
-          <el-col class="line" :span="2">-</el-col>
-          <el-col :span="11">
-            <el-form-item prop="date2">
-              <el-time-picker
-                placeholder="选择时间"
-                v-model="ruleForm.date2"
-                style="width: 100%"
-              ></el-time-picker>
-            </el-form-item>
-          </el-col>
-        </el-form-item>
-        <el-form-item label="即时配送" prop="delivery">
-          <el-switch v-model="ruleForm.delivery"></el-switch>
-        </el-form-item>
-        <el-form-item label="活动性质" prop="type">
-          <el-checkbox-group v-model="ruleForm.type">
-            <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
-            <el-checkbox label="地推活动" name="type"></el-checkbox>
-            <el-checkbox label="线下主题活动" name="type"></el-checkbox>
-            <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
-          </el-checkbox-group>
-        </el-form-item>
-        <el-form-item label="特殊资源" prop="resource">
-          <el-radio-group v-model="ruleForm.resource">
-            <el-radio label="线上品牌商赞助"></el-radio>
-            <el-radio label="线下场地免费"></el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="活动形式" prop="desc">
-          <el-input type="textarea" v-model="ruleForm.desc"></el-input>
-        </el-form-item>
-        <el-form-item>
+      </el-alert>
+
+      <br />
+      <el-button
+        type="primary"
+        @click="getCoordinate"
+        v-show="newCoordinate.length === 0"
+        >拾取遗产坐标位置</el-button
+      >
+
+      <div class="main-box" v-show="newCoordinate.length !== 0">
+        <el-form
+          size="mini"
+          :model="ruleForm"
+          :rules="rules"
+          ref="ruleForm"
+          label-width="100px"
+          class="demo-ruleForm"
+        >
+          <el-form-item label="添加类型" prop="addType">
+            <el-radio-group v-model="ruleForm.addType">
+              <el-radio label="工业遗产"></el-radio>
+              <el-radio label="遗产博物馆"></el-radio>
+              <el-radio label="工业旅游区"></el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="遗产名称" prop="name">
+            <el-input v-model="ruleForm.name"></el-input>
+          </el-form-item>
+          <el-form-item label="所在地址" prop="address">
+            <el-input v-model="ruleForm.address"></el-input>
+          </el-form-item>
+          <el-form-item label="始建年份" prop="start">
+            <el-date-picker
+              v-model="ruleForm.start"
+              type="year"
+              value-format="yyyy"
+              placeholder="选择年"
+            >
+            </el-date-picker>
+          </el-form-item>
+
+          <el-form-item label="遗产类型" prop="type">
+            <el-input v-model="ruleForm.type"></el-input>
+          </el-form-item>
+
+          <el-form-item label="所属公司" prop="company">
+            <el-input v-model="ruleForm.company"></el-input>
+          </el-form-item>
+
+          <el-form-item label="保护等级及再利用情况">
+            <el-input v-model="ruleForm.prolevel"></el-input>
+          </el-form-item>
+          <el-form-item label="工业旅游示范点等级">
+            <el-input v-model="ruleForm.trvlevel"></el-input>
+          </el-form-item>
+
+          <el-form-item label="旅游景区等级">
+            <el-rate v-model="ruleForm.scelevel" show-text> </el-rate>
+          </el-form-item>
+
+          <el-form-item label="遗产简介" prop="brief">
+            <el-input
+              type="textarea"
+              :autosize="{ minRows: 2 }"
+              placeholder="请输入遗产简介"
+              v-model="ruleForm.brief"
+            >
+            </el-input>
+          </el-form-item>
+          <el-form-item label="详细介绍" prop="details">
+            <el-input
+              type="textarea"
+              :autosize="{ minRows: 2 }"
+              placeholder="请输入详细介绍"
+              v-model="ruleForm.details"
+            >
+            </el-input>
+          </el-form-item>
+        </el-form>
+
+        <div class="subBtn">
           <el-button type="primary" @click="submitForm('ruleForm')"
             >立即创建</el-button
           >
           <el-button @click="resetForm('ruleForm')">重置</el-button>
-        </el-form-item>
-      </el-form>
+        </div>
+      </div>
     </div>
+
+    <div class="HeritageAdd-images"></div>
   </div>
 </template>
 
@@ -103,6 +137,7 @@ export default {
 
   computed: {
     ...mapState(["lang"]),
+    ...mapState(["newCoordinate"]),
   },
   created() {
     // console.log(this.$route);
@@ -110,59 +145,85 @@ export default {
   data() {
     return {
       ruleForm: {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: "",
+        addType: "", //添加类型
+        name: "", //遗产名称
+        address: "", //遗产地址
+
+        type: "", //类型
+        company: "", //所属公司
+        start: "", //年份
+        prolevel: "", //保护等级及再利用情况（部分有，选择展示）
+        trvlevel: "", //工业旅游示范点等级（部分有，选择展示）
+        scelevel: null, //旅游景区等级（部分有，选择展示）
+        brief: "", //简介
+        details: "", //详细介绍
+        imagesAll: [], //相关图片
       },
+      imgobj: {},
       rules: {
+        addType: [
+          { required: true, message: "请选择添加类型", trigger: "change" },
+        ],
         name: [
-          { required: true, message: "请输入活动名称", trigger: "blur" },
-          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" },
+          { required: true, message: "请输入工业遗产名称", trigger: "blur" },
+          { min: 3, message: "长度在不少于3个字符", trigger: "blur" },
         ],
-        region: [
-          { required: true, message: "请选择活动区域", trigger: "change" },
-        ],
-        date1: [
+        address: [
           {
-            type: "date",
             required: true,
-            message: "请选择日期",
-            trigger: "change",
-          },
-        ],
-        date2: [
-          {
-            type: "date",
-            required: true,
-            message: "请选择时间",
+            message: "请选择工业遗产所在地址",
             trigger: "change",
           },
         ],
         type: [
           {
-            type: "array",
             required: true,
-            message: "请至少选择一个活动性质",
+            message: "请输入工业遗产类型",
             trigger: "change",
           },
         ],
-        resource: [
-          { required: true, message: "请选择活动资源", trigger: "change" },
+        company: [
+          {
+            required: true,
+            message: "请输入工业遗产所属公司",
+            trigger: "change",
+          },
         ],
-        desc: [{ required: true, message: "请填写活动形式", trigger: "blur" }],
+        start: [
+          {
+            required: true,
+            message: "请选择遗产始建年份",
+            trigger: "change",
+          },
+        ],
+        brief: [
+          {
+            required: true,
+            message: "请输入工业遗产简介",
+            trigger: "change",
+          },
+        ],
+        details: [
+          {
+            required: true,
+            message: "请输入工业遗产详细介绍",
+            trigger: "change",
+          },
+        ],
       },
     };
   },
   methods: {
+    //跳转页面拾取坐标位置
+    getCoordinate() {
+      this.$router.push("/get/coordinate");
+    },
     submitForm(formName) {
+      console.log(this.ruleForm);
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert("submit!");
+          // alert("submit!");
+          console.log(this.ruleForm);
         } else {
           console.log("error submit!!");
           return false;
@@ -177,4 +238,7 @@ export default {
 </script>
 
 <style>
+/* .HeritageAdd {
+  overflow: auto;
+} */
 </style>
