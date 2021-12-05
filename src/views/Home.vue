@@ -27,6 +27,10 @@ export default {
     };
   },
 
+  created() {
+    this.testEdit();
+  },
+
   methods: {
     col() {
       var re = /\n/g;
@@ -37,6 +41,37 @@ export default {
       var newarr = arr.map((ele) => "<p class='test'>" + ele + "</p>");
       var newStr = newarr.join("");
       this.end = newStr;
+    },
+
+    async testEdit() {
+      var res = await this.$axios.post(
+        "https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/editHeritageMainData/editHeritageMainData",
+        {
+          _id: "61ab909f291c0100018b9139",
+
+          name: "为什么不变？？？new测试3测试3",
+          address: "new测试3",
+          type: "new测试3",
+          company: "测试3",
+          start: "2020",
+          mainImage:
+            "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-790d5b85-9674-4a89-9bcc-c0657ea369be/22d677cf-6455-41de-af73-e20776309469.jpg",
+          coordinate: [115.358093, 39.071991],
+          addType: "工业遗产", //new
+          jing: 115.358093,
+          wei: 39.071991,
+          prolevel: "",
+          trvlevel: "",
+          scelevel: 4,
+          brief: "<p class='test'>测试3</p>",
+          details: "<p class='test'>测试3</p>",
+
+          imagesAllurl: [
+            "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-790d5b85-9674-4a89-9bcc-c0657ea369be/bcaf6cf3-e4ab-452d-93a1-6369aceba0a4.jpg",
+          ],
+        }
+      );
+      console.log("res---", res);
     },
   },
 };

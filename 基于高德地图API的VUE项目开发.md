@@ -279,6 +279,84 @@ exports.main = async (event, context) => {
 };
 ```
 
+- 开发一个数据编辑接口，以工业遗产内容编辑为例
+
+```js
+// Cloud代码
+// service.js
+// 编辑工业遗产主要内容
+const { Service } = require("uni-cloud-router");
+module.exports = class editHeritageMainData extends Service {
+  editHeritageMainData() {
+    const db = uniCloud.database();
+
+    let collection = db
+      .collection("heritageMainData")
+      .doc(this.ctx.data._id)
+      .set(
+        // this.ctx.data
+        {
+          addType: this.ctx.data.addType,
+          name: this.ctx.data.name,
+          address: this.ctx.data.address,
+          type: this.ctx.data.type,
+          company: this.ctx.data.company,
+          jing: this.ctx.data.jing,
+          wei: this.ctx.data.wei,
+          start: this.ctx.data.start,
+          prolevel: this.ctx.data.prolevel,
+          trvlevel: this.ctx.data.trvlevel,
+          scelevel: this.ctx.data.scelevel,
+          brief: this.ctx.data.brief,
+          details: this.ctx.data.details,
+          mainImage: this.ctx.data.mainImage,
+          imagesAllurl: this.ctx.data.imagesAllurl,
+          coordinate: this.ctx.data.coordinate,
+        }
+      );
+    return collection;
+  }
+};
+
+// controller.js
+const { Controller } = require("uni-cloud-router");
+module.exports = class editHeritageMainData extends Controller {
+  editHeritageMainData() {
+    return this.service.editHeritageMainData.editHeritageMainData();
+  }
+};
+
+// vue 代码
+ async testEdit() {
+      var res = await this.$axios.post(
+        "https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/editHeritageMainData/editHeritageMainData",
+        {
+          _id: "61ab909f291c0100018b9139",
+          addType: "工业遗产",
+          name: "为什么不变？？？new测试3测试3",
+          address: "new测试3",
+          type: "new测试3",
+          company: "测试3",
+          jing: 115.358093,
+          wei: 39.071991,
+          start: "2020",
+          prolevel: "",
+          trvlevel: "",
+          scelevel: 4,
+          brief: "<p class='test'>测试3</p>",
+          details: "<p class='test'>测试3</p>",
+          mainImage:
+            "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-790d5b85-9674-4a89-9bcc-c0657ea369be/22d677cf-6455-41de-af73-e20776309469.jpg",
+          imagesAllurl: [
+            "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-790d5b85-9674-4a89-9bcc-c0657ea369be/bcaf6cf3-e4ab-452d-93a1-6369aceba0a4.jpg",
+          ],
+          coordinate: [115.358093, 39.071991],
+        }
+      );
+      console.log("res---", res);
+    },
+```
+
 ## 接口文档
 
 接口：
@@ -390,7 +468,107 @@ exports.main = async (event, context) => {
   }
   ```
 
-- 2、获取遗产博物馆主要内容
+- 3、编辑遗产主要内容
+  url:https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/editHeritageMainData/editHeritageMainData
+
+  参数：
+
+  ```js
+   {
+          _id: "61ab909f291c0100018b9139",
+          addType: "工业遗产",
+          name: "为什么不变？？？new测试3测试3",
+          address: "new测试3",
+          type: "new测试3",
+          company: "测试3",
+          jing: 115.358093,
+          wei: 39.071991,
+          start: "2020",
+          prolevel: "",
+          trvlevel: "",
+          scelevel: 4,
+          brief: "<p class='test'>测试3</p>",
+          details: "<p class='test'>测试3</p>",
+          mainImage:
+            "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-790d5b85-9674-4a89-9bcc-c0657ea369be/22d677cf-6455-41de-af73-e20776309469.jpg",
+          imagesAllurl: [
+            "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-790d5b85-9674-4a89-9bcc-c0657ea369be/bcaf6cf3-e4ab-452d-93a1-6369aceba0a4.jpg",
+          ],
+          coordinate: [115.358093, 39.071991],
+        }
+  ```
+
+  请求方式：post
+  返回值：
+
+  ```js
+  {
+    affectedDocs: 1;
+    updated: 1;
+    upsertedId: null;
+  }
+  ```
+
+- 4、依据 id 获取单条工业遗产信息
+  url:https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/getOneHeritageMainData/getOneHeritageMainData
+
+  参数：
+
+  ```js
+   {
+        _id: this.$route.params.heritage,
+      }
+  ```
+
+  请求方式：post
+  返回值：
+
+  ```js
+  <!-- 该遗产数据; -->
+  ```
+
+- 3、编辑遗产主要内容
+  url:https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/editHeritageMainData/editHeritageMainData
+
+  参数：
+
+  ```js
+   {
+          _id: "61ab909f291c0100018b9139",
+          addType: "工业遗产",
+          name: "为什么不变？？？new测试3测试3",
+          address: "new测试3",
+          type: "new测试3",
+          company: "测试3",
+          jing: 115.358093,
+          wei: 39.071991,
+          start: "2020",
+          prolevel: "",
+          trvlevel: "",
+          scelevel: 4,
+          brief: "<p class='test'>测试3</p>",
+          details: "<p class='test'>测试3</p>",
+          mainImage:
+            "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-790d5b85-9674-4a89-9bcc-c0657ea369be/22d677cf-6455-41de-af73-e20776309469.jpg",
+          imagesAllurl: [
+            "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-790d5b85-9674-4a89-9bcc-c0657ea369be/bcaf6cf3-e4ab-452d-93a1-6369aceba0a4.jpg",
+          ],
+          coordinate: [115.358093, 39.071991],
+        }
+  ```
+
+  请求方式：post
+  返回值：
+
+  ```js
+  {
+    affectedDocs: 1;
+    updated: 1;
+    upsertedId: null;
+  }
+  ```
+
+- 5、获取遗产博物馆主要内容
   url:https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/getHeritageMuseum/getHeritageMuseum
 
   参数：无

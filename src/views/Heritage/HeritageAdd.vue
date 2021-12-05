@@ -36,7 +36,7 @@
       <br />
       <el-button
         type="primary"
-        @click="getCoordinate"
+        @click="getCoordinateP"
         v-show="newCoordinate.length === 0"
         >拾取遗产坐标位置</el-button
       >
@@ -66,6 +66,9 @@
           </el-form-item>
           <el-form-item label="坐标纬度" prop="wei">
             <el-input style="width: 200px" v-model="ruleForm.wei"></el-input>
+            <el-button @click="getCoordinateP" style="margin-left: 10px"
+              >重新拾取</el-button
+            >
           </el-form-item>
           <el-form-item label="所在地址" prop="address">
             <el-input v-model="ruleForm.address"></el-input>
@@ -167,7 +170,7 @@
 
 <script>
 import MainTop from "../../components/MainTop.vue";
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   components: {
@@ -275,8 +278,10 @@ export default {
   },
 
   methods: {
+    ...mapMutations(["getCoordinate"]),
+
     //跳转页面拾取坐标位置
-    getCoordinate() {
+    getCoordinateP() {
       this.$router.push("/get/coordinate");
     },
 
@@ -350,7 +355,7 @@ export default {
                   message: "工业遗产信息添加成功",
                   type: "success",
                 });
-
+                this.getCoordinate([]); //将拾取到的坐标清空
                 this.$router.push("/data/manage");
               }
             }
