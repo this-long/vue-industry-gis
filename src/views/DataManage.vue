@@ -79,7 +79,12 @@
                     size="small"
                     >查看</el-button
                   >
-                  <el-button type="text" size="small">编辑</el-button>
+                  <el-button
+                    type="text"
+                    @click="editMain(scope.row)"
+                    size="small"
+                    >编辑</el-button
+                  >
                   <el-button type="text" size="small">删除</el-button>
                 </template>
               </el-table-column>
@@ -118,7 +123,7 @@ export default {
 
   methods: {
     addHeritage() {
-      this.$router.push("/heritage/add");
+      this.$router.push("/heritage/add/add");
     },
 
     async changeDataType() {
@@ -137,6 +142,12 @@ export default {
     getMain(row) {
       console.log(row);
       this.$router.push("/heritage/industry/main/" + row._id);
+    },
+
+    // 编辑按钮
+    editMain(row) {
+      console.log(row);
+      this.$router.push("/heritage/add/" + row._id);
     },
 
     // 模糊查询按钮

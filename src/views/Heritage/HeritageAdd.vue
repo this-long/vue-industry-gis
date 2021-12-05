@@ -182,10 +182,56 @@ export default {
     ...mapState(["lang"]),
     ...mapState(["newCoordinate"]),
   },
-  created() {
-    // console.log(this.$route);
-    this.ruleForm.jing = this.newCoordinate[0];
-    this.ruleForm.wei = this.newCoordinate[1];
+  async created() {
+    console.log(this.$route);
+    if (this.$route.params.editid !== "add") {
+      var res = await this.$axios.post(
+        "https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/getOneHeritageMainData/getOneHeritageMainData",
+        {
+          _id: this.$route.params.editid,
+        }
+      );
+      console.log(res.data.data);
+
+      this.ruleForm = res.data.data[0];
+      this.getCoordinate(res.data.data[0].coordinate);
+
+      //   if (res.data.data[0].addType) {
+      //     this.ruleForm.addType = res.data.data[0].addType;
+      //   }
+      //   if (res.data.data[0].jing) {
+      //     this.ruleForm.jing = res.data.data[0].jing;
+      //   }
+      //   if (res.data.data[0].wei) {
+      //     this.ruleForm.wei = res.data.data[0].wei;
+      //   }
+      //   if (res.data.data[0].prolevel) {
+      //     this.ruleForm.prolevel = res.data.data[0].prolevel;
+      //   }
+      //   if (res.data.data[0].scelevel) {
+      //     this.ruleForm.scelevel = res.data.data[0].scelevel;
+      //   }
+      //   if (res.data.data[0].trvlevel) {
+      //     this.ruleForm.trvlevel = res.data.data[0].trvlevel;
+      //   }
+      //   if (res.data.data[0].imagesAllurl) {
+      //     this.ruleForm.imagesAllurl = res.data.data[0].imagesAllurl;
+      //   }
+
+      //   this.ruleForm.name = res.data.data[0].name;
+      //   this.ruleForm.address = res.data.data[0].address;
+      //   this.ruleForm.type = res.data.data[0].type;
+      //   this.ruleForm.company = res.data.data[0].company;
+
+      //   this.ruleForm.start = res.data.data[0].start;
+
+      //   this.ruleForm.mainImage = res.data.data[0].mainImage;
+
+      //   this.ruleForm.coordinate = res.data.data[0].coordinate;
+    } else {
+      this.ruleForm.jing = this.newCoordinate[0];
+      this.ruleForm.wei = this.newCoordinate[1];
+    }
   },
   data() {
     return {
@@ -343,20 +389,37 @@ export default {
             // 格式已经处理完毕，下面发送请求
 
             // 发送请求;
-
-            if (this.ruleForm.addType === "工业遗产") {
-              var res = await this.$axios.post(
-                "https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/postHeritageMainData/postHeritageMainData",
-                this.ruleForm
-              );
-              console.log("res====", res);
-              if (res.status === 200) {
-                this.$message({
-                  message: "工业遗产信息添加成功",
-                  type: "success",
-                });
-                this.getCoordinate([]); //将拾取到的坐标清空
-                this.$router.push("/data/manage");
+            if (this.$route.params.editid !== "add") {
+              if (this.ruleForm.addType === "工业遗产") {
+                var res = await this.$axios.post(
+                  "https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/editHeritageMainData/editHeritageMainData",
+                  this.ruleForm
+                );
+                console.log("res====", res);
+                if (res.status === 200) {
+                  this.$message({
+                    message: "工业遗产信息编辑成功",
+                    type: "success",
+                  });
+                  this.getCoordinate([]); //将拾取到的坐标清空
+                  this.$router.push("/data/manage");
+                }
+              }
+            } else {
+              if (this.ruleForm.addType === "工业遗产") {
+                var res2 = await this.$axios.post(
+                  "https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/postHeritageMainData/postHeritageMainData",
+                  this.ruleForm
+                );
+                console.log("res====", res2);
+                if (res2.status === 200) {
+                  this.$message({
+                    message: "工业遗产信息添加成功",
+                    type: "success",
+                  });
+                  this.getCoordinate([]); //将拾取到的坐标清空
+                  this.$router.push("/data/manage");
+                }
               }
             }
           } else {

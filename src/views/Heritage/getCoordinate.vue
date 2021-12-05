@@ -179,7 +179,7 @@ export default {
     },
 
     sub() {
-      this.$router.push("/heritage/add");
+      this.$router.push("/heritage/add/add");
     },
   },
 };

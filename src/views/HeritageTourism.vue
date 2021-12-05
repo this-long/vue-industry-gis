@@ -570,7 +570,7 @@ export default {
         // "单位名称：" + this.searchObj.company,
         "类型：" + this.searchObj.type,
         `<a href="#/heritage/industry/main/` +
-          this.searchObj.company +
+          this.searchObj._id +
           `" class="">详细信息</a>`,
       ];
 

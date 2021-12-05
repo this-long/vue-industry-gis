@@ -35,8 +35,9 @@
 
 - 6、2day 依据 type 类型动态展示覆盖点，工业旅游区数据已配置
 
-- 7、顶部展示配置(明日，开发工业遗产数据的添加)
-- 8、5day 遗产添加功能已完全实现
+- 7、3day 顶部展示配置(明日，开发工业遗产数据的添加)
+- 8、4day 遗产添加功能已完全实现
+- 9、5day 编辑功能实现
 
 ## 显示地图
 
@@ -653,3 +654,17 @@ module.exports = class editHeritageMainData extends Controller {
     ]
   }
   ```
+
+```js
+{
+"addType":"",
+"jing": 0,
+"wei": 0,
+"prolevel": "",
+"trvlevel": "",
+"scelevel": 0,
+"brief": "",
+"details": "",
+"imagesAllurl": [],
+}
+```

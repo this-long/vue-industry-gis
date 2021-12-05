@@ -94,7 +94,7 @@ const routes = [
       },
       // 工业遗产数据添加
       {
-        path: '/heritage/add',
+        path: '/heritage/add/:editid',
         component: () => import('../views/Heritage/HeritageAdd.vue')
       },
       // 拾取遗产坐标位置页
