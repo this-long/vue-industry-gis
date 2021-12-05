@@ -259,7 +259,7 @@
 
 <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=2eccb47b400c8ab58f2dc596dbfe9d53&plugin=AMap.MouseTool,AMap.DistrictSearch"></script>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 export default {
   name: "HeritageMuseum",
 
@@ -313,10 +313,8 @@ export default {
     var res = await this.$axios.get("/getHeritageMuseum/getHeritageMuseum");
     this.dataList = res.data.data;
 
-    // var res2 = await this.$axios.get("/getHeritageMuseum/getHeritageMuseum");
-    // console.log("res2-------", res2.data.data);
-
     this.getAllType(); //初始化下拉菜单
+    this.changeinstryType("two");
   },
 
   mounted() {
@@ -334,6 +332,8 @@ export default {
   },
 
   methods: {
+    ...mapMutations(["changeinstryType"]),
+
     initMap() {
       //初始化地图
       this.map = new AMap.Map("container", {
@@ -542,15 +542,6 @@ export default {
 
     // 点击搜索按钮
     searchIndustryCli() {
-      // var targetMarker;
-      // console.log("markers", this.markers[1].getExtData());
-      // var res = this.markers.find((ele) => {
-      //   console.log(ele.getExtData()._id);
-      //   console.log(this.searchObj._id);
-      //   return (ele.getExtData()._id = this.searchObj._id);
-      // });
-      // console.log(index);
-
       // console.log(this.markers[index]);
       this.addMarker();
       var title =

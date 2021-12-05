@@ -28,7 +28,8 @@ export default {
   },
 
   created() {
-    this.testEdit();
+    // this.testEdit();
+    // this.testPostMus();
   },
 
   methods: {
@@ -44,7 +45,7 @@ export default {
     },
 
     async testEdit() {
-      var res = await this.$axios.post(
+      await this.$axios.post(
         "https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/editHeritageMainData/editHeritageMainData",
         {
           _id: "61ab909f291c0100018b9139",
@@ -71,7 +72,20 @@ export default {
           ],
         }
       );
-      console.log("res---", res);
+    },
+
+    async testPostMus() {
+      var res = await this.$axios.post(
+        "https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/postHeritageMuseum/postHeritageMuseum",
+        {
+          name: "我是测试数据",
+          address: "new测试3",
+          type: "new测试3",
+          company: "测试3",
+          start: "2020",
+        }
+      );
+      console.log(res);
     },
   },
 };

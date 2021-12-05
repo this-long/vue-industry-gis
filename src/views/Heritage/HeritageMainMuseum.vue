@@ -100,10 +100,9 @@
 
 <script>
 import MainTop from "../../components/MainTop.vue";
-import { mapState } from "vuex";
 
 export default {
-  name: "HeritageMain",
+  name: "HeritageMainMuseum",
   components: {
     MainTop,
   },
@@ -114,46 +113,16 @@ export default {
     };
   },
 
-  computed: {
-    ...mapState(["instryType"]),
-  },
-
   async created() {
-    console.log(this.instryType);
-    var res = "";
-    console.log(this.$route.params.heritage);
-
-    if (this.instryType === "one") {
-      // console.log(1);
-
-      res = await this.$axios.post(
-        "https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/getOneHeritageMainData/getOneHeritageMainData",
-        {
-          _id: this.$route.params.heritage,
-        }
-      );
-    } else if (this.instryType === "two") {
-      console.log(2);
-
-      res = await this.$axios.post(
-        "getOneHeritageMuseum/getOneHeritageMuseum",
-        {
-          _id: this.$route.params.heritage,
-        }
-      );
-    } else if (this.instryType === "three") {
-      console.log(3);
-
-      res = await this.$axios.post(
-        "getOneHeritageTourism/getOneHeritageTourism",
-        {
-          _id: this.$route.params.heritage,
-        }
-      );
-    }
-
+    // console.log(this.$route);
+    var res = await this.$axios.post(
+      "getOneHeritageMuseum/getOneHeritageMuseum",
+      {
+        _id: this.$route.params.heritage,
+      }
+    );
     this.heritageMainData = res.data.data[0];
-    console.log("test", this.heritageMainData);
+    console.log(this.heritageMainData);
   },
 };
 </script>

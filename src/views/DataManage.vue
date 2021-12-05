@@ -90,8 +90,112 @@
               </el-table-column>
             </el-table>
           </el-tab-pane>
-          <el-tab-pane label="工业博物馆" name="second">工业博物馆</el-tab-pane>
-          <el-tab-pane label="工业旅游区" name="third">工业旅游区</el-tab-pane>
+          <el-tab-pane label="工业博物馆" name="second">
+            <el-table
+              border
+              stripe
+              :data="tableData"
+              style="width: 100%"
+              height="480"
+            >
+              <el-table-column
+                prop="start"
+                label="始建"
+                width="60"
+                align="center"
+              >
+              </el-table-column>
+              <el-table-column prop="name" label="工业博物馆名称" width="180">
+              </el-table-column>
+              <el-table-column prop="address" label="地址"> </el-table-column>
+              <el-table-column
+                prop="type"
+                align="center"
+                label="博物馆类型"
+                width="100"
+              >
+              </el-table-column>
+              <el-table-column
+                prop="addType"
+                width="100"
+                align="center"
+                label="所属分类"
+              >
+              </el-table-column>
+              <el-table-column prop="company" label="公司"> </el-table-column>
+
+              <el-table-column label="操作" align="center" width="150">
+                <template slot-scope="scope">
+                  <el-button
+                    @click="getMain(scope.row)"
+                    type="text"
+                    size="small"
+                    >查看</el-button
+                  >
+                  <el-button
+                    type="text"
+                    @click="editMain(scope.row)"
+                    size="small"
+                    >编辑</el-button
+                  >
+                  <el-button type="text" size="small">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-tab-pane>
+          <el-tab-pane label="工业旅游区" name="third">
+            <el-table
+              border
+              stripe
+              :data="tableData"
+              style="width: 100%"
+              height="480"
+            >
+              <el-table-column
+                prop="start"
+                label="始建"
+                width="60"
+                align="center"
+              >
+              </el-table-column>
+              <el-table-column prop="name" label="工业旅游区名称" width="180">
+              </el-table-column>
+              <el-table-column prop="address" label="地址"> </el-table-column>
+              <el-table-column
+                prop="type"
+                align="center"
+                label="景区类型"
+                width="100"
+              >
+              </el-table-column>
+              <el-table-column
+                prop="addType"
+                width="100"
+                align="center"
+                label="所属分类"
+              >
+              </el-table-column>
+              <el-table-column prop="company" label="公司"> </el-table-column>
+
+              <el-table-column label="操作" align="center" width="150">
+                <template slot-scope="scope">
+                  <el-button
+                    @click="getMain(scope.row)"
+                    type="text"
+                    size="small"
+                    >查看</el-button
+                  >
+                  <el-button
+                    type="text"
+                    @click="editMain(scope.row)"
+                    size="small"
+                    >编辑</el-button
+                  >
+                  <el-button type="text" size="small">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-tab-pane>
         </el-tabs>
       </div>
     </div>
@@ -100,6 +204,8 @@
 
 <script>
 import MainTop from "../components/MainTop.vue";
+import { mapState, mapMutations } from "vuex";
+
 export default {
   components: {
     MainTop,
@@ -119,9 +225,15 @@ export default {
     // 初始化数据
     var res = await this.$axios.get("/getHeritageMainData/getHeritageMainData");
     this.tableData = res.data.data;
+    this.changeinstryType("one");
+  },
+
+  computed: {
+    ...mapState(["instryType"]),
   },
 
   methods: {
+    ...mapMutations(["changeinstryType"]),
     addHeritage() {
       this.$router.push("/heritage/add/add");
     },
@@ -133,8 +245,21 @@ export default {
           "/getHeritageMainData/getHeritageMainData"
         );
         this.tableData = res.data.data;
+        this.changeinstryType("one");
+      } else if (this.activeName === "second") {
+        var resMus = await this.$axios.get(
+          "/getHeritageMuseum/getHeritageMuseum"
+        );
+        this.tableData = resMus.data.data;
+        this.changeinstryType("two");
+      } else if (this.activeName === "third") {
+        var resTir = await this.$axios.get(
+          "/getHeritageTourism/getHeritageTourism"
+        );
+        this.tableData = resTir.data.data;
+        this.changeinstryType("three");
       }
-      console.log(this.tableData);
+      // console.log(this.tableData);
     },
 
     // 表格start

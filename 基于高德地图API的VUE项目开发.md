@@ -37,7 +37,7 @@
 
 - 7、3day 顶部展示配置(明日，开发工业遗产数据的添加)
 - 8、4day 遗产添加功能已完全实现
-- 9、5day 编辑功能实现
+- 9、5day 编辑功能实现,
 
 ## 显示地图
 
@@ -611,9 +611,10 @@ module.exports = class editHeritageMainData extends Controller {
   }
   ```
 
-- 3、
+- 6、 添加工业博物馆主要
+  url:https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/postHeritageMuseum/postHeritageMuseum
 
-- 4、获取`工业旅游区`主要内容
+- 7、获取`工业旅游区`主要内容
   url:https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/getHeritageTourism/getHeritageTourism
 
   参数：无
@@ -668,3 +669,6 @@ module.exports = class editHeritageMainData extends Controller {
 "imagesAllurl": [],
 }
 ```
+
+- 8 添加工业旅游区主要内
+  url:https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/postHeritageTourism/postHeritageTourism

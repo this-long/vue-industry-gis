@@ -195,39 +195,6 @@ export default {
 
       this.ruleForm = res.data.data[0];
       this.getCoordinate(res.data.data[0].coordinate);
-
-      //   if (res.data.data[0].addType) {
-      //     this.ruleForm.addType = res.data.data[0].addType;
-      //   }
-      //   if (res.data.data[0].jing) {
-      //     this.ruleForm.jing = res.data.data[0].jing;
-      //   }
-      //   if (res.data.data[0].wei) {
-      //     this.ruleForm.wei = res.data.data[0].wei;
-      //   }
-      //   if (res.data.data[0].prolevel) {
-      //     this.ruleForm.prolevel = res.data.data[0].prolevel;
-      //   }
-      //   if (res.data.data[0].scelevel) {
-      //     this.ruleForm.scelevel = res.data.data[0].scelevel;
-      //   }
-      //   if (res.data.data[0].trvlevel) {
-      //     this.ruleForm.trvlevel = res.data.data[0].trvlevel;
-      //   }
-      //   if (res.data.data[0].imagesAllurl) {
-      //     this.ruleForm.imagesAllurl = res.data.data[0].imagesAllurl;
-      //   }
-
-      //   this.ruleForm.name = res.data.data[0].name;
-      //   this.ruleForm.address = res.data.data[0].address;
-      //   this.ruleForm.type = res.data.data[0].type;
-      //   this.ruleForm.company = res.data.data[0].company;
-
-      //   this.ruleForm.start = res.data.data[0].start;
-
-      //   this.ruleForm.mainImage = res.data.data[0].mainImage;
-
-      //   this.ruleForm.coordinate = res.data.data[0].coordinate;
     } else {
       this.ruleForm.jing = this.newCoordinate[0];
       this.ruleForm.wei = this.newCoordinate[1];
@@ -390,6 +357,7 @@ export default {
 
             // 发送请求;
             if (this.$route.params.editid !== "add") {
+              // 编辑部分
               if (this.ruleForm.addType === "工业遗产") {
                 var res = await this.$axios.post(
                   "https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/editHeritageMainData/editHeritageMainData",
@@ -406,15 +374,46 @@ export default {
                 }
               }
             } else {
+              // 添加部分
               if (this.ruleForm.addType === "工业遗产") {
                 var res2 = await this.$axios.post(
                   "https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/postHeritageMainData/postHeritageMainData",
                   this.ruleForm
                 );
-                console.log("res====", res2);
+                // console.log("res====", res2);
                 if (res2.status === 200) {
                   this.$message({
                     message: "工业遗产信息添加成功",
+                    type: "success",
+                  });
+                  this.getCoordinate([]); //将拾取到的坐标清空
+                  this.$router.push("/data/manage");
+                }
+              } else if (this.ruleForm.addType === "遗产博物馆") {
+                // console.log(1);
+
+                var resMuseum = await this.$axios.post(
+                  "https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/postHeritageMuseum/postHeritageMuseum",
+                  this.ruleForm
+                );
+                // console.log("res====", res2);
+                if (resMuseum.status === 200) {
+                  this.$message({
+                    message: "遗产博物馆信息添加成功",
+                    type: "success",
+                  });
+                  this.getCoordinate([]); //将拾取到的坐标清空
+                  this.$router.push("/data/manage");
+                }
+              } else if (this.ruleForm.addType === "工业旅游区") {
+                var resTourism = await this.$axios.post(
+                  "https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/postHeritageTourism/postHeritageTourism",
+                  this.ruleForm
+                );
+                // console.log("res====", res2);
+                if (resTourism.status === 200) {
+                  this.$message({
+                    message: "工业旅游区信息添加成功",
                     type: "success",
                   });
                   this.getCoordinate([]); //将拾取到的坐标清空

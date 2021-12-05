@@ -256,7 +256,7 @@
 
 <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=2eccb47b400c8ab58f2dc596dbfe9d53&plugin=AMap.MouseTool,AMap.DistrictSearch"></script>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 export default {
   name: "HeritageIndustry",
 
@@ -311,6 +311,7 @@ export default {
     this.dataList = res.data.data;
 
     this.getAllType(); //初始化下拉菜单
+    this.changeinstryType("one");
   },
 
   mounted() {
@@ -328,6 +329,8 @@ export default {
   },
 
   methods: {
+    ...mapMutations(["changeinstryType"]),
+
     initMap() {
       //初始化地图
       this.map = new AMap.Map("container", {

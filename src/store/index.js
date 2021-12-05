@@ -6,7 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     lang: "zh_cn",
-    newCoordinate: []
+    newCoordinate: [],
+    instryType: 'one'
   },
   mutations: {
     langChange(state, lang) {
@@ -15,6 +16,9 @@ export default new Vuex.Store({
     getCoordinate(state, newCoordinate) {
       // 拾取遗产坐标
       state.newCoordinate = newCoordinate
+    },
+    changeinstryType(state, type) {
+      state.instryType = type
     }
   },
   actions: {
