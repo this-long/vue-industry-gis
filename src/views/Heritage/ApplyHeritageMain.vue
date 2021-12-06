@@ -1,14 +1,33 @@
 <template>
-  <!-- 工业遗产的详情 -->
-  <div class="HeritageMain">
-    <div class="HeritageMain-top">
+  <!-- 工业遗产申请的详情 -->
+  <div class="ApplyHeritageMain">
+    <div class="ApplyHeritageMain-top">
       <MainTop>遗产数据 <span class="gang"> / </span> 遗产详情</MainTop>
     </div>
-    <div class="HeritageMain-bottom padding15">
+    <div class="ApplyHeritageMain-bottom padding15">
       <el-card v-if="heritageMainData !== null" class="box-card" shadow="hover">
         <div slot="header" class="clearfix">
           <span class="title">{{ heritageMainData.name }}</span>
-          <span>{{ heritageMainData.addType }}</span>
+          <div>
+            <span style="margin-right: 10px">{{
+              heritageMainData.addType
+            }}</span>
+            <el-tag
+              v-if="heritageMainData.approvalStatus === 'pending'"
+              type="info"
+              >待审批</el-tag
+            >
+            <el-tag
+              v-if="heritageMainData.approvalStatus === 'adopt'"
+              type="success"
+              >已通过</el-tag
+            >
+            <el-tag
+              v-if="heritageMainData.approvalStatus === 'reject'"
+              type="danger"
+              >已驳回</el-tag
+            >
+          </div>
         </div>
         <div class="text item">
           <div>
@@ -92,6 +111,16 @@
               </el-carousel-item>
             </el-carousel>
           </div>
+
+          <div class="text-che">
+            <span>审批意见： </span>
+          </div>
+          <div
+            v-if="heritageMainData.approvalComments !== ''"
+            class="text-che"
+            v-html="heritageMainData.approvalComments"
+          ></div>
+          <div v-else class="text-che"><p>暂无意见</p></div>
         </div>
       </el-card>
     </div>
@@ -102,7 +131,7 @@
 import MainTop from "../../components/MainTop.vue";
 
 export default {
-  name: "HeritageMainMuseum",
+  name: "ApplyHeritageMain",
   components: {
     MainTop,
   },
@@ -114,11 +143,11 @@ export default {
   },
 
   async created() {
-    // console.log(this.$route);
+    console.log(this.$route);
     var res = await this.$axios.post(
-      "getOneHeritageMuseum/getOneHeritageMuseum",
+      "/getOneApplyHeritage/getOneApplyHeritage",
       {
-        _id: this.$route.params.heritage,
+        _id: this.$route.params.applyid,
       }
     );
     this.heritageMainData = res.data.data[0];
@@ -128,26 +157,26 @@ export default {
 </script>
 
 <style >
-.HeritageMain .HeritageMain-bottom .clearfix {
+.ApplyHeritageMain .ApplyHeritageMain-bottom .clearfix {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.HeritageMain .HeritageMain-bottom .clearfix span {
+.ApplyHeritageMain .ApplyHeritageMain-bottom .clearfix span {
   font-size: 16px;
 }
-.HeritageMain .HeritageMain-bottom .clearfix .title {
+.ApplyHeritageMain .ApplyHeritageMain-bottom .clearfix .title {
   font-size: 20px;
 }
 
-.HeritageMain .HeritageMain-bottom .text span {
+.ApplyHeritageMain .ApplyHeritageMain-bottom .text span {
   font-size: 15px;
 }
 
-.HeritageMain .HeritageMain-bottom .text .text-che {
+.ApplyHeritageMain .ApplyHeritageMain-bottom .text .text-che {
   padding: 5px 0;
 }
-.HeritageMain .HeritageMain-bottom .text p {
+.ApplyHeritageMain .ApplyHeritageMain-bottom .text p {
   margin: 0;
   margin-left: 5px;
   color: black;
@@ -156,13 +185,13 @@ export default {
   text-indent: 35px;
   word-break: break-all;
 }
-.HeritageMain .HeritageMain-bottom .text .mainImage {
+.ApplyHeritageMain .ApplyHeritageMain-bottom .text .mainImage {
   width: 80%;
   height: auto;
   display: block;
   margin: 0 auto;
 }
-/* .HeritageMain .HeritageMain-bottom .text .otherImage {
+/* .ApplyHeritageMain .ApplyHeritageMain-bottom .text .otherImage {
 
 } */
 </style>

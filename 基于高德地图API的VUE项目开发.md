@@ -363,6 +363,8 @@ module.exports = class editHeritageMainData extends Controller {
 
 接口：
 
+### 数据维护部分
+
 - 1、获取遗产主要内容
   url:https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/getHeritageMainData/getHeritageMainData
   参数：无
@@ -673,3 +675,46 @@ module.exports = class editHeritageMainData extends Controller {
 
 - 8 添加工业旅游区主要内
   url:https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/postHeritageTourism/postHeritageTourism
+
+### 遗产申请部分
+
+- 1 添加遗产申请
+  post
+  url:/postApplyHeritageData/postApplyHeritageData
+
+参数：
+
+```js
+ ruleForm: {
+        applyName: "", //申请人姓名
+        phone: "", //申请手机号
+        addType: "", //添加类型
+        name: "", //遗产名称
+        address: "", //遗产地址
+
+        type: "", //类型
+        company: "", //所属公司
+        jing: 0,
+        wei: 0,
+        start: "", //年份
+        prolevel: "", //保护等级及再利用情况（部分有，选择展示）
+        trvlevel: "", //工业旅游示范点等级（部分有，选择展示）
+        scelevel: null, //旅游景区等级（部分有，选择展示）
+        brief: "", //简介
+        details: "", //详细介绍
+        mainImage: "", //封面图片
+        imagesAllurl: [], //相关图片
+        coordinate: [],
+        approvalStatus: "pending", //待审批状态：pending  adopt 通过 reject  驳回
+        approvalComments: "", //审批意见
+        rejectComment: "", //驳回提示
+      },
+```
+
+- 2 获取列表
+  get
+  url: /getApplyHeritageData/getApplyHeritageData
+
+- 3 获取单条
+  post
+  url : /getOneApplyHeritage/getOneApplyHeritage

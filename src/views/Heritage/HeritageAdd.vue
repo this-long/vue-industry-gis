@@ -159,7 +159,7 @@
           <el-button type="primary" @click="submitForm('ruleForm')"
             >立即创建</el-button
           >
-          <el-button @click="resetForm('ruleForm')">重置</el-button>
+          <el-button @click="resetForm('ruleForm')">清空提示</el-button>
         </div>
       </div>
     </div>
@@ -183,6 +183,8 @@ export default {
     ...mapState(["newCoordinate", "instryType"]),
   },
   async created() {
+    // 将坐标拾取状态改为add
+    this.changeCoordinateType("add");
     console.log(this.$route);
     if (this.$route.params.editid !== "add") {
       var res = "";
@@ -240,7 +242,7 @@ export default {
         imagesAllurl: [], //相关图片
         coordinate: [],
       },
-      imgobj: {},
+      // imgobj: {},
       rules: {
         addType: [
           { required: true, message: "请选择添加类型", trigger: "change" },
@@ -310,10 +312,15 @@ export default {
   },
 
   methods: {
-    ...mapMutations(["getCoordinate"]),
+    ...mapMutations([
+      "getCoordinate",
+      "changeCoordinateType",
+      "getapplyCoordinate",
+    ]),
 
     //跳转页面拾取坐标位置
     getCoordinateP() {
+      this.getapplyCoordinate([]);
       this.$router.push("/get/coordinate");
     },
 
@@ -336,7 +343,7 @@ export default {
         if (valid) {
           // alert("submit!");
           if (
-            this.ruleForm.mainImageurl !== "" &&
+            this.ruleForm.mainImage !== "" &&
             this.ruleForm.imagesAllurl.length !== 0
           ) {
             // 格式化遗产简介

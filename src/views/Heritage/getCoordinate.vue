@@ -6,7 +6,10 @@
       <div id="container" class="container">
         <div class="map-buttons">
           <el-button
-            v-if="this.newCoordinate.length === 0"
+            v-if="
+              this.newCoordinate.length === 0 ||
+              this.applyCoordinate.length === 0
+            "
             size="mini"
             type="primary"
             @click="drawGeometry"
@@ -24,7 +27,10 @@
           >
 
           <el-button
-            v-show="this.newCoordinate.length !== 0"
+            v-show="
+              this.newCoordinate.length !== 0 ||
+              this.applyCoordinate.length !== 0
+            "
             size="mini"
             type="primary"
             @click="sub"
@@ -72,7 +78,11 @@ export default {
   },
 
   computed: {
-    ...mapState(["lang", "newCoordinate"]),
+    ...mapState(["lang", "newCoordinate", "CoordinateType", "applyCoordinate"]),
+  },
+
+  created() {
+    console.log(this.CoordinateType);
   },
 
   mounted() {
@@ -84,7 +94,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(["getCoordinate"]),
+    ...mapMutations(["getCoordinate", "getapplyCoordinate"]),
 
     initMap() {
       //初始化地图
@@ -166,7 +176,12 @@ export default {
         console.log("e.obj---------", e.obj.getPosition()); //获取点标记的位置
 
         var zb = e.obj.getPosition();
-        this.getCoordinate([zb.lng, zb.lat]);
+        if (this.CoordinateType === "add") {
+          this.getCoordinate([zb.lng, zb.lat]);
+        } else if (this.CoordinateType === "apply") {
+          this.getapplyCoordinate([zb.lng, zb.lat]);
+        }
+
         console.log(this.newCoordinate);
 
         this.mouseTool.close(); //关闭
@@ -176,10 +191,15 @@ export default {
     getAgin() {
       this.mouseTool.close(true);
       this.getCoordinate([]);
+      this.getapplyCoordinate([]);
     },
 
     sub() {
-      this.$router.push("/heritage/add/add");
+      if (this.CoordinateType === "add") {
+        this.$router.push("/heritage/add/add");
+      } else if (this.CoordinateType === "apply") {
+        this.$router.push("/heritage/apply");
+      }
     },
   },
 };

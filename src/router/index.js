@@ -46,6 +46,15 @@ const routes = [
         path: '/heritage/repair',//遗产报修
         component: () => import('../views/HeritageRepair.vue')
       },
+      {
+        path: '/heritage/myapply',//我的申请
+        component: () => import('../views/MyApply.vue')
+      },
+      {
+        path: "/heritage/my/apply/:applyid",//工业遗产详情
+        name: "ApplyHeritageMain",
+        component: () => import('../views/Heritage/ApplyHeritageMain.vue')
+      },
       // 遗产数据
       {
         path: '/heritage/Echarts',//遗产报表
