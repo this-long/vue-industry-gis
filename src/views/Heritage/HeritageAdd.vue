@@ -180,17 +180,36 @@ export default {
 
   computed: {
     ...mapState(["lang"]),
-    ...mapState(["newCoordinate"]),
+    ...mapState(["newCoordinate", "instryType"]),
   },
   async created() {
     console.log(this.$route);
     if (this.$route.params.editid !== "add") {
-      var res = await this.$axios.post(
-        "https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/getOneHeritageMainData/getOneHeritageMainData",
-        {
-          _id: this.$route.params.editid,
-        }
-      );
+      var res = "";
+
+      if (this.instryType === "one") {
+        res = await this.$axios.post(
+          "https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/getOneHeritageMainData/getOneHeritageMainData",
+          {
+            _id: this.$route.params.editid,
+          }
+        );
+      } else if (this.instryType === "two") {
+        res = await this.$axios.post(
+          "https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/getOneHeritageMuseum/getOneHeritageMuseum",
+          {
+            _id: this.$route.params.editid,
+          }
+        );
+      } else if (this.instryType === "three") {
+        res = await this.$axios.post(
+          "https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/getOneHeritageTourism/getOneHeritageTourism",
+          {
+            _id: this.$route.params.editid,
+          }
+        );
+      }
+
       console.log(res.data.data);
 
       this.ruleForm = res.data.data[0];
@@ -367,6 +386,39 @@ export default {
                 if (res.status === 200) {
                   this.$message({
                     message: "工业遗产信息编辑成功",
+                    type: "success",
+                  });
+                  this.getCoordinate([]); //将拾取到的坐标清空
+                  this.$router.push("/data/manage");
+                }
+              }
+              // --------------
+              if (this.ruleForm.addType === "遗产博物馆") {
+                res = await this.$axios.post(
+                  "https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/editHeritageMuseum/editHeritageMuseum",
+                  this.ruleForm
+                );
+                console.log("res====", res);
+                if (res.status === 200) {
+                  this.$message({
+                    message: "遗产博物馆信息编辑成功",
+                    type: "success",
+                  });
+                  this.getCoordinate([]); //将拾取到的坐标清空
+                  this.$router.push("/data/manage");
+                }
+              }
+              // --------------
+
+              if (this.ruleForm.addType === "工业旅游区") {
+                res = await this.$axios.post(
+                  "https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/editHeritageTourism/editHeritageTourism",
+                  this.ruleForm
+                );
+                console.log("res====", res);
+                if (res.status === 200) {
+                  this.$message({
+                    message: "工业旅游区信息编辑成功",
                     type: "success",
                   });
                   this.getCoordinate([]); //将拾取到的坐标清空

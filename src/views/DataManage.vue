@@ -85,7 +85,12 @@
                     size="small"
                     >编辑</el-button
                   >
-                  <el-button type="text" size="small">删除</el-button>
+                  <el-button
+                    type="text"
+                    size="small"
+                    @click="delMain(scope.row)"
+                    >删除</el-button
+                  >
                 </template>
               </el-table-column>
             </el-table>
@@ -138,7 +143,12 @@
                     size="small"
                     >编辑</el-button
                   >
-                  <el-button type="text" size="small">删除</el-button>
+                  <el-button
+                    type="text"
+                    size="small"
+                    @click="delMain(scope.row)"
+                    >删除</el-button
+                  >
                 </template>
               </el-table-column>
             </el-table>
@@ -191,7 +201,12 @@
                     size="small"
                     >编辑</el-button
                   >
-                  <el-button type="text" size="small">删除</el-button>
+                  <el-button
+                    type="text"
+                    size="small"
+                    @click="delMain(scope.row)"
+                    >删除</el-button
+                  >
                 </template>
               </el-table-column>
             </el-table>
@@ -233,8 +248,9 @@ export default {
   },
 
   methods: {
-    ...mapMutations(["changeinstryType"]),
+    ...mapMutations(["changeinstryType", "getCoordinate"]),
     addHeritage() {
+      this.getCoordinate([]);
       this.$router.push("/heritage/add/add");
     },
 
@@ -278,18 +294,86 @@ export default {
     // 模糊查询按钮
     async searchClick() {
       if (this.searchStr) {
+        // this.changeDataType();
+
+        var res1 = "";
+        if (this.instryType === "one") {
+          res1 = await this.$axios.get(
+            "/getHeritageMainData/getHeritageMainData"
+          );
+        } else if (this.instryType === "two") {
+          res1 = await this.$axios.get("/getHeritageMuseum/getHeritageMuseum");
+        } else if (this.instryType === "three") {
+          res1 = await this.$axios.get(
+            "/getHeritageTourism/getHeritageTourism"
+          );
+        }
+
+        this.tableData = res1.data.data;
+
         var newtableData = this.tableData.filter((ele) =>
           ele.name.includes(this.searchStr)
         );
+
         this.tableData = newtableData;
       } else {
-        var res = await this.$axios.get(
-          "/getHeritageMainData/getHeritageMainData"
-        );
+        var res = "";
+        if (this.instryType === "one") {
+          res = await this.$axios.get(
+            "/getHeritageMainData/getHeritageMainData"
+          );
+        } else if (this.instryType === "two") {
+          res = await this.$axios.get("/getHeritageMuseum/getHeritageMuseum");
+        } else if (this.instryType === "three") {
+          res = await this.$axios.get("/getHeritageTourism/getHeritageTourism");
+        }
+
         this.tableData = res.data.data;
       }
 
       // console.log(newtableData);
+    },
+
+    async delMain(row) {
+      // console.log(row, this.instryType);
+      var res = "";
+      if (this.instryType === "one") {
+        res = await this.$axios.post(
+          "/removeOneHeritageMainData/removeOneHeritageMainData",
+          row
+        );
+      } else if (this.instryType === "two") {
+        res = await this.$axios.post(
+          "/removeOneHeritageMuseum/removeOneHeritageMuseum",
+          row
+        );
+      } else if (this.instryType === "three") {
+        res = await this.$axios.post(
+          "/removeOneHeritageTourism/removeOneHeritageTourism",
+          row
+        );
+      }
+
+      if (res.status === 200) {
+        this.$message({
+          message: "信息删除成功",
+          type: "success",
+        });
+      }
+
+      // 重新获取数据
+      var res1 = "";
+      if (this.instryType === "one") {
+        res1 = await this.$axios.get(
+          "/getHeritageMainData/getHeritageMainData"
+        );
+      } else if (this.instryType === "two") {
+        res1 = await this.$axios.get("/getHeritageMuseum/getHeritageMuseum");
+      } else if (this.instryType === "three") {
+        res1 = await this.$axios.get("/getHeritageTourism/getHeritageTourism");
+      }
+
+      this.tableData = res1.data.data;
     },
   },
 };
