@@ -174,7 +174,22 @@ export default {
     ...mapState(["lang", "applyCoordinate"]),
   },
 
-  created() {
+  async created() {
+    // console.log(this.$route);
+
+    if (this.$route.query.applyId) {
+      var res = await this.$axios.post(
+        "/getOneApplyHeritage/getOneApplyHeritage",
+        {
+          _id: this.$route.query.applyId,
+        }
+      );
+      // this.editData = { ...res.data.data[0] };
+      this.getapplyCoordinate(res.data.data[0].coordinate);
+      this.ruleForm = { ...res.data.data[0] };
+      // console.log(res);
+    }
+
     // 将坐标拾取状态改为apply
     this.changeCoordinateType("apply");
 
@@ -286,6 +301,8 @@ export default {
           },
         ],
       },
+
+      editData: [],
     };
   },
 
@@ -343,20 +360,40 @@ export default {
             this.ruleForm.coordinate = [this.ruleForm.jing, this.ruleForm.wei];
             // 格式处理完毕
             console.log(this.ruleForm);
+            if (!this.$route.query.applyId) {
+              var res = await this.$axios.post(
+                "/postApplyHeritageData/postApplyHeritageData",
+                this.ruleForm
+              );
+              console.log("res----", res);
+              if (res.status === 200) {
+                this.$message({
+                  message: "申报信息提交成功，请耐心等待审核",
+                  type: "success",
+                });
+                this.getapplyCoordinate([]);
+                this.getCoordinate([]); //将拾取到的坐标清空
+                this.$router.push("/heritage/myapply");
+              }
+            } else {
+              //上传编辑后的内容
+              this.ruleForm.approvalStatus = "pending";
+              var editres = await this.$axios.post(
+                "/editApplyHeritage/editApplyHeritage",
+                this.ruleForm
+              );
 
-            var res = await this.$axios.post(
-              "/postApplyHeritageData/postApplyHeritageData",
-              this.ruleForm
-            );
-            console.log("res----", res);
-            if (res.status === 200) {
-              this.$message({
-                message: "申报信息提交成功，请耐心等待审核",
-                type: "success",
-              });
-              this.getapplyCoordinate([]);
-              this.getCoordinate([]); //将拾取到的坐标清空
-              this.$router.push("/heritage/myapply");
+              if (editres.status === 200) {
+                this.$message({
+                  message: "编辑信息提交成功，请耐心等待审核",
+                  type: "success",
+                });
+                this.getapplyCoordinate([]);
+                this.getCoordinate([]); //将拾取到的坐标清空
+                this.$router.push("/heritage/myapply");
+              }
+
+              console.log(this.ruleForm);
             }
           } else {
             this.$message.error("请上传遗产相关图片");

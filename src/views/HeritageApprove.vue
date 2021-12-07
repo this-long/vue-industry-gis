@@ -6,10 +6,10 @@
     </div>
     <div class="my-approve-bottom padding15">
       <div class="my-approve-btns">
-        <el-button type="primary">全部审批</el-button>
-        <el-button type="primary">已通过</el-button>
-        <el-button type="primary">已驳回</el-button>
-        <el-button type="primary">待处理</el-button>
+        <el-button type="primary" @click="allClick">全部申请</el-button>
+        <el-button type="primary" @click="adoptClick">已通过</el-button>
+        <el-button type="primary" @click="rejectClick">已驳回</el-button>
+        <el-button type="primary" @click="pendClick">待审批</el-button>
       </div>
       <br />
       <el-table
@@ -91,6 +91,7 @@ export default {
   data() {
     return {
       tableData: [],
+      listData: [], //存储列表数据
     };
   },
 
@@ -101,12 +102,40 @@ export default {
         "/getApplyHeritageData/getApplyHeritageData"
       );
       this.tableData = res.data.data;
+      this.listData = res.data.data;
       console.log(this.tableData);
     },
 
     getApply(row) {
       console.log(row);
       this.$router.push("/heritage/my/approve/" + row._id);
+    },
+
+    // 分类按钮
+    allClick() {
+      this.tableData = this.listData;
+    },
+
+    // 待审批
+    pendClick() {
+      this.tableData = this.listData.filter(
+        (ele) => ele.approvalStatus === "pending"
+      );
+    },
+
+    // 通过
+    adoptClick() {
+      this.tableData = this.listData.filter(
+        (ele) => ele.approvalStatus === "adopt"
+      );
+    },
+
+    // 驳回
+    // 通过
+    rejectClick() {
+      this.tableData = this.listData.filter(
+        (ele) => ele.approvalStatus === "reject"
+      );
     },
   },
 };
