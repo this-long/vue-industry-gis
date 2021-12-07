@@ -51,9 +51,14 @@ const routes = [
         component: () => import('../views/MyApply.vue')
       },
       {
-        path: "/heritage/my/apply/:applyid",//工业遗产详情
+        path: "/heritage/my/apply/:applyid",//工业遗产申请详情
         name: "ApplyHeritageMain",
         component: () => import('../views/Heritage/ApplyHeritageMain.vue')
+      },
+      {
+        path: "/heritage/my/approve/:applyid",//工业遗产审批详情
+        name: "ApproveHeritageMain",
+        component: () => import('../views/Heritage/ApproveHeritageMain.vue')
       },
       // 遗产数据
       {

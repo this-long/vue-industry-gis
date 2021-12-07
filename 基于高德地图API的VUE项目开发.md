@@ -39,6 +39,7 @@
 - 8、4day 遗产添加功能已完全实现
 - 9、5day 编辑功能实现,
 - 10、6day 删除功能实现
+- 11、7day 申请提交，审批，以实现（待实现：分类、编辑再提交。）
 
 ## 显示地图
 
@@ -711,10 +712,14 @@ module.exports = class editHeritageMainData extends Controller {
       },
 ```
 
-- 2 获取列表
+- 2 获取申请列表
   get
   url: /getApplyHeritageData/getApplyHeritageData
 
-- 3 获取单条
+- 3 获取申请单条
   post
   url : /getOneApplyHeritage/getOneApplyHeritage
+
+  - 4 编辑申请单挑
+    post
+    url:/editApplyHeritage/editApplyHeritage

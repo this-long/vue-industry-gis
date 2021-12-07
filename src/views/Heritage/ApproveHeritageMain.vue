@@ -1,10 +1,20 @@
 <template>
-  <!-- 工业遗产审批的详情 -->
+  <!-- 工业遗产申请的详情 -->
   <div class="ApplyHeritageMain">
     <div class="ApplyHeritageMain-top">
       <MainTop>遗产数据 <span class="gang"> / </span> 遗产详情</MainTop>
     </div>
     <div class="ApplyHeritageMain-bottom padding15">
+      <el-alert
+        title="
+        
+            管理员，欢迎您,请对用户的申请进行客观审批。
+           
+        "
+        type="info"
+      >
+      </el-alert>
+      <br />
       <el-card v-if="heritageMainData !== null" class="box-card" shadow="hover">
         <div slot="header" class="clearfix">
           <span class="title">{{ heritageMainData.name }}</span>
@@ -26,11 +36,6 @@
               v-if="heritageMainData.approvalStatus === 'reject'"
               type="danger"
               >已驳回</el-tag
-            >
-            <el-tag
-              v-if="heritageMainData.rejectComment !== ''"
-              type="danger"
-              >{{ heritageMainData.rejectComment }}</el-tag
             >
           </div>
         </div>
@@ -126,6 +131,49 @@
             v-html="heritageMainData.approvalComments"
           ></div>
           <div v-else class="text-che"><p>暂无意见</p></div>
+          <el-divider></el-divider>
+
+          <!-- 审批表单部分 -->
+          <el-form
+            :model="ruleForm"
+            :rules="rules"
+            ref="ruleForm"
+            label-width="100px"
+            class="demo-ruleForm"
+          >
+            <el-form-item label="特殊资源" prop="approvalStatus">
+              <el-radio-group v-model="ruleForm.approvalStatus">
+                <el-radio label="同意" value="adopt"></el-radio>
+                <el-radio label="驳回" value="reject"></el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="审批意见" prop="approvalComments">
+              <el-input
+                type="textarea"
+                v-model="ruleForm.approvalComments"
+              ></el-input>
+            </el-form-item>
+
+            <el-form-item
+              v-if="ruleForm.approvalStatus === '驳回'"
+              label="驳回原因"
+            >
+              <el-radio-group v-model="ruleForm.rejectComment">
+                <el-radio label="图片不全"></el-radio>
+                <el-radio label="坐标或地址与实际不符"></el-radio>
+                <el-radio label="个人信息或联系方式有误"></el-radio>
+                <el-radio label="遗产内容不完善"></el-radio>
+                <el-radio label="其他"></el-radio>
+              </el-radio-group>
+            </el-form-item>
+
+            <el-form-item>
+              <el-button type="primary" @click="submitForm('ruleForm')"
+                >立即创建</el-button
+              >
+            </el-form-item>
+          </el-form>
+          <!-- end -->
         </div>
       </el-card>
     </div>
@@ -136,7 +184,7 @@
 import MainTop from "../../components/MainTop.vue";
 
 export default {
-  name: "ApproveHeritageMain",
+  name: "ApplyHeritageMain",
   components: {
     MainTop,
   },
@@ -144,11 +192,25 @@ export default {
   data() {
     return {
       heritageMainData: null,
+      ruleForm: {
+        approvalStatus: "",
+        approvalComments: "",
+        rejectComment: "",
+      },
+
+      rules: {
+        approvalStatus: [
+          { required: true, message: "请输入选择审批类型", trigger: "blur" },
+        ],
+        approvalComments: [
+          { required: true, message: "请输入审批意见", trigger: "change" },
+        ],
+      },
     };
   },
 
   async created() {
-    console.log(this.$route);
+    console.log(this.heritageMainData);
     var res = await this.$axios.post(
       "/getOneApplyHeritage/getOneApplyHeritage",
       {
@@ -157,6 +219,86 @@ export default {
     );
     this.heritageMainData = res.data.data[0];
     console.log(this.heritageMainData);
+  },
+
+  methods: {
+    submitForm(formName) {
+      this.$refs[formName].validate(async (valid) => {
+        if (valid) {
+          console.log(this.ruleForm);
+          if (this.ruleForm.approvalStatus === "同意") {
+            this.heritageMainData.approvalStatus = "adopt";
+          } else if (this.ruleForm.approvalStatus === "驳回") {
+            this.heritageMainData.approvalStatus = "reject";
+          }
+
+          this.heritageMainData.approvalComments =
+            this.ruleForm.approvalComments;
+          this.heritageMainData.rejectComment = this.ruleForm.rejectComment;
+          var res = await this.$axios.post(
+            "/editApplyHeritage/editApplyHeritage",
+            this.heritageMainData
+          );
+
+          if (res.status === 200) {
+            if (this.heritageMainData.approvalStatus === "adopt") {
+              var postres = "";
+              var postdata = {
+                addType: this.heritageMainData.addType,
+                name: this.heritageMainData.name,
+                address: this.heritageMainData.address,
+
+                type: this.heritageMainData.type,
+                company: this.heritageMainData.company,
+                jing: this.heritageMainData.jing,
+                wei: this.heritageMainData.wei,
+                start: this.heritageMainData.start,
+                prolevel: this.heritageMainData.prolevel,
+                trvlevel: this.heritageMainData.trvlevel,
+                scelevel: this.heritageMainData.scelevel,
+                brief: this.heritageMainData.brief,
+                details: this.heritageMainData.details,
+                mainImage: this.heritageMainData.mainImage,
+                imagesAllurl: this.heritageMainData.imagesAllurl,
+                coordinate: this.heritageMainData.coordinate,
+              };
+              if (this.heritageMainData.addType === "工业遗产") {
+                postres = await this.$axios.post(
+                  "/postHeritageMainData/postHeritageMainData",
+                  postdata
+                );
+              } else if (this.heritageMainData.addType === "遗产博物馆") {
+                postres = await this.$axios.post(
+                  "/postHeritageMuseum/postHeritageMuseum",
+                  postdata
+                );
+              } else if (this.heritageMainData.addType === "工业旅游区") {
+                postres = await this.$axios.post(
+                  "/postHeritageTourism/postHeritageTourism",
+                  postdata
+                );
+              }
+              if (postres.status === 200) {
+                this.$message({
+                  message: "审批成功",
+                  type: "success",
+                });
+                this.$router.push("/heritage/approve");
+              }
+            } else {
+              this.$message({
+                message: "审批成功",
+                type: "success",
+              });
+              this.$router.push("/heritage/approve");
+            }
+          }
+        } else {
+          this.$message.error("请完善审批信息");
+          return false;
+        }
+      });
+    },
   },
 };
 </script>

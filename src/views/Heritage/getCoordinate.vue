@@ -6,10 +6,6 @@
       <div id="container" class="container">
         <div class="map-buttons">
           <el-button
-            v-if="
-              this.newCoordinate.length === 0 ||
-              this.applyCoordinate.length === 0
-            "
             size="mini"
             type="primary"
             @click="drawGeometry"
@@ -18,12 +14,11 @@
           >
 
           <el-button
-            v-else
             size="mini"
             type="primary"
             @click="getAgin"
             class="map-btn map-element"
-            >{{ lang === "zh_cn" ? "重新拾取" : "Clear" }}</el-button
+            >{{ lang === "zh_cn" ? "清空" : "Clear" }}</el-button
           >
 
           <el-button

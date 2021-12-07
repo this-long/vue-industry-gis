@@ -290,7 +290,11 @@ export default {
   },
 
   methods: {
-    ...mapMutations(["changeCoordinateType", "getCoordinate"]),
+    ...mapMutations([
+      "changeCoordinateType",
+      "getCoordinate",
+      "getapplyCoordinate",
+    ]),
 
     getapplyCoordinateP() {
       this.getCoordinate([]);
@@ -350,8 +354,9 @@ export default {
                 message: "申报信息提交成功，请耐心等待审核",
                 type: "success",
               });
+              this.getapplyCoordinate([]);
               this.getCoordinate([]); //将拾取到的坐标清空
-              this.$router.push("/data/manage");
+              this.$router.push("/heritage/myapply");
             }
           } else {
             this.$message.error("请上传遗产相关图片");
