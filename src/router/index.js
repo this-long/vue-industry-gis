@@ -96,6 +96,19 @@ const routes = [
         path: '/repair/approve',//报修申请
         component: () => import('../views/RepairApprove.vue')
       },
+      {
+        path: '/repair/apply/main',//报修新建
+        component: () => import('../views/Heritage/ApplyRepair.vue')
+      },
+      {
+        path: '/repair/my/applyRepair',//报修申请列表
+        component: () => import('../views/MyRepir.vue')
+      },
+      {
+        path: '/repair/my/applyRepairMain',//报修申请详情
+        component: () => import('../views/Heritage/ApplyRepairMain.vue')
+      },
+
       // 关于我们
       {
         path: '/about',

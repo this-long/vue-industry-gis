@@ -1,5 +1,5 @@
 <template>
-  <!-- 工业遗产申请的详情 -->
+  <!-- 工业遗产审批的详情 -->
   <div class="ApplyHeritageMain">
     <div class="ApplyHeritageMain-top">
       <MainTop>遗产数据 <span class="gang"> / </span> 遗产详情</MainTop>

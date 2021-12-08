@@ -1,15 +1,16 @@
 <template>
-  <!-- 我的申报 -->
+  <!-- 我的报修 -->
   <div class="my-apply">
     <div class="my-apply-top">
-      <MainTop>遗产申请 <span class="gang"> / </span> 我的申请</MainTop>
+      <MainTop>遗产申请 <span class="gang"> / </span> 我的报修</MainTop>
     </div>
     <div class="my-apply-bottom padding15">
       <div class="my-apply-buttons">
         <el-button type="primary" @click="allClick">全部申请</el-button>
-        <el-button type="primary" @click="adoptClick">已通过</el-button>
+        <el-button type="primary" @click="adoptClick">已完成</el-button>
         <el-button type="primary" @click="rejectClick">已驳回</el-button>
         <el-button type="primary" @click="pendClick">待审批</el-button>
+        <el-button type="primary" @click="pendClick">维修中</el-button>
       </div>
       <br />
       <el-table
@@ -19,7 +20,7 @@
         style="width: 100%"
         height="550"
       >
-        <el-table-column prop="start" label="始建" width="60" align="center">
+        <el-table-column type="index" width="60" align="center">
         </el-table-column>
         <el-table-column prop="name" label="工业遗产名称" width="180">
         </el-table-column>
@@ -39,18 +40,22 @@
         >
         </el-table-column>
         <el-table-column prop="company" label="公司"> </el-table-column>
-        <el-table-column prop="phone" label="联系方式" width="150">
+        <el-table-column prop="phone" label="联系方式" width="130">
         </el-table-column>
+        <el-table-column prop="repairType" label="报修类型"> </el-table-column>
         <el-table-column label="审批状态" width="100" align="center">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.approvalStatus === 'pending'" type="info"
               >待审批</el-tag
             >
-            <el-tag v-if="scope.row.approvalStatus === 'adopt'" type="success"
-              >已通过</el-tag
+            <el-tag v-if="scope.row.approvalStatus === 'adopt'" type="warning"
+              >处理中</el-tag
             >
             <el-tag v-if="scope.row.approvalStatus === 'reject'" type="danger"
               >已驳回</el-tag
+            >
+            <el-tag v-if="scope.row.approvalStatus === 'isend'" type="success"
+              >已完成</el-tag
             >
           </template>
         </el-table-column>
@@ -94,9 +99,7 @@ export default {
 
   methods: {
     async getAllData() {
-      var res = await this.$axios.get(
-        "/getApplyHeritageData/getApplyHeritageData"
-      );
+      var res = await this.$axios.get("/getApplyRepairData/getApplyRepairData");
       this.tableData = res.data.data;
       this.listData = res.data.data;
       console.log(this.listData);
@@ -104,7 +107,12 @@ export default {
 
     getApply(row) {
       console.log(row);
-      this.$router.push("/heritage/my/apply/" + row._id);
+      this.$router.push({
+        path: "/repair/my/applyRepairMain",
+        query: {
+          _id: row._id,
+        },
+      });
     },
 
     // 编辑按钮

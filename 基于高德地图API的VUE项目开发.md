@@ -40,6 +40,7 @@
 - 9、5day 编辑功能实现,
 - 10、6day 删除功能实现
 - 11、7day 申请提交，审批，分类、编辑再提交。均已实现
+- 12、8day 报修申请提交，列表展示,报修查看详情
 
 （后续计划，遗产报修申请。）
 
@@ -729,3 +730,44 @@ module.exports = class editHeritageMainData extends Controller {
   - 4 编辑申请单挑
     post
     url:/editApplyHeritage/editApplyHeritage
+
+### 报修申请部分
+
+- 1、添加报修申请
+
+url:/postApplyRepairData/postApplyRepairData
+
+参数
+
+```js
+
+      ruleForm: {
+        applyName: "", //申请人姓名
+        phone: "", //申请手机号
+        addType: "", //添加类型
+        name: "", //遗产名称
+        address: "", //遗产地址
+        type: "", //类型
+        company: "", //所属公司
+        jing: 0,
+        wei: 0,
+        start: "", //年份
+        mainImage: "", //封面图片
+        coordinate: [],
+        approvalStatus: "pending", //待审批状态：pending 待审批 adopt 处理中 reject 已驳回 isend 已完成
+        approvalComments: "", //审批意见
+        rejectComment: "", //驳回提示
+
+        repairType: "", //报修类型
+        repairMain: "", //报修详情
+        imagesAllurl: [], //报修相关图片
+        isPart: "是", //是否需要材料
+        partMain: "", //材料详情
+      },
+```
+
+- 2、获取报修申请列表
+  url:/getApplyRepairData/getApplyRepairData
+
+- 获取报修申请单条
+  url:/getOneApplyRepair/getOneApplyRepair

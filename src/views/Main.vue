@@ -42,7 +42,10 @@
             lang === "zh_cn" ? "遗产报修" : "Repair"
           }}</el-menu-item>
           <el-menu-item index="/heritage/myapply">{{
-            lang === "zh_cn" ? "我的申请" : "MyApply"
+            lang === "zh_cn" ? "我的申报" : "MyApply"
+          }}</el-menu-item>
+          <el-menu-item index="/repair/my/applyRepair">{{
+            lang === "zh_cn" ? "我的报修" : "MyRepair"
           }}</el-menu-item>
         </el-submenu>
 
