@@ -84,7 +84,7 @@
           <div
             class="text-che"
             v-if="heritageMainData.partMain !== ''"
-            v-html="heritageMainData.details"
+            v-html="heritageMainData.partMain"
           ></div>
 
           <el-divider></el-divider>

@@ -41,6 +41,7 @@
 - 10、6day 删除功能实现
 - 11、7day 申请提交，审批，分类、编辑再提交。均已实现
 - 12、8day 报修申请提交，列表展示,报修查看详情
+- 13、9day 报修申请审批、编辑、交工已完成，剩余功能旅游及地图。
 
 （后续计划，遗产报修申请。）
 
@@ -771,3 +772,7 @@ url:/postApplyRepairData/postApplyRepairData
 
 - 获取报修申请单条
   url:/getOneApplyRepair/getOneApplyRepair
+
+```js
+
+```

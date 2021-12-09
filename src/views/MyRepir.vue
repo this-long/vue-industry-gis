@@ -7,10 +7,10 @@
     <div class="my-apply-bottom padding15">
       <div class="my-apply-buttons">
         <el-button type="primary" @click="allClick">全部申请</el-button>
-        <el-button type="primary" @click="adoptClick">已完成</el-button>
+        <el-button type="primary" @click="isendClick">已完成</el-button>
         <el-button type="primary" @click="rejectClick">已驳回</el-button>
         <el-button type="primary" @click="pendClick">待审批</el-button>
-        <el-button type="primary" @click="pendClick">维修中</el-button>
+        <el-button type="primary" @click="adoptClick">维修中</el-button>
       </div>
       <br />
       <el-table
@@ -120,7 +120,7 @@ export default {
       console.log(row);
 
       this.$router.push({
-        path: "/heritage/apply",
+        path: "/repair/apply/main",
         query: { applyId: row._id },
       });
     },
@@ -149,6 +149,11 @@ export default {
     rejectClick() {
       this.tableData = this.listData.filter(
         (ele) => ele.approvalStatus === "reject"
+      );
+    },
+    isendClick() {
+      this.tableData = this.listData.filter(
+        (ele) => ele.approvalStatus === "isend"
       );
     },
   },

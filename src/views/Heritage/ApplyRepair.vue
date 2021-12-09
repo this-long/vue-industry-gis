@@ -121,9 +121,19 @@ export default {
   components: {
     MainTop,
   },
-  created() {
+  async created() {
     console.log(this.$route.query);
-    this.getData();
+
+    if (this.$route.query.applyId) {
+      var res = await this.$axios.post("/getOneApplyRepair/getOneApplyRepair", {
+        _id: this.$route.query.applyId,
+      });
+      // this.editData = { ...res.data.data[0] };
+      this.ruleForm = { ...res.data.data[0] };
+      // console.log(res);
+    } else {
+      this.getData();
+    }
   },
 
   data() {
@@ -285,18 +295,34 @@ export default {
             this.ruleForm.partMain = newStr2;
           }
 
-          var res = await this.$axios.post(
-            "/postApplyRepairData/postApplyRepairData",
-            this.ruleForm
-          );
-          if (res.status === 200) {
-            this.$message({
-              message: "报修信息提交成功，请耐心等待审核",
-              type: "success",
-            });
-            this.$router.push({
-              path: "repair/my/applyRepair",
-            });
+          if (this.$route.query.applyId) {
+            // 编辑
+            this.ruleForm.approvalStatus = "pending";
+            var editRes = await this.$axios.post(
+              "/editApplyRepair/editApplyRepair",
+              this.ruleForm
+            );
+            if (editRes.status === 200) {
+              this.$message({
+                message: "编辑成功",
+                type: "success",
+              });
+              this.$router.push({
+                path: "/repair/my/applyRepair",
+              });
+            }
+          } else {
+            var res = await this.$axios.post(
+              "/postApplyRepairData/postApplyRepairData",
+              this.ruleForm
+            );
+            if (res.status === 200) {
+              this.$message({
+                message: "报修信息提交成功，请耐心等待审核",
+                type: "success",
+              });
+              this.$router.push("/repair/my/applyRepair");
+            }
           }
         } else {
           console.log("error submit!!");

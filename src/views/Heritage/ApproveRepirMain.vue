@@ -1,14 +1,14 @@
 <template>
-  <!-- 工业遗产审批的详情 -->
+  <!-- 工业遗产报修审批的详情 -->
   <div class="ApplyHeritageMain">
     <div class="ApplyHeritageMain-top">
-      <MainTop>遗产数据 <span class="gang"> / </span> 遗产详情</MainTop>
+      <MainTop>遗产数据 <span class="gang"> / </span> 报修详情</MainTop>
     </div>
     <div class="ApplyHeritageMain-bottom padding15">
       <el-alert
         title="
         
-            管理员，欢迎您,请对用户的申请进行客观审批。
+            管理员，欢迎您,请对用户的报修申请进行客观审批。
            
         "
         type="info"
@@ -22,6 +22,7 @@
             <span style="margin-right: 10px">{{
               heritageMainData.addType
             }}</span>
+
             <el-tag
               v-if="heritageMainData.approvalStatus === 'pending'"
               type="info"
@@ -29,18 +30,50 @@
             >
             <el-tag
               v-if="heritageMainData.approvalStatus === 'adopt'"
-              type="success"
-              >已通过</el-tag
+              type="warning"
+              >处理中</el-tag
             >
             <el-tag
               v-if="heritageMainData.approvalStatus === 'reject'"
               type="danger"
               >已驳回</el-tag
             >
+            <el-tag
+              v-if="heritageMainData.approvalStatus === 'isend'"
+              type="success"
+              >已完成</el-tag
+            >
           </div>
         </div>
         <div class="text item">
           <div>
+            <div class="text-che">
+              <span>报修人：{{ heritageMainData.applyName }}</span>
+            </div>
+            <div class="text-che">
+              <span>联系方式：{{ heritageMainData.phone }}</span>
+            </div>
+            <div class="text-che">
+              <span>报修类型：{{ heritageMainData.repairType }}</span>
+            </div>
+            <div class="text-che">
+              <span>报修详情：</span>
+            </div>
+            <div class="text-che" v-html="heritageMainData.repairMain"></div>
+            <div class="text-che">
+              <span>是否自备材料及配件：{{ heritageMainData.isPart }}</span>
+            </div>
+
+            <div class="text-che" v-if="heritageMainData.partMain !== ''">
+              <span>材料描述：</span>
+            </div>
+            <div
+              class="text-che"
+              v-if="heritageMainData.partMain !== ''"
+              v-html="heritageMainData.partMain"
+            ></div>
+
+            <el-divider></el-divider>
             <div class="text-che">
               <span>始建年份：{{ heritageMainData.start }}</span>
             </div>
@@ -71,41 +104,17 @@
               }}
             </p>
           </div>
-          <div class="text-che">
-            <span
-              >旅游景区等级：
-              {{
-                heritageMainData.scelevel
-                  ? heritageMainData.scelevel + "A级示范景区"
-                  : "暂无数据"
-              }}</span
-            >
-          </div>
-          <div class="text-che">
-            <span
-              >工业旅游示范点等级：
-              {{
-                heritageMainData.trvlevel
-                  ? heritageMainData.trvlevel
-                  : "暂无数据"
-              }}</span
-            >
-          </div>
+
           <el-divider></el-divider>
           <div class="text-che">
-            <span>遗产简介： </span>
+            <span>遗产预览： </span>
           </div>
-          <div class="text-che" v-html="heritageMainData.brief"></div>
 
           <!-- 首页图片 -->
           <div class="text-che">
             <img class="mainImage" :src="heritageMainData.mainImage" alt="" />
           </div>
           <el-divider></el-divider>
-          <div class="text-che">
-            <span>工业遗产详细介绍： </span>
-          </div>
-          <div class="text-che" v-html="heritageMainData.details"></div>
 
           <div class="text-che">
             <span>相关图片 </span>
@@ -160,9 +169,8 @@
             >
               <el-radio-group v-model="ruleForm.rejectComment">
                 <el-radio label="图片不全"></el-radio>
-                <el-radio label="坐标或地址与实际不符"></el-radio>
-                <el-radio label="个人信息或联系方式有误"></el-radio>
-                <el-radio label="遗产内容不完善"></el-radio>
+                <el-radio label="无需派工维修"></el-radio>
+                <el-radio label="遗产报修相关内容不完善"></el-radio>
                 <el-radio label="其他"></el-radio>
               </el-radio-group>
             </el-form-item>
@@ -210,13 +218,10 @@ export default {
   },
 
   async created() {
-    console.log(this.heritageMainData);
-    var res = await this.$axios.post(
-      "/getOneApplyHeritage/getOneApplyHeritage",
-      {
-        _id: this.$route.params.applyid,
-      }
-    );
+    console.log(this.$route);
+    var res = await this.$axios.post("/getOneApplyRepair/getOneApplyRepair", {
+      _id: this.$route.query._id,
+    });
     this.heritageMainData = res.data.data[0];
     console.log(this.heritageMainData);
   },
@@ -236,62 +241,16 @@ export default {
             this.ruleForm.approvalComments;
           this.heritageMainData.rejectComment = this.ruleForm.rejectComment;
           var res = await this.$axios.post(
-            "/editApplyHeritage/editApplyHeritage",
+            "/editApplyRepair/editApplyRepair",
             this.heritageMainData
           );
 
           if (res.status === 200) {
-            if (this.heritageMainData.approvalStatus === "adopt") {
-              var postres = "";
-              var postdata = {
-                addType: this.heritageMainData.addType,
-                name: this.heritageMainData.name,
-                address: this.heritageMainData.address,
-
-                type: this.heritageMainData.type,
-                company: this.heritageMainData.company,
-                jing: this.heritageMainData.jing,
-                wei: this.heritageMainData.wei,
-                start: this.heritageMainData.start,
-                prolevel: this.heritageMainData.prolevel,
-                trvlevel: this.heritageMainData.trvlevel,
-                scelevel: this.heritageMainData.scelevel,
-                brief: this.heritageMainData.brief,
-                details: this.heritageMainData.details,
-                mainImage: this.heritageMainData.mainImage,
-                imagesAllurl: this.heritageMainData.imagesAllurl,
-                coordinate: this.heritageMainData.coordinate,
-              };
-              if (this.heritageMainData.addType === "工业遗产") {
-                postres = await this.$axios.post(
-                  "/postHeritageMainData/postHeritageMainData",
-                  postdata
-                );
-              } else if (this.heritageMainData.addType === "遗产博物馆") {
-                postres = await this.$axios.post(
-                  "/postHeritageMuseum/postHeritageMuseum",
-                  postdata
-                );
-              } else if (this.heritageMainData.addType === "工业旅游区") {
-                postres = await this.$axios.post(
-                  "/postHeritageTourism/postHeritageTourism",
-                  postdata
-                );
-              }
-              if (postres.status === 200) {
-                this.$message({
-                  message: "审批成功",
-                  type: "success",
-                });
-                this.$router.push("/heritage/approve");
-              }
-            } else {
-              this.$message({
-                message: "审批成功",
-                type: "success",
-              });
-              this.$router.push("/heritage/approve");
-            }
+            this.$message({
+              message: "审批成功",
+              type: "success",
+            });
+            this.$router.push("/repair/approve");
           }
         } else {
           this.$message.error("请完善审批信息");

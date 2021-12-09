@@ -60,6 +60,11 @@ const routes = [
         name: "ApproveHeritageMain",
         component: () => import('../views/Heritage/ApproveHeritageMain.vue')
       },
+      {
+        path: "/heritage/my/approveRepair",//工业遗产报修审批详情
+        name: "ApproveRepirMain",
+        component: () => import('../views/Heritage/ApproveRepirMain.vue')
+      },
       // 遗产数据
       {
         path: '/heritage/Echarts',//遗产报表
