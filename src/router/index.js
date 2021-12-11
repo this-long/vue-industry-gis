@@ -23,6 +23,7 @@ const routes = [
         path: "/heritage/industry",//工业遗产
         component: HeritageIndustry
       },
+
       {
         path: "/heritage/museum",//工业遗产博物馆
         component: HeritageMuseum
@@ -137,11 +138,30 @@ const routes = [
     ]
 
   },
+  {
+    path: "/heritage/login",//登陆页面
+    component: () => import('../views/LoginUser.vue')
+  },
+  {
+    path: "/heritage/postUser",//登陆页面
+    component: () => import('../views/postUser.vue')
+  },
 
 ]
 
+
+
 const router = new VueRouter({
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  const username = sessionStorage.getItem('username')
+
+  // console.log(username)
+
+  if (to.path !== "/heritage/login" && to.path !== "/heritage/postUser" && username === null) next("/heritage/login");
+  next();
 })
 
 export default router

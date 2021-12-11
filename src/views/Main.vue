@@ -55,7 +55,7 @@
             <span>{{ lang === "zh_cn" ? "遗产数据" : "Information" }}</span>
           </template>
           <el-menu-item index="/heritage/Echarts">{{
-            lang === "zh_cn" ? "遗产报表" : "ReportForm"
+            lang === "zh_cn" ? "遗产可视化" : "ReportForm"
           }}</el-menu-item>
           <el-menu-item index="/heritage/ranking">{{
             lang === "zh_cn" ? "遗产排行榜" : "RankingList"
