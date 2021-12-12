@@ -54,6 +54,13 @@
             <i class="myIcon el-icon-s-marketing"></i>
             <span>{{ lang === "zh_cn" ? "遗产数据" : "Information" }}</span>
           </template>
+
+          <el-menu-item index="/heritage/hotmap">{{
+            lang === "zh_cn" ? "分布热力图" : "HeatMap"
+          }}</el-menu-item>
+          <el-menu-item index="/heritage/praise">{{
+            lang === "zh_cn" ? "遗产好评度" : "Praise"
+          }}</el-menu-item>
           <el-menu-item index="/heritage/Echarts">{{
             lang === "zh_cn" ? "遗产可视化" : "ReportForm"
           }}</el-menu-item>

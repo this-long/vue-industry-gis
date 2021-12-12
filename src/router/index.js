@@ -135,6 +135,16 @@ const routes = [
         path: '/get/coordinate',
         component: () => import('../views/Heritage/getCoordinate.vue')
       },
+      //热力图
+      {
+        path: '/heritage/hotmap',
+        component: () => import('../views/HeritageHotMap.vue')
+      },
+      {
+        // 好评蜂窝图
+        path: '/heritage/praise',
+        component: () => import('../views/HeritagePraise.vue')
+      },
     ]
 
   },

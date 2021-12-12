@@ -20,7 +20,7 @@
             >
           </el-dropdown-menu>
         </el-dropdown>
-        <el-button type="text" style="margin-left: 10px">
+        <el-button type="text" style="margin-left: 10px" @click="leginOut">
           {{ lang === "zh_cn" ? "退出登陆" : "SignOut" }}</el-button
         >
       </div>
@@ -53,6 +53,13 @@ export default {
     handleCommand(command) {
       // console.log(command);
       this.langChange(command);
+    },
+
+    leginOut() {
+      // console.log(11);
+      // sessionStorage.setItem("username", null);
+      sessionStorage.removeItem("username");
+      this.$router.push("/heritage/login");
     },
   },
 };
