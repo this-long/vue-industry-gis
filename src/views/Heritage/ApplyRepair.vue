@@ -300,7 +300,10 @@ export default {
             this.ruleForm.approvalStatus = "pending";
             var editRes = await this.$axios.post(
               "/editApplyRepair/editApplyRepair",
-              this.ruleForm
+              {
+                ...this.ruleForm,
+                user: sessionStorage.getItem("username"),
+              }
             );
             if (editRes.status === 200) {
               this.$message({
@@ -314,7 +317,10 @@ export default {
           } else {
             var res = await this.$axios.post(
               "/postApplyRepairData/postApplyRepairData",
-              this.ruleForm
+              {
+                ...this.ruleForm,
+                user: sessionStorage.getItem("username"),
+              }
             );
             if (res.status === 200) {
               this.$message({

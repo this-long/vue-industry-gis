@@ -97,8 +97,12 @@ export default {
       var res = await this.$axios.get(
         "/getApplyHeritageData/getApplyHeritageData"
       );
-      this.tableData = res.data.data;
-      this.listData = res.data.data;
+      this.tableData = res.data.data.filter(
+        (ele) => ele.user === sessionStorage.getItem("username")
+      );
+      this.listData = res.data.data.filter(
+        (ele) => ele.user === sessionStorage.getItem("username")
+      );
       console.log(this.listData);
     },
 

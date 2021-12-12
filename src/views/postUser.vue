@@ -112,7 +112,7 @@ export default {
                 type: "success",
               });
 
-              this.$router.push("heritage/login");
+              this.$router.push("/heritage/login");
             }
           }
         } else {

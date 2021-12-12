@@ -175,7 +175,7 @@ export default {
   },
 
   async created() {
-    // console.log(this.$route);
+    console.log(sessionStorage.getItem("username"));
 
     if (this.$route.query.applyId) {
       var res = await this.$axios.post(
@@ -363,7 +363,10 @@ export default {
             if (!this.$route.query.applyId) {
               var res = await this.$axios.post(
                 "/postApplyHeritageData/postApplyHeritageData",
-                this.ruleForm
+                {
+                  ...this.ruleForm,
+                  user: sessionStorage.getItem("username"),
+                }
               );
               console.log("res----", res);
               if (res.status === 200) {
@@ -380,7 +383,10 @@ export default {
               this.ruleForm.approvalStatus = "pending";
               var editres = await this.$axios.post(
                 "/editApplyHeritage/editApplyHeritage",
-                this.ruleForm
+                {
+                  ...this.ruleForm,
+                  user: sessionStorage.getItem("username"),
+                }
               );
 
               if (editres.status === 200) {
