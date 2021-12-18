@@ -83,7 +83,12 @@
           </div>
 
           <div class="text-che">
-            <el-carousel :interval="4000" type="card" height="500px">
+            <el-carousel
+              :interval="4000"
+              type="card"
+              height="500px"
+              width="700px"
+            >
               <el-carousel-item
                 v-for="item in heritageMainData.imagesAllurl"
                 :key="item"

@@ -32,3 +32,7 @@ body {
 span {
   margin-left: 0;
 }
+.otherImage {
+  width: 700px;
+  height: 500px;
+}
