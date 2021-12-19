@@ -3,7 +3,7 @@
     <div class="ligin-user-right">
       <h1>欢迎登陆</h1>
       <span class="span"
-        >没有帐户？点击 <a href="/#/heritage/postUser">注册</a></span
+        >没有帐户？点击 <a href="#/heritage/postUser">注册</a></span
       >
       <br />
       <br />

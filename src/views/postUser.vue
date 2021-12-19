@@ -4,7 +4,7 @@
     <div class="post-user-right">
       <h1>欢迎加入我们</h1>
       <span class="span"
-        >已有帐户？点击 <a href="/#/heritage/login">登陆</a></span
+        >已有帐户？点击 <a href="#/heritage/login">登陆</a></span
       >
       <br />
       <br />

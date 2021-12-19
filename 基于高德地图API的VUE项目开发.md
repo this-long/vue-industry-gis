@@ -1,5 +1,15 @@
 # 基于高德地图 API 的 VUE 项目开发踩坑
 
+## bug 记录
+
+登录注册 a 标签路径错误。去掉第一个斜杠可修复
+
+```html
+<a href="/#/heritage/login">登陆</a>
+<!-- 转为 -->
+<a href="#/heritage/login">登陆</a>
+```
+
 注：
 
 - 登陆控制台请选择手机号登陆、
@@ -45,7 +55,9 @@
 - 14、10day 用户登陆注册，申请信息绑定用户已实现。
 - 15、17day 我要旅行出行规划：获取当前定位功能开发。
 
-（后续计划，遗产报修申请。）
+  （后续计划，遗产报修申请。）
+
+- 16、19day 出行规划，多路线规划，天气预报查看，路线展示已实现。后续：查找周边，以及预算评估（预算评估信息如何带入需要考虑）
 
 ---
 
@@ -76,6 +88,46 @@ uniCloud 线上跨域？
     mounted() {
     this.initMap();//地图初始化必须要在 mounted 生命周期内，在created内的话无法正常显示，但是不会报错。ECharts在绘制图形时同样需要注意这个问题。
   },
+```
+
+## 路线规划报错
+
+```js
+VM52100:1 Uncaught TypeError: Cannot read properties of null (reading 'appendChild')
+at AMap.DrivingRender.b.autoRender
+```
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/9ba0f64fba4845a69b70f9c9023d7f8a.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAPGRpdiBjbGFzcz0n6b6Z5a6d5a6dJz4=,size_5,color_FFFFFF,t_70,g_se,x_16#pic_center)
+
+这是由于 drivingOption 的 panel 属性是一个盒子的 id，我们需要写一个这样的 id 才可以，
+
+```js
+// test
+this.drivingOption = {
+  policy: AMap.DrivingPolicy.LEAST_TIME, // 其它policy参数请参考 https://lbs.amap.com/api/javascript-api/reference/route-search#m_DrivingPolicy
+  ferry: 1, // 是否可以使用轮渡
+  province: "冀", // 车牌省份的汉字缩写
+  map: this.map,
+  panel: "panel", //这个是盒子的id
+};
+// 构造路线导航类
+this.driving = new AMap.Driving(this.drivingOption);
+
+// 根据起终点经纬度规划驾车导航路线
+
+this.driving.search(
+  [114.835283, 40.749399],
+  [117.933427, 40.92395],
+  (status, result) => {
+    // result 即是对应的驾车导航信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_DrivingResult
+    if (status === "complete") {
+      log.success("绘制驾车路线完成");
+    } else {
+      log.error("获取驾车数据失败：" + result);
+    }
+  }
+);
+// end
 ```
 
 ## JS API
