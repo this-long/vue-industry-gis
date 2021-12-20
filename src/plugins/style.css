@@ -64,3 +64,16 @@ span {
   overflow: hidden;
 }
 /* 路径规划相关end */
+
+/* 周边查询相关start */
+#place {
+  position: fixed;
+  background-color: white;
+  max-height: 90%;
+  overflow-y: auto;
+  top: 60px;
+  right: 15px;
+  width: 280px;
+  /* border-bottom: solid 1px silver; */
+}
+/* 周边查询相关end */

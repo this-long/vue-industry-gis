@@ -106,8 +106,32 @@
         placeholder="请输入想要查询的周边内容"
         size="mini"
       ></el-autocomplete>
+      <br />
+      <div>
+        <br />
+        <span>查询范围</span><br />
+        <el-radio v-model="perRange" :label="1000">1千米</el-radio>
+        <el-radio v-model="perRange" :label="2000">2千米</el-radio>
+        <el-radio v-model="perRange" :label="3000">3千米</el-radio>
+        <el-radio v-model="perRange" :label="5000">5千米</el-radio>
+        <br />
+        <br />
+      </div>
       <el-button type="primary" size="mini" @click="getperiphery"
         >查找</el-button
+      >
+      <el-button
+        type="primary"
+        size="mini"
+        @click="clearperiphery"
+        v-if="placeSearch"
+        >清空查找结果</el-button
+      >
+      <el-divider>
+        <span class="fourtext">预算评估</span>
+      </el-divider>
+      <el-button type="primary" size="mini" @click="moneyplan"
+        >点击进行预算评估</el-button
       >
     </div>
 
@@ -145,6 +169,7 @@
 
       <div id="container" class="container"></div>
       <div id="panel"></div>
+      <div id="place"></div>
     </div>
 
     <el-dialog title="当前位置" :visible.sync="dialogVisible" width="45%">
@@ -220,12 +245,13 @@ export default {
       radio: "LEAST_TIME", //路线类型
 
       periphery: "", //周边查询关键词
+      perRange: 1000, //查询范围
       restaurants: [
         {
           value: "宾馆",
         },
         {
-          value: "饭店",
+          value: "酒店",
         },
         {
           value: "停车场",
@@ -243,6 +269,7 @@ export default {
           value: "学校",
         },
       ],
+      placeSearch: null, //周边查询类
     };
   },
   computed: {
@@ -286,10 +313,11 @@ export default {
             // onComplete(result);
             // console.log("定位结果", result);
             this.geolocationRes = result;
+            console.log(this.geolocationRes);
           } else {
             // onError(result);
             this.$message.error("定位失败，请检查浏览器权限");
-            // console.log("定位结果", result);
+            console.log("定位结果", result);
           }
         });
       });
@@ -375,6 +403,7 @@ export default {
     //选择了一级数据
     handleChange(value) {
       console.log(value);
+      this.opePanel = false;
     },
 
     //进行规划
@@ -541,6 +570,55 @@ export default {
     // 查找周边
     getperiphery() {
       console.log(this.periphery);
+      console.log(this.perRange);
+      if (this.placeSearch) {
+        this.placeSearch.clear();
+        this.placeSearch = null;
+      }
+
+      if (this.periphery !== "") {
+        AMap.service(["AMap.PlaceSearch"], () => {
+          //构造地点查询类
+          this.placeSearch = new AMap.PlaceSearch({
+            type: this.periphery, // 兴趣点类别
+            pageSize: 20, // 单页显示结果条数
+            pageIndex: 1, // 页码
+
+            map: this.map, // 展现结果的地图实例
+            panel: "place", // 结果列表将在此容器中进行展示。
+            autoFitView: true, // 是否自动调整地图视野使绘制的 Marker点都处于视口的可见范围
+          });
+
+          var cpoint = this.mainType[1].coordinate; //中心点坐标
+          this.placeSearch.searchNearBy(
+            "",
+            cpoint,
+            this.perRange,
+            function (status, result) {}
+          );
+        });
+
+        this.opePanel = false;
+        this.$message({
+          message: "为便于查看，出行规划面板已展示关闭，如需要再次打开即可。",
+          type: "warning",
+        });
+      } else {
+        this.$message.error("请选择查询关键词");
+      }
+    },
+    // 清空查找结果
+    clearperiphery() {
+      this.placeSearch.clear();
+      this.placeSearch = null;
+    },
+
+    // 跳转预算评估
+    moneyplan() {
+      console.log("moneyplan");
+      this.$router.push({
+        path: "/travel/money",
+      });
     },
   },
 };

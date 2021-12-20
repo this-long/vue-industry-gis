@@ -58,10 +58,19 @@
   （后续计划，遗产报修申请。）
 
 - 16、19day 出行规划，多路线规划，天气预报查看，路线展示已实现。后续：查找周边，以及预算评估（预算评估信息如何带入需要考虑）
+- 17、20day 发现谷歌浏览器定位获取失败 bug 并找到对应解决方法。开发玉树按评估及周边查看页面
+
+预算评估公式设置
+跟团 火车每公里 1 元；大巴每公里 2 元；火车每公里 3 元飞机每公里 2 元；
+游玩偏好：1000；500；300；
+住宿：200；400；700 每天
+
+预算评估已开发完成。
 
 ---
 
-缺陷：
+## 缺陷：
+
 1、目前的两种申请没有绑定用户，故我的申请功能会出现所有用户显示相同的 bug，在后续的功能中会影响到足迹地图功能。
 其他功能不会受到影响，故先暂时不进行修改，开发完其余功能后再回来对于用户注册这一项功能进行处理。若时间紧迫，可以考虑不进行修复，不会严重影响答辩。
 
@@ -71,7 +80,7 @@
 
 uniCloud 线上跨域？
 
-## 显示地图
+### 显示地图
 
 ```js
   methods: {
@@ -90,7 +99,7 @@ uniCloud 线上跨域？
   },
 ```
 
-## 路线规划报错
+### 路线规划报错
 
 ```js
 VM52100:1 Uncaught TypeError: Cannot read properties of null (reading 'appendChild')
@@ -130,9 +139,45 @@ this.driving.search(
 // end
 ```
 
-## JS API
+### JS API
 
 在使用 JS API 时注意 key 的类型，web 服务主要针对线上服务，Web 端才是 JS API 的 key，key 不正确不报错但是不会返回结果。
+
+### 浏览器定位错误
+
+遇到的问题：在开发过程中发现，使用高德地图的 api 在进行当前位置定位时并不稳定。当所处的网络存在波动时可能会导致定位失败，而如果我们的系统定位失败，去浏览高德地图官方网站同样会定位失败。
+
+而 ip 定位失败后，浏览器常常会去调用 html5 定位，而 html5 定位的成功率只有 5%左右。常常定位的位置相差千里。
+
+```js
+// 错误结果
+{message: 'Get ipLocation failed.Get geolocation time out.', info: 'FAILED', status: 0}
+info: "FAILED"
+message: "Get ipLocation failed.Get geolocation time out."
+status: 0
+[[Prototype]]: Object}
+```
+
+#### 目前的解决办法：
+
+Windows10 自带的 edge 浏览器，这个浏览器可以直接调用 Windows 系统的内置定位服务，可以跳过网络的坑来获取当前位置，精度可观。在其他浏览器均不能定位时可以使用该浏览器进行定位。
+
+#### 定位失败的原因
+
+浏览器定位是如何实现的？为什么会有浏览器定位失败的情况？
+高德地图开放平台 JavaScript API 提供的 Geolocation 定位插件，融合了 HTML5 Geolocation 定位接口、精确 IP 定位服务，以及安卓定位 sdk 定位。其中与安卓定位 sdk 的结合使用适用于开发安卓系统的 H5 应用，需同时使用安卓定位 sdk 和 JavaScript API。
+
+浏览器定位失败，有多种情况：
+
+第一种情况，浏览器不支持原生定位接口，如 IE 较低版本的浏览器等，message 字段包含‘Browser not Support html5 geolocation.’信息；
+
+第二种情况，用户禁用了定位权限，需要用户开启定位权限，message 字段包含‘Geolocation permission denied.’
+
+第三种情况，浏览器禁止了非安全域的定位请求，比如 Chrome、IOS10 已陆续禁止，这时候需要升级站点到 HTTPS，message 字段也是包含‘Geolocation permission denied.’信息。注意 Chrome 不会禁止 localhost 等域名 HTTP 协议下的定位；
+
+第四种情况，浏览器定位超时，包括原生的超时，可以适当增加超时属性的设定值以减少这一现象，另外还有个别浏览器本身的定位接口就是黑洞，完全没有回应，也会超时返回失败，message 字段包含‘Get geolocation time out.’信息；
+
+第五种情况，确实定位失败，Chrome、火狐以及部分套壳浏览器接入的定位服务在国外，有较大限制，失败率高；
 
 ## 云函数可行性分析
 
