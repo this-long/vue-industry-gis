@@ -107,7 +107,7 @@ export default {
 
     async drawHotMap() {
       this.$message({
-        message: "工业遗产建筑密度热力图绘制中，初次加载可能用时较长",
+        message: "工业遗产游客量热力图绘制中，初次加载可能用时较长",
       });
 
       var res1 = await this.$axios.get(
@@ -144,6 +144,7 @@ export default {
 
       this.layer = new Loca.HeatmapLayer({
         map: this.map,
+        fitView: true,
       });
       console.log(this.list);
       this.layer.setData(this.list, {

@@ -56,10 +56,10 @@
           </template>
 
           <el-menu-item index="/heritage/hotmap">{{
-            lang === "zh_cn" ? "分布热力图" : "HeatMap"
+            lang === "zh_cn" ? "游客量热力图" : "HeatMap"
           }}</el-menu-item>
           <el-menu-item index="/heritage/praise">{{
-            lang === "zh_cn" ? "遗产好评度" : "Praise"
+            lang === "zh_cn" ? "遗产聚集度" : "Praise"
           }}</el-menu-item>
           <el-menu-item index="/heritage/Echarts">{{
             lang === "zh_cn" ? "遗产可视化" : "ReportForm"
@@ -81,9 +81,10 @@
           <el-menu-item index="/travel/money">{{
             lang === "zh_cn" ? "预算评估" : "Budget"
           }}</el-menu-item>
-          <el-menu-item index="/travel/map">{{
+          <!-- 展示关闭该功能模块，后续再考虑是否开发 -->
+          <!-- <el-menu-item index="/travel/map">{{
             lang === "zh_cn" ? "足迹地图" : "FootMap"
-          }}</el-menu-item>
+          }}</el-menu-item> -->
         </el-submenu>
 
         <el-submenu index="数据维护">

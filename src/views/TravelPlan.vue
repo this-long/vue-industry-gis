@@ -316,7 +316,9 @@ export default {
             console.log(this.geolocationRes);
           } else {
             // onError(result);
-            this.$message.error("定位失败，请检查浏览器权限");
+            this.$message.error(
+              "定位失败，请检查浏览器权限。可以更换Eage浏览器进行定位。"
+            );
             console.log("定位结果", result);
           }
         });

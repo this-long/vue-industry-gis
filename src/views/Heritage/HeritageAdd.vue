@@ -131,7 +131,7 @@
         <el-alert
           :title="
             lang === 'zh_cn'
-              ? '请选择封面图片，注意封面图片仅允许上传一张，多次上传仅最后一张图会展示'
+              ? '请选择封面图片，注意封面图片仅允许上传一张，多次上传仅最后一张图会展示。为保证上传成功，图片大小建议小于3MB'
               : 'Please select a cover image. Note that only one cover image can be uploaded, and only the last image will be displayed after multiple uploads'
           "
           type="info"
@@ -144,7 +144,7 @@
         <el-alert
           :title="
             lang === 'zh_cn'
-              ? '请选择工业遗产详细图片，可以上传多张'
+              ? '请选择工业遗产详细图片，可以上传多张。为保证上传成功，图片大小建议小于3MB'
               : 'Please select a detailed picture of industrial heritage. You can upload multiple pictures'
           "
           type="info"
