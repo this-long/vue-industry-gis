@@ -10,14 +10,18 @@
         text-color="#fff"
         active-text-color="#325288"
       >
-        <el-menu-item index="/">
+        <el-menu-item index="/" style="font-size: 16px">
           <i class="myIcon el-icon-s-home"></i>
-          <span slot="title">{{ lang === "zh_cn" ? "首页" : "Home" }}</span>
+          <span class="menuSpan" slot="title">{{
+            lang === "zh_cn" ? "首页" : "Home"
+          }}</span>
         </el-menu-item>
         <el-submenu index="/heritage">
           <template slot="title">
             <i class="myIcon el-icon-location"></i>
-            <span>{{ lang === "zh_cn" ? "遗产展示" : "Heritage" }}</span>
+            <span class="menuSpan">{{
+              lang === "zh_cn" ? "遗产展示" : "Heritage"
+            }}</span>
           </template>
           <el-menu-item index="/heritage/industry">{{
             lang === "zh_cn" ? "工业遗产" : "Industry"
@@ -33,7 +37,9 @@
         <el-submenu index="遗产申请">
           <template slot="title">
             <i class="myIcon el-icon-s-promotion"></i>
-            <span>{{ lang === "zh_cn" ? "遗产申请" : "Apply" }}</span>
+            <span class="menuSpan">{{
+              lang === "zh_cn" ? "遗产申请" : "Apply"
+            }}</span>
           </template>
           <el-menu-item index="/heritage/apply">{{
             lang === "zh_cn" ? "遗产申报" : "Declare"
@@ -52,7 +58,9 @@
         <el-submenu index="遗产数据">
           <template slot="title">
             <i class="myIcon el-icon-s-marketing"></i>
-            <span>{{ lang === "zh_cn" ? "遗产数据" : "Information" }}</span>
+            <span class="menuSpan">{{
+              lang === "zh_cn" ? "遗产数据" : "Information"
+            }}</span>
           </template>
 
           <el-menu-item index="/heritage/hotmap">{{
@@ -61,18 +69,20 @@
           <el-menu-item index="/heritage/praise">{{
             lang === "zh_cn" ? "遗产聚集度" : "Praise"
           }}</el-menu-item>
-          <el-menu-item index="/heritage/Echarts">{{
+          <!-- <el-menu-item index="/heritage/Echarts">{{
             lang === "zh_cn" ? "遗产可视化" : "ReportForm"
-          }}</el-menu-item>
+          }}</el-menu-item> -->
           <el-menu-item index="/heritage/ranking">{{
-            lang === "zh_cn" ? "遗产排行榜" : "RankingList"
+            lang === "zh_cn" ? "数据可视化" : "ReportForm"
           }}</el-menu-item>
         </el-submenu>
 
         <el-submenu index="我要旅行">
           <template slot="title">
             <i class="myIcon el-icon-s-cooperation"></i>
-            <span>{{ lang === "zh_cn" ? "我要旅行" : "Travel" }}</span>
+            <span class="menuSpan">{{
+              lang === "zh_cn" ? "我要旅行" : "Travel"
+            }}</span>
           </template>
 
           <el-menu-item index="/travel/plan">{{
@@ -90,7 +100,9 @@
         <el-submenu index="数据维护">
           <template slot="title">
             <i class="myIcon el-icon-s-order"></i>
-            <span>{{ lang === "zh_cn" ? "数据维护" : "AdminData" }}</span>
+            <span class="menuSpan">{{
+              lang === "zh_cn" ? "数据维护" : "AdminData"
+            }}</span>
           </template>
           <el-menu-item index="/data/manage">{{
             lang === "zh_cn" ? "遗产管理" : "HeritageRun"
@@ -103,7 +115,9 @@
         <el-submenu index="我的审核">
           <template slot="title">
             <i class="myIcon el-icon-s-check"></i>
-            <span>{{ lang === "zh_cn" ? "我的审核" : "MyApprove" }}</span>
+            <span class="menuSpan">{{
+              lang === "zh_cn" ? "我的审核" : "MyApprove"
+            }}</span>
           </template>
           <el-menu-item index="/heritage/approve">{{
             lang === "zh_cn" ? "遗产申请" : "HeritageApprove"
@@ -115,13 +129,15 @@
 
         <el-menu-item index="/about">
           <i class="myIcon el-icon-s-comment"></i>
-          <span slot="title">{{
+          <span class="menuSpan" slot="title">{{
             lang === "zh_cn" ? "关于我们" : "AboutUs"
           }}</span>
         </el-menu-item>
         <el-menu-item index="/setup">
           <i class="myIcon el-icon-s-tools"></i>
-          <span slot="title">{{ lang === "zh_cn" ? "设置" : "SetUp" }}</span>
+          <span class="menuSpan" slot="title">{{
+            lang === "zh_cn" ? "设置" : "SetUp"
+          }}</span>
         </el-menu-item>
       </el-menu>
     </div>
@@ -176,6 +192,10 @@ export default {
 .main .main-left > ul {
   width: 160px;
 }
+.main .main-left > .el-menu-vertical-demo > .el-menu-item,
+.main .main-left > .el-menu-vertical-demo .el-submenu__title {
+  font-size: 16px !important;
+}
 .main .main-right {
   width: calc(100% - 160px);
   /* background-color: red; */
@@ -201,5 +221,9 @@ export default {
 }
 .myIcon {
   color: white;
+}
+.menuSpan {
+  font-size: 15px;
+  padding-left: 5px;
 }
 </style>
