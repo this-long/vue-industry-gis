@@ -145,6 +145,11 @@ const routes = [
         path: '/heritage/praise',
         component: () => import('../views/HeritagePraise.vue')
       },
+      {
+        // 要闻详情
+        path: '/main/noticemain',
+        component: () => import('../views/NoticeMain.vue')
+      },
     ]
 
   },

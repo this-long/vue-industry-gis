@@ -54,6 +54,7 @@
 - 13、9day 报修申请审批、编辑、交工已完成，剩余功能旅游及地图。
 - 14、10day 用户登陆注册，申请信息绑定用户已实现。
 - 15、17day 我要旅行出行规划：获取当前定位功能开发。
+- 16、26day 一阶段除关于我们外所有功能已开发完毕并上传线上版本。（等待提交老师测试）
 
   （后续计划，遗产报修申请。）
 
@@ -895,3 +896,26 @@ url:/postApplyRepairData/postApplyRepairData
 - 2、添加新用户
   post
   url:/postUser/postUser
+
+  ### 首页编辑
+
+  - 添加要闻
+    post
+    url:postNoticeList/postNoticeList
+
+- 获取要闻
+  get
+  url：getNoticeList/getNoticeList
+
+- 获取单条
+
+post
+url：/getOneNoticeList/getOneNoticeList
+
+- 编辑单条
+  post
+  url：/editNoticeList/editNoticeList
+
+- 删除单条
+  post
+  url：/removeOneNoticeList/removeOneNoticeList

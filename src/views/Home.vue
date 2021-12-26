@@ -51,7 +51,20 @@
       </div>
       <div class="home-bottom-usermain">
         <div class="usermain-left">
-          <el-card class="box-card" style="height: 320px"></el-card>
+          <el-card class="box-card" style="height: 320px">
+            <span style="font-size: 16px; font-weight: 600">遗产要闻</span>
+            <div class="notic-list">
+              <div
+                class="notic-che"
+                @click="getNoticMain(ele)"
+                v-for="ele in noticeList"
+                :key="ele._id"
+              >
+                <span>[{{ ele.region }}] {{ ele.name }}</span
+                ><span>{{ ele.date1 }}</span>
+              </div>
+            </div>
+          </el-card>
         </div>
         <div class="usermain-right">
           <el-card class="box-card" style="height: 320px">
@@ -143,12 +156,15 @@ export default {
       nowUser: "暂无用户",
       todayWeather: null,
       fourDayWeatherList: null,
+
+      noticeList: [], //要闻列表
     };
   },
 
   created() {
     this.initMap();
     this.nowUser = sessionStorage.getItem("username");
+    this.getNoticeList();
   },
 
   methods: {
@@ -215,6 +231,18 @@ export default {
         });
       });
       // 获取天气预报end
+    },
+
+    async getNoticeList() {
+      var res = await this.$axios.get("/getNoticeList/getNoticeList");
+      console.log(res);
+      this.noticeList = res.data.data;
+    },
+    getNoticMain(ele) {
+      // console.log(ele);
+      this.$router.push({
+        path: "/main/noticemain?_id=" + ele._id,
+      });
     },
   },
 };
@@ -285,5 +313,26 @@ export default {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+}
+
+.home-bottom-usermain .notic-list {
+  height: 250px;
+  overflow: auto;
+  margin-top: 5px;
+}
+.home-bottom-usermain .notic-list .notic-che {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  cursor: pointer;
+  color: #606266;
+}
+.home-bottom-usermain .notic-list .notic-che:hover {
+  color: black;
+  /* font-weight: 600; */
+}
+::-webkit-scrollbar {
+  /*隐藏滚轮*/
+  display: none;
 }
 </style>
