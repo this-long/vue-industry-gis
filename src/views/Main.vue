@@ -34,7 +34,7 @@
           }}</el-menu-item>
         </el-submenu>
 
-        <el-submenu index="遗产申请">
+        <el-submenu v-if="nowUser !== 'admin'" index="遗产申请">
           <template slot="title">
             <i class="myIcon el-icon-s-promotion"></i>
             <span class="menuSpan">{{
@@ -97,7 +97,7 @@
           }}</el-menu-item> -->
         </el-submenu>
 
-        <el-submenu index="数据维护">
+        <el-submenu index="数据维护" v-if="nowUser === 'admin'">
           <template slot="title">
             <i class="myIcon el-icon-s-order"></i>
             <span class="menuSpan">{{
@@ -112,7 +112,7 @@
           }}</el-menu-item>
         </el-submenu>
 
-        <el-submenu index="我的审核">
+        <el-submenu index="我的审核" v-if="nowUser === 'admin'">
           <template slot="title">
             <i class="myIcon el-icon-s-check"></i>
             <span class="menuSpan">{{
@@ -165,11 +165,13 @@ export default {
   data() {
     return {
       isCollapse: true,
+      nowUser: "暂未获取用户数据",
     };
   },
 
   created() {
-    // console.log("route");
+    this.nowUser = sessionStorage.getItem("username");
+    console.log(this.nowUser);
   },
 
   computed: {
