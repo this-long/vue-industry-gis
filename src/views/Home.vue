@@ -156,6 +156,7 @@ export default {
       nowUser: "暂无用户",
       todayWeather: null,
       fourDayWeatherList: null,
+      weatherPlace: null,
 
       noticeList: [], //要闻列表
     };
@@ -199,6 +200,40 @@ export default {
             // console.log("定位结果", result);
             this.geolocationRes = result;
             console.log(this.geolocationRes);
+            var start = this.geolocationRes.formattedAddress.search("省");
+            var end = this.geolocationRes.formattedAddress.search("市");
+
+            console.log("start", start, end);
+
+            this.weatherPlace = this.geolocationRes.formattedAddress.slice(
+              start + 1,
+              end
+            );
+
+            // 获取天气预报start
+
+            console.log("当前地址", this.weatherPlace);
+            AMap.plugin("AMap.Weather", () => {
+              var weather = new AMap.Weather();
+
+              //查询实时天气信息, 查询的城市到行政级别的城市，如朝阳区、杭州市
+              weather.getLive(this.weatherPlace, (err, data) => {
+                if (!err) {
+                  console.log("当天天气", data);
+                  this.todayWeather = data;
+                }
+              });
+              //未来4天天气预报
+              weather.getForecast(this.weatherPlace, (err, data) => {
+                if (err) {
+                  return;
+                }
+                console.log("4天天气", data);
+                this.fourDayWeatherList = data.forecasts;
+                // console.log("四天天气", this.fourDayWeatherList);
+              });
+            });
+            // 获取天气预报end
           } else {
             // onError(result);
             this.$message.error(
@@ -210,27 +245,6 @@ export default {
       });
 
       // 获取天气start
-      // 获取天气预报start
-      AMap.plugin("AMap.Weather", () => {
-        var weather = new AMap.Weather();
-        //查询实时天气信息, 查询的城市到行政级别的城市，如朝阳区、杭州市
-        weather.getLive("唐山", (err, data) => {
-          if (!err) {
-            console.log("当天天气", data);
-            this.todayWeather = data;
-          }
-        });
-        //未来4天天气预报
-        weather.getForecast("唐山", (err, data) => {
-          if (err) {
-            return;
-          }
-          console.log("4天天气", data);
-          this.fourDayWeatherList = data.forecasts;
-          // console.log("四天天气", this.fourDayWeatherList);
-        });
-      });
-      // 获取天气预报end
     },
 
     async getNoticeList() {
