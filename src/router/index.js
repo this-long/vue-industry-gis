@@ -146,6 +146,16 @@ const routes = [
         component: () => import('../views/HeritagePraise.vue')
       },
       {
+        // 维修现状图（在我的审核模块，仅对管理员开放）
+        path: '/heritage/repairmap',
+        component: () => import('../views/HeritageRepairMap.vue')
+      },
+      {
+        // 遗产维修次数图
+        path: '/heritage/repairlocalmap',
+        component: () => import('../views/HeritageRepairLocalMap.vue')
+      },
+      {
         // 要闻详情
         path: '/main/noticemain',
         component: () => import('../views/NoticeMain.vue')

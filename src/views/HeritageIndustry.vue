@@ -400,6 +400,13 @@ export default {
         // 循环点坐标
         // 注意这里一定得用 let
         let marker = new AMap.Marker({
+          // 自定义图标
+          icon: new AMap.Icon({
+            image:
+              "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-790d5b85-9674-4a89-9bcc-c0657ea369be/28d39e83-507a-430d-acfc-e69261ebdd9a.png",
+            size: new AMap.Size(40, 40),
+            imageSize: new AMap.Size(40, 40),
+          }),
           map: this.map,
           position: this.dataList[i].coordinate,
           extData: this.dataList[i],

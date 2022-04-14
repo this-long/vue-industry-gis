@@ -42,13 +42,13 @@
             }}</span>
           </template>
           <el-menu-item index="/heritage/apply">{{
-            lang === "zh_cn" ? "遗产申报" : "Declare"
+            lang === "zh_cn" ? "遗产添加申请" : "Declare"
           }}</el-menu-item>
           <el-menu-item index="/heritage/repair">{{
             lang === "zh_cn" ? "遗产报修" : "Repair"
           }}</el-menu-item>
           <el-menu-item index="/heritage/myapply">{{
-            lang === "zh_cn" ? "我的申报" : "MyApply"
+            lang === "zh_cn" ? "我的申请" : "MyApply"
           }}</el-menu-item>
           <el-menu-item index="/repair/my/applyRepair">{{
             lang === "zh_cn" ? "我的报修" : "MyRepair"
@@ -72,8 +72,12 @@
           <!-- <el-menu-item index="/heritage/Echarts">{{
             lang === "zh_cn" ? "遗产可视化" : "ReportForm"
           }}</el-menu-item> -->
+
           <el-menu-item index="/heritage/ranking">{{
             lang === "zh_cn" ? "数据可视化" : "ReportForm"
+          }}</el-menu-item>
+          <el-menu-item index="/heritage/repairlocalmap">{{
+            lang === "zh_cn" ? "遗产维修次数" : "ReportNum"
           }}</el-menu-item>
         </el-submenu>
 
@@ -120,11 +124,33 @@
             }}</span>
           </template>
           <el-menu-item index="/heritage/approve">{{
-            lang === "zh_cn" ? "遗产申请" : "HeritageApprove"
+            lang === "zh_cn" ? "添加审核" : "HeritageApprove"
           }}</el-menu-item>
           <el-menu-item index="/repair/approve">{{
-            lang === "zh_cn" ? "报修申请" : "RepairApprove"
+            lang === "zh_cn" ? "报修审核" : "RepairApprove"
           }}</el-menu-item>
+          <el-menu-item index="/heritage/repairmap">{{
+            lang === "zh_cn" ? "维修现状图" : "RepairMap"
+          }}</el-menu-item>
+        </el-submenu>
+
+        <!-- 国家申遗 -->
+        <el-submenu index="国家申遗">
+          <template slot="title">
+            <i class="myIcon el-icon-s-management"></i>
+            <span class="menuSpan">{{
+              lang === "zh_cn" ? "国家申遗" : "National"
+            }}</span>
+          </template>
+          <el-menu-item @click="path1" index="">{{
+            lang === "zh_cn" ? "工信官网" : "NationalWebsite"
+          }}</el-menu-item>
+          <el-menu-item @click="path2" index="">{{
+            lang === "zh_cn" ? "申遗入口" : "ApplicationEntry"
+          }}</el-menu-item>
+          <!-- <el-menu-item index="/repair/approve">{{
+            lang === "zh_cn" ? "报修申请" : "RepairApprove"
+          }}</el-menu-item> -->
         </el-submenu>
 
         <el-menu-item index="/about">
@@ -176,6 +202,17 @@ export default {
 
   computed: {
     ...mapState(["lang"]),
+  },
+
+  methods: {
+    path1() {
+      window.location.href = "https://wap.miit.gov.cn/";
+    },
+
+    path2() {
+      window.location.href =
+        "http://www.gov.cn/xinwen/2021-04/14/content_5599500.htm";
+    },
   },
 };
 </script>

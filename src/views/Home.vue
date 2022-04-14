@@ -112,12 +112,12 @@
                 <span
                   class="miniText"
                   v-if="
-                    todayWeather.temperature > 5 &&
+                    todayWeather.temperature >= 5 &&
                     todayWeather.temperature < 15
                   "
                   >天气温暖，适合出行</span
                 >
-                <span class="miniText" v-if="todayWeather.temperature > 15"
+                <span class="miniText" v-if="todayWeather.temperature >= 15"
                   >注意防暑</span
                 >
               </div>

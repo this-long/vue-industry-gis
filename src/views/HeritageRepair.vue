@@ -85,11 +85,103 @@
             </el-table-column>
           </el-table></el-tab-pane
         >
-        <el-tab-pane label="遗产博物馆报修" name="two"
-          >遗产博物馆报修</el-tab-pane
+        <el-tab-pane label="遗产博物馆报修" name="two">
+          <el-table
+            border
+            stripe
+            :data="tableData"
+            style="width: 100%"
+            height="420"
+          >
+            <el-table-column
+              prop="start"
+              label="始建"
+              width="60"
+              align="center"
+            >
+            </el-table-column>
+            <el-table-column prop="name" label="工业遗产名称" width="180">
+            </el-table-column>
+            <el-table-column prop="address" label="地址"> </el-table-column>
+            <el-table-column
+              prop="type"
+              align="center"
+              label="遗产类型"
+              width="100"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="addType"
+              width="100"
+              align="center"
+              label="所属分类"
+            >
+            </el-table-column>
+            <el-table-column prop="company" label="公司"> </el-table-column>
+
+            <el-table-column label="操作" align="center" width="150">
+              <template slot-scope="scope">
+                <el-button @click="getMain(scope.row)" type="text" size="small"
+                  >查看</el-button
+                >
+                <el-button
+                  type="text"
+                  @click="addRepair(scope.row)"
+                  size="small"
+                  >我要报修</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table></el-tab-pane
         >
-        <el-tab-pane label="工业旅游区报修" name="three"
-          >工业旅游区报修</el-tab-pane
+        <el-tab-pane label="工业旅游区报修" name="three">
+          <el-table
+            border
+            stripe
+            :data="tableData"
+            style="width: 100%"
+            height="420"
+          >
+            <el-table-column
+              prop="start"
+              label="始建"
+              width="60"
+              align="center"
+            >
+            </el-table-column>
+            <el-table-column prop="name" label="工业遗产名称" width="180">
+            </el-table-column>
+            <el-table-column prop="address" label="地址"> </el-table-column>
+            <el-table-column
+              prop="type"
+              align="center"
+              label="遗产类型"
+              width="100"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="addType"
+              width="100"
+              align="center"
+              label="所属分类"
+            >
+            </el-table-column>
+            <el-table-column prop="company" label="公司"> </el-table-column>
+
+            <el-table-column label="操作" align="center" width="150">
+              <template slot-scope="scope">
+                <el-button @click="getMain(scope.row)" type="text" size="small"
+                  >查看</el-button
+                >
+                <el-button
+                  type="text"
+                  @click="addRepair(scope.row)"
+                  size="small"
+                  >我要报修</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table></el-tab-pane
         >
       </el-tabs>
     </div>

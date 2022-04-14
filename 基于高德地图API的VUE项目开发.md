@@ -73,6 +73,11 @@
 
 - 19、27day 一期开发已完成，页面整体修复已完成，打包编译，上传一期最终成果，等待用户查验。
 
+- 20、2022-4-14 开发遗产维修数据可视化功能，已实现
+  以及打包 electron（待实现）
+
+补全了遗产报修缺少的两个标签页，已修复
+
 ---
 
 ## 缺陷：
@@ -741,6 +746,11 @@ module.exports = class editHeritageMainData extends Controller {
 - 6、 添加工业博物馆主要
   url:https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/postHeritageMuseum/postHeritageMuseum
 
+  获取博物馆单条
+
+  post
+  /getOneHeritageMuseum/getOneHeritageMuseum
+
 - 7、获取`工业旅游区`主要内容
   url:https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/getHeritageTourism/getHeritageTourism
 
@@ -799,6 +809,11 @@ module.exports = class editHeritageMainData extends Controller {
 
 - 8 添加工业旅游区主要内
   url:https://790d5b85-9674-4a89-9bcc-c0657ea369be.bspapp.com/mainFun/postHeritageTourism/postHeritageTourism
+
+  获取旅游区单条
+
+  post
+  /getOneHeritageTourism/getOneHeritageTourism
 
 ### 遗产申请部分
 

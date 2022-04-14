@@ -249,7 +249,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .heritage-Hot-Map .legend {
   position: absolute;
   bottom: 20px;

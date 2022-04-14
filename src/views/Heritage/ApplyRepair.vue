@@ -124,16 +124,16 @@ export default {
   async created() {
     console.log(this.$route.query);
 
-    if (this.$route.query.applyId) {
-      var res = await this.$axios.post("/getOneApplyRepair/getOneApplyRepair", {
-        _id: this.$route.query.applyId,
-      });
-      // this.editData = { ...res.data.data[0] };
-      this.ruleForm = { ...res.data.data[0] };
-      // console.log(res);
-    } else {
-      this.getData();
-    }
+    // if (this.$route.query._id && this.$route.query.addType === "工业遗产") {
+    //   var res = await this.$axios.post("/getOneApplyRepair/getOneApplyRepair", {
+    //     _id: this.$route.query.applyId,
+    //   });
+    //   // this.editData = { ...res.data.data[0] };
+    //   this.ruleForm = { ...res.data.data[0] };
+    //   // console.log(res);
+    // } else {
+    this.getData();
+    // }
   },
 
   data() {
@@ -242,6 +242,20 @@ export default {
       if (this.$route.query.addType === "工业遗产") {
         res = await this.$axios.post(
           "/getOneHeritageMainData/getOneHeritageMainData",
+          {
+            _id: this.$route.query._id,
+          }
+        );
+      } else if (this.$route.query.addType === "遗产博物馆") {
+        res = await this.$axios.post(
+          "/getOneHeritageMuseum/getOneHeritageMuseum",
+          {
+            _id: this.$route.query._id,
+          }
+        );
+      } else if (this.$route.query.addType === "工业旅游区") {
+        res = await this.$axios.post(
+          "/getOneHeritageTourism/getOneHeritageTourism",
           {
             _id: this.$route.query._id,
           }
