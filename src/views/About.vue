@@ -162,6 +162,94 @@
           >
         </div>
       </div>
+      <el-divider></el-divider>
+
+      <div class="about-install">
+        <div class="png">
+          <div class="png-che">
+            <img
+              src="https://vkceyugu.cdn.bspapp.com/VKCEYUGU-790d5b85-9674-4a89-9bcc-c0657ea369be/cfaefb6d-0f9c-48c0-8b11-fc0834594ef6.png"
+              alt=""
+            />
+          </div>
+          <div class="png-p">
+            <p>
+              为应对不通的业务需求，提高系统运行效率。本系统还提供了桌面应用程序的下载安装包。目前版本支持Windows系统64位及32位操作系统，目前有精简绿色包版以及安装包版两种下载方式，请依据自己实际需求下载使用。
+            </p>
+            <!-- <img
+              src="https://vkceyugu.cdn.bspapp.com/VKCEYUGU-790d5b85-9674-4a89-9bcc-c0657ea369be/26afc341-0280-4965-bb7e-1e8fe787111d.png"
+              alt=""
+            /> -->
+          </div>
+        </div>
+
+        <div class="install-a">
+          <div class="a-che">
+            <p>Windows版64位</p>
+            <span class="span">安装包版 1.0.0.0</span>
+
+            <br />
+            <el-button
+              style="width: 95px; margin-top: 10px"
+              type="primary"
+              @click="
+                goInstall(
+                  'https://pan.baidu.com/s/1iI-r7qZMpxCv2laVzriQyA?pwd=wi64'
+                )
+              "
+              >下载</el-button
+            >
+          </div>
+          <div class="a-che">
+            <p>Windows版64位</p>
+            <span class="span">精简绿色包版 1.0.0.0</span>
+
+            <br />
+            <el-button
+              style="width: 95px; margin-top: 10px"
+              type="primary"
+              @click="
+                goInstall(
+                  'https://pan.baidu.com/s/1de9x5y-G6wGnErh4Pe7m2w?pwd=wi64'
+                )
+              "
+              >下载</el-button
+            >
+          </div>
+          <div class="a-che">
+            <p>Windows版32位</p>
+            <span class="span">安装包版 1.0.0.0</span>
+
+            <br />
+            <el-button
+              style="width: 95px; margin-top: 10px"
+              type="primary"
+              @click="
+                goInstall(
+                  'https://pan.baidu.com/s/1J5sg7MAnGyLvBOD74iYaKA?pwd=wi32'
+                )
+              "
+              >下载</el-button
+            >
+          </div>
+          <div class="a-che">
+            <p>Windows版32位</p>
+            <span class="span">精简绿色包版 1.0.0.0</span>
+
+            <br />
+            <el-button
+              style="width: 95px; margin-top: 10px"
+              type="primary"
+              @click="
+                goInstall(
+                  'https://pan.baidu.com/s/1XKa7faMlzZGz1I5htHw2RQ?pwd=wi32'
+                )
+              "
+              >下载</el-button
+            >
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -183,6 +271,9 @@ export default {
     }, */
     getMore() {
       this.$router.push("/");
+    },
+    goInstall(path) {
+      window.open(path);
     },
   },
 };
@@ -296,6 +387,7 @@ export default {
   width: 70%;
   margin: 0 auto;
   text-align: center;
+  padding-bottom: 30px;
 }
 
 .about .about-bottom .about-bottom-inner img {
@@ -309,5 +401,49 @@ export default {
 }
 .about .about-bottom .about-bottom-inner .el-card {
   min-height: 0;
+}
+
+/* 安装包部分样式 */
+.about-install {
+  padding-bottom: 50px;
+}
+.about-install .png {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 60px;
+}
+.about-install .png .png-che {
+  text-align: center;
+  padding-right: 200px;
+}
+.about-install .png .png-p {
+  width: 35%;
+  font-size: 18px;
+  text-indent: 2em;
+  line-height: 30px;
+}
+.about-install .install-a {
+  padding-top: 60px;
+  display: flex;
+  justify-content: center;
+}
+.about-install .install-a .a-che {
+  padding: 0 40px;
+  text-align: center;
+  line-height: 28px;
+}
+.about-install .install-a .a-che p {
+  margin: 0;
+  font-size: 20px;
+}
+.about-install .install-a .a-che .span {
+  font-size: 18px;
+  color: #333;
+}
+.about-install .install-a .a-che .spanmini {
+  font-size: 14px;
+  color: #333;
+  line-height: 15px;
 }
 </style>
