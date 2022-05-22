@@ -1,6 +1,6 @@
 <template>
   <!-- 遗产报表 -->
-  <div class="heritage-Hot-Map">
+  <div class="heritage-Hot-Map-p">
     <div class="heritage-industry">
       <!-- 地图容器 -->
       <div id="container" class="container"></div>
@@ -117,9 +117,9 @@ export default {
         var polygon = new AMap.Polygon({
           pathL: pathArray,
           strokeColor: "#F9D5A7",
-          strokeWeight: 1,
+          strokeWeight: 3,
           fillColor: "#F9D5A7",
-          fillOpacity: 0.2,
+          fillOpacity: 0.3,
         });
         polygon.setPath(pathArray);
         _this.map.add(polygon);
@@ -249,32 +249,32 @@ export default {
 };
 </script>
 
-<style scoped>
-.heritage-Hot-Map .legend {
+<style >
+.heritage-Hot-Map-p .legend {
   position: absolute;
   bottom: 20px;
   right: 20px;
 }
 
-.heritage-Hot-Map .legend ul {
+.heritage-Hot-Map-p .legend ul {
   padding: 0;
   margin: 0;
   list-style: none;
 }
 
-.heritage-Hot-Map .color-item {
+.heritage-Hot-Map-p .color-item {
   width: 30px;
   height: 20px;
   display: inline-block;
 }
 
-.heritage-Hot-Map .label-item {
+.heritage-Hot-Map-p .label-item {
   display: inline-block;
   width: 30px;
   margin-left: -2px;
   font-size: 14px;
 }
-.heritage-Hot-Map .info {
+.heritage-Hot-Map-p .info {
   padding: 0.75rem 1.25rem;
   margin-bottom: 1rem;
   border-radius: 0.25rem;
@@ -288,7 +288,7 @@ export default {
   box-shadow: 0 2px 6px 0 rgba(114, 124, 245, 0.5);
   font-size: 12px;
 }
-.heritage-Hot-Map .info span {
+.heritage-Hot-Map-p .info span {
   color: #1b91ff;
 }
 </style>

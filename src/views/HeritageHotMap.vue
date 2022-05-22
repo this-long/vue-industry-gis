@@ -94,9 +94,9 @@ export default {
         var polygon = new AMap.Polygon({
           pathL: pathArray,
           strokeColor: "#F9D5A7",
-          strokeWeight: 1,
+          strokeWeight: 3,
           fillColor: "#F9D5A7",
-          fillOpacity: 0.2,
+          fillOpacity: 0.3,
         });
         polygon.setPath(pathArray);
         _this.map.add(polygon);
